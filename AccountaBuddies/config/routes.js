@@ -86,5 +86,20 @@ module.exports.routes = {
 	'POST /goal/delete/:id': {
 		controller: 'goal',
 		action: 'delete'
+	},
+	
+	'POST /comment/create/:goalId' : {
+		controller: 'comment',
+		action: 'create'
+	},
+	
+	'GET /comment/:id' : {
+		controller: 'comment',
+		action: 'find'
+	},
+	
+	'POST /comment/delete/:id' : {
+		controller: 'comment',
+		action: 'delete'
 	}
 };

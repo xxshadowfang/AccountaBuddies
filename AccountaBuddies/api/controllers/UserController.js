@@ -11,7 +11,7 @@ module.exports = function() {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				User.findOne({id : req.body.id}).exec(function(err, user) {
+				User.findOne({id : req.param('id')}).exec(function(err, user) {
 					if (user === undefined)
 						return sails.globals.jsonFailure(req, res, 'User was not found.');
 					if (err)
