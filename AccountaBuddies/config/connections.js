@@ -43,7 +43,7 @@ module.exports.connections = {
   accountaBuddiesMYSQL: {
     adapter: 'sails-mysql',
     host: 'localhost',
-    port: 3306,
+    port: 3307,
     user: 'root',
     password: '',
     database: 'accounta_buddies'
