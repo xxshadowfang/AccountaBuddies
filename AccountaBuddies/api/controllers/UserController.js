@@ -4,24 +4,22 @@ module.exports = function() {
 	return {
 
 		find : function(req, res) {
-			if (!req.body.id) {
-				return sails.globals.jsonFailure(req, res,
-						'You must provide a user id.');
+			if (!req.param('id')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
 			}
-
-			// TODO: USE STORED PROCEDURE
-			User.findOne({
-				id : req.body.id
-			}).exec(
-					function(err, user) {
-						if (user === undefined)
-							return sails.globals.jsonFailure(req, res,
-									'User was not found.');
-						if (err)
-							return sails.globals.jsonFailure(req, res, err);
-
-						return sails.globals.jsonSuccess(req, res, user);
-					});
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				// TODO: USE STORED PROCEDURE
+				User.findOne({id : req.body.id}).exec(function(err, user) {
+					if (user === undefined)
+						return sails.globals.jsonFailure(req, res, 'User was not found.');
+					if (err)
+						return sails.globals.jsonFailure(req, res, err);
+	
+					return sails.globals.jsonSuccess(req, res, user);
+				});
+			}
 		},
 
 		register : function(req, res) {

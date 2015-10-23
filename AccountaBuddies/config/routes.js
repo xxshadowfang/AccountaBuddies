@@ -73,4 +73,18 @@ module.exports.routes = {
 		action: 'create'
 	},
 	
+	'GET /goal/:id': {
+		controller: 'goal',
+		action: 'find'
+	},
+	
+	'POST /goal/update/:id': {
+		controller: 'goal',
+		action: 'update'
+	},
+	
+	'POST /goal/delete/:id': {
+		controller: 'goal',
+		action: 'delete'
+	}
 };
