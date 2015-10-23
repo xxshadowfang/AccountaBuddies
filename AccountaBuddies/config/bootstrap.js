@@ -28,6 +28,21 @@ module.exports.bootstrap = function(cb) {
 		}
 	}
 	
+	sails.globals.jsonSuccess = function(req, res, content) {
+		return res.ok({
+			success: true,
+			body : {
+				content : !content ? '' : content
+			}
+		});
+	}
+	
+	sails.globals.jsonFailure = function(req, res, reason) {
+		return res.ok({
+			success : false,
+			content : !reason ? 'failure with no reason :(' : reason
+		})
+	}
 		
 	// sets up the cache of the cookies
 	// wasn't sure how this should be done, but sails.globals.cookieCache
