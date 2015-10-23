@@ -17,12 +17,23 @@ module.exports = function() {
 			},
 			saltedPassword : {
 				type : 'string',
+				maxLength : 60,
 				required : true
 			},
 			firstName : {
 				type : 'string'
 			},
 			lastName : {
+				type : 'string'
+			},
+			age: {
+				type: 'integer'
+			},
+			gender: {
+				type: 'string',
+				size: 1
+			},
+			cookie : {
 				type : 'string'
 			},
 			goals : {
