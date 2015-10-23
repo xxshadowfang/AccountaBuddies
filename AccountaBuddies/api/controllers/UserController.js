@@ -9,7 +9,7 @@ module.exports = function() {
 			}
 			
 			// TODO: USE STORED PROCEDURE
-			User.findOne({id: req.body.id}.exec(function(err, user) {
+			User.findOne({id: req.body.id}).exec(function(err, user) {
 				if (user === undefined)
 					return res.notFound();
 				if (err)
