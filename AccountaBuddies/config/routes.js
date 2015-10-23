@@ -34,7 +34,9 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+	
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +47,44 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-
+	
+  	'POST /user/register': {
+		controller: 'user',
+		action: 'register'
+	},
+	
+	'GET /user/:id': {
+		controller: 'user',
+		action: 'find'
+	},
+	
+	'POST /user/login': {
+		controller: 'user',
+		action: 'login'
+	},
+	
+	'POST /user/logout': {
+		controller: 'user',
+		action: 'logout'
+	},
+	
+	'POST /goal/create': {
+		controller: 'goal',
+		action: 'create'
+	},
+	
+	'GET /goal/:id': {
+		controller: 'goal',
+		action: 'find'
+	},
+	
+	'POST /goal/update/:id': {
+		controller: 'goal',
+		action: 'update'
+	},
+	
+	'POST /goal/delete/:id': {
+		controller: 'goal',
+		action: 'delete'
+	}
 };
