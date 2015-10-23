@@ -37,13 +37,13 @@ CREATE DEFINER=``@`` PROCEDURE `registerUser`(
 )
 
 BEGIN
-    if (username IS NULL) THEN SIGNAL SQLSTATE '45000'
+    if (_username IS NULL) THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'username was null';
         END IF;
-    if (salt IS NULL) THEN SIGNAL SQLSTATE '45001'
+    if (_salt IS NULL) THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'password was null';
         END IF;
-    if (cookie IS NULL) THEN SIGNAL SQLSTATE '45002'
+    if (_cookie IS NULL) THEN SIGNAL SQLSTATE '45002'
         SET MESSAGE_TEXT = 'cookie was null';
         END IF;
 
