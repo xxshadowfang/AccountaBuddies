@@ -21,6 +21,8 @@ module.exports.bootstrap = function(cb) {
 	};
 
 	sails.globals.isLoggedInUser = function(cookie, userId) {
+		if (!cookie || !userId) return false;
+		
 		if (sails.globals.cookieCache[cookie] == userId) {
 			return true;
 		} else {
