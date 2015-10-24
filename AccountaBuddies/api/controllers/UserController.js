@@ -16,13 +16,15 @@ module.exports = function() {
 						return sails.globals.jsonFailure(req, res, 'User was not found.');
 					if (err)
 						return sails.globals.jsonFailure(req, res, err);
-	
+
 					return sails.globals.jsonSuccess(req, res, user);
 				});
 			}
 		},
 
 		register : function(req, res) {
+      console.log("register request received");
+      console.log(req.body);
 			if (!req.body.username) {
 				return sails.globals.jsonFailure(req, res,
 						'You must provide a username.');
@@ -35,18 +37,19 @@ module.exports = function() {
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(req.body.password, salt, function(err, hash) {
 					var cookie = sails.globals.generateCookie();
-
+          console.log("call register");
 					var cmd = "CALL `registerUser` ('" + req.body.username
 							+ "', '" + hash + "', '" + req.body.firstName
 							+ "', '" + req.body.lastName + "', '"
-							+ req.body.age + "', '" + req.body.gender + "', '"
+							+ 20 + "', '" + 'M' + "', '"
 							+ cookie + "');";
 
 					User.query(cmd, function(err, results) {
 						if (err) {
+              console.log(err);
 							return sails.globals.jsonFailure(req, res, err);
 						}
-
+            console.log("created");
 						var userId = results[0][0].id;
 
 						sails.globals.cookieCache[cookie] = userId;

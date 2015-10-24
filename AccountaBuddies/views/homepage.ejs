@@ -1,5 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <link rel="stylesheet" type="text/css" href="styles/StyleSheet.css" />
+<link rel="stylesheet" type="text/css" href="styles/StyleSheet.css" />
+<script src="/js/homepage.js"></script>
 <div class="header">
   <span> <img src="images/logo.png" height="98"/> </span>
   <span id="headerTitle">Register a User Account</span>
@@ -11,21 +11,17 @@
   <div>
     <h2>Register a new account!</h2>
     <div id="invalidLoginAttempt"  visible="false"></div>
-    <Label >Desired Username</Label>
-    <TextBox  id="userName"></TextBox>
+    Desired Username: <input id="input-username" type="text" name="username" /><br />
     <!-- Do we want to insert a button here to click to check if the username is valid/available? -->
     <span id="usernameEntered"  visible="false"></span> <br /> <br />
-    <Label >Password</Label>
-    <TextBox  id="password"></TextBox>
+    Password: <input id="input-password" type="text" name="password" /><br />
     <span id="passwordEntered"  visible="false"></span> <br /> <br />
-    <Label >Confirm Password</Label>
-    <TextBox  id="confirmPassword"></TextBox>
+    Confirm Password: <input id="input-confirm" type="text" name="confirmPassword" /><br />
     <span id="passwordsMatch"  visible="false"></span> <br /> <br />
 
-    <Button  ID="registerButton" Text="Register" OnClick="register" />
+    <input id="btn-submit" type="submit" value="Register" />
   </div> <br />
 
-  <a href="Default.aspx">Back to home page</a>
+  <a href="login">Back to home page</a>
 
 </form>
-

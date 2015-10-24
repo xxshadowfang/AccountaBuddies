@@ -7,7 +7,7 @@ Util.debug = false;
 Util.id = null;
 
 
- Util.login = function(username,password,callback){
+Util.login = function(username,password,callback){
      $.ajax({
        method: "POST",
        url: "/user/login",
