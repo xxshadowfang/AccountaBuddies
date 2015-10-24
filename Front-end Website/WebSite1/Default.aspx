@@ -17,15 +17,17 @@
     <form id="form1" runat="server">
     <h1 class="center">AccountaBuddies</h1>
     <div>
+
         <h2>Log In</h2>
-        <div id="invalidLoginAttempt" runat="server" visible="false"></div>
+        <div id="invalidLoginAttempt" visible="false"></div>
         <asp:Label runat="server">Username</asp:Label>
-        <asp:TextBox runat="server" id="userName"></asp:TextBox>
-        <span id="usernameEntered" runat="server" visible="false"></span> <br /> <br />
+        <input type="text" name="username" /><br />
+        <span id="usernameEntered" visible="false"></span> <br /> <br />
         <asp:Label runat="server">Password</asp:Label>
-        <asp:TextBox runat="server" id="password"></asp:TextBox> 
-        <span id="passwordEntered" runat="server" visible="false"></span> <br /> <br />
-        <asp:Button runat="server" ID="loginButton" Text="Log In" OnClick="logIn" />
+        <input type="text" name="password" /><br />
+        <span id="passwordEntered" visible="false"></span> <br /> <br />
+
+        <input type="submit" value="Log In" />
     </div> <br />
 
     <a href="Register.aspx">Don't have an account yet?  Click here to sign up!</a>

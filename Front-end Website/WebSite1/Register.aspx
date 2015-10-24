@@ -19,18 +19,15 @@
     <div>
         <h2>Register a new account!</h2>
         <div id="invalidLoginAttempt" runat="server" visible="false"></div>
-        <asp:Label runat="server">Desired Username</asp:Label>
-        <asp:TextBox runat="server" id="userName"></asp:TextBox>
+        Desired Username: <input type="text" name="username" /><br />
         <!-- Do we want to insert a button here to click to check if the username is valid/available? -->
         <span id="usernameEntered" runat="server" visible="false"></span> <br /> <br />
-        <asp:Label runat="server">Password</asp:Label>
-        <asp:TextBox runat="server" id="password"></asp:TextBox> 
+        Password: <input type="text" name="password" /><br />
         <span id="passwordEntered" runat="server" visible="false"></span> <br /> <br />
-        <asp:Label runat="server">Confirm Password</asp:Label>
-        <asp:TextBox runat="server" id="confirmPassword"></asp:TextBox> 
+        Confirm Password: <input type="text" name="confirmPassword" /><br />
         <span id="passwordsMatch" runat="server" visible="false"></span> <br /> <br />
 
-        <asp:Button runat="server" ID="registerButton" Text="Register" OnClick="register" />
+        <input type="submit" value="Log In" />
     </div> <br />
 
     <a href="Default.aspx">Back to home page</a>
