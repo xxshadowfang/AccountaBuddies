@@ -43,6 +43,10 @@ module.exports = function() {
 			comments : {
 				collection : 'Comment',
 				via : 'userId'
+			},
+			groups : {
+				collection : 'Group',
+				via : 'users'
 			}
 		}
 	}

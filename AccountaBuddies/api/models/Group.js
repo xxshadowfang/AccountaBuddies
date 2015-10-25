@@ -24,6 +24,10 @@ module.exports = function() {
 				type : 'integer',
 				defaultsTo : 1
 			},
+			users : {
+				collection : 'User',
+				via: 'groups'
+			}
 		// privacy: {}
 		}
 	}

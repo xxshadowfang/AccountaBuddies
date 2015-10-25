@@ -48,7 +48,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 	
-  	'POST /user/register': {
+   	'POST /user/register': {
 		controller: 'user',
 		action: 'register'
 	},
@@ -100,6 +100,31 @@ module.exports.routes = {
 	
 	'POST /comment/delete/:id' : {
 		controller: 'comment',
+		action: 'delete'
+	},
+	
+	'POST /group/create' : {
+		controller: 'group',
+		action: 'create'
+	},
+	
+	'GET /group/:id' : {
+		controller: 'group',
+		action: 'find'
+	},
+	
+	'POST /group/join' : {
+		controller: 'group',
+		action: 'addUser'
+	},
+	
+	'POST /group/leave' : {
+		controller: 'group',
+		action: 'removeUser'
+	},
+	
+	'POST /group/delete' : {
+		controller: 'group',
 		action: 'delete'
 	}
 };
