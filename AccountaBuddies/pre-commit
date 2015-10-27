@@ -2,6 +2,6 @@
 git stash -q --keep-index
 
 # Run tests
-mocha AccountaBuddies/test/bootstrap.test.js AccountaBuddies/test/**/*.test.js
+mocha test/bootstrap.test.js test/**/*.test.js
 
 git stash pop -q
