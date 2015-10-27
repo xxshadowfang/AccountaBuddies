@@ -8,7 +8,7 @@ describe('UserController', function() {
 			request(sails.hooks.http.app)
 				.post('/user/register')
 				.send({ username: 'collin', password: 'test'})
-				.expect(200, done);
+				.expect(300, done);
 				// TODO: write real tests
 				//done();
 		});
