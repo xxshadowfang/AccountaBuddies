@@ -2,7 +2,7 @@ var Sails = require('sails'), sails;
 
 before(function(done) {
 	// let the server lift before mocah runs
-	this.timeout(4000);
+	this.timeout(5000);
 	
 	Sails.lift({
 		// configure for testing
