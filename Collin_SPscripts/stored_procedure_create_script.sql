@@ -162,6 +162,8 @@ BEGIN
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
     
+	CALL doesGoalExist(_goalId);
+	
     if (SELECT userId FROM goal WHERE id = _goalId) != _userId THEN
 		SIGNAL SQLSTATE '45002'
         SET MESSAGE_TEXT = 'you must be the owner of this goal';
@@ -324,6 +326,7 @@ BEGIN
         SET MESSAGE_TEXT = 'you must be the owner of this goal';
 		END IF;
     
+	CALL doesGoalExist(_goalId)
 	CALL doesUserExist(_userId);
     
     UPDATE goal 

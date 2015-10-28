@@ -14,7 +14,13 @@ module.exports = function() {
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL createGoal('"+ req.cookies.id +"', '"+ 1 +"', '"+ req.body.name +"', '"+ req.body.description +"');";
+				var goal = {
+						name: req.body.name,
+						description: req.body.description
+				}
+				goal = sails.globals.encode(goal);
+				
+				cmd = "CALL createGoal('"+ req.cookies.id +"', '"+ 1 +"', '"+ goal.name +"', '"+ goal.description +"');";
 				
 				Goal.query(cmd, function(err, results) {
 					if (err)
@@ -42,7 +48,16 @@ module.exports = function() {
 					if (err)
 						return sails.globals.jsonFailure(req, res, err);
 
-					return sails.globals.jsonSuccess(req, res, goal);
+					retGoal = {
+							id : goal.id,
+							name : goal.name,
+							status : goal.status,
+							description : goal.description,
+							createdAt : goal.createdAt
+					}
+					retGoal = sails.globals.encode(retGoal);
+					
+					return sails.globals.jsonSuccess(req, res, retGoal);
 				});
 			}
 		},
@@ -72,10 +87,17 @@ module.exports = function() {
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL `updateGoal` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ req.body.status +"', '"+ req.body.name +"', '"+ req.body.description +"');";
+				var goal = {
+						name: req.body.name,
+						status: req.body.status,
+						description: req.body.description
+				}
+				goal = sails.globals.encode(goal);
+				
+				cmd = "CALL `updateGoal` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ goal.status +"', '"+ goal.name +"', '"+ goal.description +"');";
 
 				Goal.query(cmd, function(err, results) {
-					if (err)
+					if (err) 
 						return sails.globals.jsonFailure(req, res, err);
 					
 					return sails.globals.jsonSuccess(req, res);
