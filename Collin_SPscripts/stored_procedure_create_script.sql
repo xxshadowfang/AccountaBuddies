@@ -33,14 +33,14 @@ CREATE DEFINER=`root`@`%` PROCEDURE `addGoalComment`(
     IN _nsfw bit
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_goalId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
 	
-    if (_nsfw IS NULL) THEN
+    if (_nsfw = 'undefined') THEN
 		SET _nsfw = 1;
         END IF;
         
@@ -64,10 +64,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `addUserToGroup`(
     IN _groupId int
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_groupId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_groupId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'groupId was null';
         END IF;
         
@@ -100,10 +100,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `createGoal`(
     IN _description varchar(255)
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_name IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_name = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'goal name was null';
         END IF;
         
@@ -125,13 +125,13 @@ CREATE DEFINER=`root`@`%` PROCEDURE `createGroup`(
 	IN _motto varchar(255)
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_name IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_name = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'group name was null';
         END IF;
-	IF (_motto IS NULL) THEN SIGNAL SQLSTATE '45002'
+	IF (_motto = 'undefined') THEN SIGNAL SQLSTATE '45002'
 		SET MESSAGE_TEXT = 'motto was null';
 		END IF;
         
@@ -155,10 +155,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `deleteGoal`(
     IN _userId int
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_goalId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
     
@@ -182,10 +182,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `deleteGoalComment`(
     IN _userId int
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_commentId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_commentId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'commentId was null';
         END IF;
         
@@ -207,10 +207,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `deleteGroup`(
     IN _userId int
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_groupId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_groupId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
     
@@ -238,13 +238,13 @@ CREATE DEFINER=`root`@`%` PROCEDURE `registerUser`(
     IN _cookie nvarchar(50)
 )
 BEGIN
-    if (_username IS NULL) THEN SIGNAL SQLSTATE '45000'
+    if (_username = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'username was null';
         END IF;
-    if (_salt IS NULL) THEN SIGNAL SQLSTATE '45001'
+    if (_salt = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'password was null';
         END IF;
-    if (_cookie IS NULL) THEN SIGNAL SQLSTATE '45002'
+    if (_cookie = 'undefined') THEN SIGNAL SQLSTATE '45002'
         SET MESSAGE_TEXT = 'cookie was null';
         END IF;
         
@@ -266,10 +266,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `removeUserFromGroup`(
     IN _groupId int
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_groupId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_groupId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'groupId was null';
         END IF;
         
@@ -289,13 +289,13 @@ CREATE DEFINER=`root`@`%` PROCEDURE `updateCookie`(
     IN _cookie varchar(50)
 )
 BEGIN
-	if (_userID IS NULL) THEN SIGNAL SQLSTATE '45555'
+	if (_userID = 'undefined') THEN SIGNAL SQLSTATE '45555'
 		SET MESSAGE_TEXT = 'userID was NULL';
         END IF;
     if (select COUNT(*) from user where id = _userID) = 0 THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userID not found';
         END IF;
-    if (_cookie IS NULL) THEN SIGNAL SQLSTATE '45001'
+    if (_cookie = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = '_cookie was NULL';
         END IF;
 
@@ -314,10 +314,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `updateGoal`(
     IN _description varchar(255)
 )
 BEGIN
-	if (_userId IS NULL) THEN SIGNAL SQLSTATE '45000'
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
-	if (_goalId IS NULL) THEN SIGNAL SQLSTATE '45001'
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
        
@@ -326,7 +326,7 @@ BEGIN
         SET MESSAGE_TEXT = 'you must be the owner of this goal';
 		END IF;
     
-	CALL doesGoalExist(_goalId)
+	CALL doesGoalExist(_goalId);
 	CALL doesUserExist(_userId);
     
     UPDATE goal 

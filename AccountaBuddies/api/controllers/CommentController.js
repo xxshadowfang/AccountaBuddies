@@ -10,16 +10,26 @@ module.exports = function() {
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL addGoalComment('"+ req.cookies.id +"', '"+ req.param('goalId') +"', '"
-										+ req.body.text +"', '"+ req.body.rating +"', '"+ req.body.nsfw +"');";
+				var comment = {
+						goalId: req.param('goalId'),
+						text: req.body.text,
+						rating: req.body.rating,
+						nsfw: req.body.nsfw
+				}
+				comment = sails.globals.encode(comment);
 				
-				Goal.query(cmd, function(err, results) {
-					if (err)
+				cmd = "CALL addGoalComment('"+ req.cookies.id +"', '"+ comment.goalId +"', '"
+										+ comment.text +"', '"+ comment.rating +"', '"+ comment.nsfw +"');";
+				console.log(cmd);
+				Comment.query(cmd, function(err, results) {
+					if (err) {
+						console.log(err);
 						return sails.globals.jsonFailure(req, res, err);
+					}
 					
-					var goalId = results[0][0].id;
+					var commentId = results[0][0].id;
 					
-					return sails.globals.jsonSuccess(req, res, {id : goalId});
+					return sails.globals.jsonSuccess(req, res, {id : commentId});
 				});
 			}
 		},
@@ -34,13 +44,26 @@ module.exports = function() {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				Comment.find({id : req.param('id')}).exec(function(err, comment) {
+				Comment.findOne({id : req.param('id')}).exec(function(err, comment) {
 					if (comment === undefined)
 						return sails.globals.jsonFailure(req, res, 'Comment was not found.');
 					if (err)
 						return sails.globals.jsonFailure(req, res, err);
 					
-					return sails.globals.jsonSuccess(req, res, comment);
+					retComment = {
+						id : comment.id,
+						goalId : comment.goalId,
+						userId : comment.userId,
+						text : comment.text,
+						rating : comment.rating,
+						nsfw : comment.nsfw
+					}
+					
+					console.log(retComment);
+					
+					retComment = sails.globals.decode(retComment);
+					
+					return sails.globals.jsonSuccess(req, res, retComment);
 				});
 			}
 		},
