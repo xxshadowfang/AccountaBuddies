@@ -19,8 +19,8 @@ module.exports.bootstrap = function(cb) {
 	
 	sails.globals = sails.globals || {};
 	
-	//sails.globals.test = sails.globals.test || {};
-	//sails.globals.test.request = request;
+	sails.globals.test = sails.globals.test || {};
+	sails.globals.test.request = request;
 	
 	sails.globals.encode = function(inputObj) {
 		for (var key in inputObj) {
