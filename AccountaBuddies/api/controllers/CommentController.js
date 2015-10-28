@@ -20,10 +20,9 @@ module.exports = function() {
 				
 				cmd = "CALL addGoalComment('"+ req.cookies.id +"', '"+ comment.goalId +"', '"
 										+ comment.text +"', '"+ comment.rating +"', '"+ comment.nsfw +"');";
-				console.log(cmd);
+
 				Comment.query(cmd, function(err, results) {
 					if (err) {
-						console.log(err);
 						return sails.globals.jsonFailure(req, res, err);
 					}
 					
@@ -58,8 +57,6 @@ module.exports = function() {
 						rating : comment.rating,
 						nsfw : comment.nsfw
 					}
-					
-					console.log(retComment);
 					
 					retComment = sails.globals.decode(retComment);
 					
