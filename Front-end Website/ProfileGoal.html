@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <title></title>
+</head>
+<body>
+    <div class="header">
+        <span> <img src="logo.png" height="98" /> </span>
+        <span id="headerTitle">PERSON_USERNAME</span>
+        <span class="right"></span>
+    </div>
+
+    <div id="leftGoalPost">
+        <h2 text-align="center">Profile Information</h2>
+        <br /> <br />
+        <dl>
+            <dt>First Name</dt>
+            <dd>PERSON_FIRST_NAME</dd>
+            <dt>Last Name</dt>
+            <dd>PERSON_LAST_NAME</dd>
+            <dt>Age</dt>
+            <dd>PERSON_AGE</dd>
+            <dt>Gender</dt>
+            <dd>Canadian</dd>
+            <dt>Member Since</dt>
+            <dd>REGISTRATION_DATE</dd>
+        </dl>
+        <form action="ModifyUserInfo.html">
+            <input type="submit" value="Modify Your Profile Information" />
+        </form>
+    </div>
+
+    <div id="rightGoalSteps">
+        <h1><u>Goals</u></h1>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Creation Date</th>
+                <th>Number of Steps</th>
+                <th>Progress</th>
+                <th>Delete?</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>12/34/5678</td>
+                <td>5</td>
+                <td><progress value="25" max="100"></progress></td>
+                <td><button id="deleteGoal">X</button></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+

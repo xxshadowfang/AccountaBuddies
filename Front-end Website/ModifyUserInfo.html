@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <title></title>
+</head>
+<body>
+    <div class="header">
+        <span> <img src="logo.png" height="98" /> </span>
+        <span id="headerTitle">Edit Your Profile Information</span>
+        <span class="right"></span>
+    </div>
+
+        <h2 text-align="center">Modify Your Profile</h2>
+        <form id="profileModification">
+            <dl>
+                <dt>First Name</dt>
+                <dd><input type="text" id="firstName" placeholder="CURRENT_FIRST_NAME" /></dd>
+                <dt>Last Name</dt>
+                <dd><input type="text" id="lastName" placeholder="CURRENT_LAST_NAME" /></dd>
+                <dt>Age</dt>
+                <dd><input type="number" id="age" min=14 placeholder="CURRENT_AGE" /></dd>
+                <dt>Gender</dt>
+                <dd>
+                    <input type="radio" name="gender" /> : Male <br />
+                    <input type="radio" name="gender" /> : Female <br />
+                    <input type="radio" name="gender" /> : Other <br />
+                </dd>
+                <!--For gender, check which gender they already have set (if they do), and set checked="true" for that input-->
+            </dl>
+            <br />
+            <input type="submit" value="Update Information" />
+        </form>
+
+    <br />
+    <a href="ProfileGoal.html">Discard changes and return to your profile page</a>
+</body>
+</html>
+
