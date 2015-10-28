@@ -14,7 +14,41 @@ module.exports.bootstrap = function(cb) {
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
 	var uuid = require('uuid');
+	var mysql = require('mysql');
+	var request = require('supertest');
+	
 	sails.globals = sails.globals || {};
+	
+	//sails.globals.test = sails.globals.test || {};
+	//sails.globals.test.request = request;
+	
+	sails.globals.encode = function(inputObj) {
+		for (var key in inputObj) {
+			if (inputObj.hasOwnProperty(key)) {
+				inputObj[key] = String(inputObj[key]).replace(/&/g, '&amp;')
+	               .replace(/</g, '&lt;')
+	               .replace(/>/g, '&gt;')
+	               .replace(/"/g, '&quot;')
+	               .replace(/'/g, '&apos;'); 
+			}
+		}
+		
+		return inputObj;
+	}
+	
+	sails.globals.decode = function(inputObj) {
+		for (var key in inputObj) {
+			if (inputObj.hasOwnProperty(key)) {
+				inputObj[key] = String(inputObj[key]).replace(/&apos;/g, "'")
+	               .replace(/&quot;/g, '"')
+	               .replace(/&gt;/g, '>')
+	               .replace(/&lt;/g, '<')
+	               .replace(/&amp;/g, '&');  
+			}
+		}
+		
+		return inputObj;
+	}
 	
 	sails.globals.generateCookie = function() {
 		return uuid.v4();
@@ -50,7 +84,6 @@ module.exports.bootstrap = function(cb) {
 	// wasn't sure how this should be done, but sails.globals.cookieCache
 	// is a key:value pair [cookie:userId] 
 	getCookieCache = function() {
-		var mysql = require('mysql');
 		var conn = mysql.createConnection({
 			host: 'localhost',
 			user: 'root',

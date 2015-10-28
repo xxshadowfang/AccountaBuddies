@@ -1,6 +1,6 @@
 module.exports = function() {
 	var bcrypt = require('bcryptjs');
-
+	
 	return {
 
 		find : function(req, res) {
@@ -17,7 +17,19 @@ module.exports = function() {
 					if (err)
 						return sails.globals.jsonFailure(req, res, err);
 	
-					return sails.globals.jsonSuccess(req, res, user);
+					retUser = {
+							id : user.id,
+							username: user.username,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							age: user.age,
+							gender: user.gender,
+							createdAt: user.createdAt
+					};
+					
+					retUser = sails.globals.decode(retUser);
+					
+					return sails.globals.jsonSuccess(req, res, retUser);
 				});
 			}
 		},
@@ -36,11 +48,18 @@ module.exports = function() {
 				bcrypt.hash(req.body.password, salt, function(err, hash) {
 					var cookie = sails.globals.generateCookie();
 
-					var cmd = "CALL `registerUser` ('" + req.body.username
-							+ "', '" + hash + "', '" + req.body.firstName
-							+ "', '" + req.body.lastName + "', '"
-							+ req.body.age + "', '" + req.body.gender + "', '"
-							+ cookie + "');";
+					var user = {
+							username: req.param('username'),
+							hash: hash,
+							firstName: req.body.firstName,
+							lastName: req.body.lastName							
+					}
+					
+					user = sails.globals.encode(user);
+
+					var cmd = "CALL `registerUser` ('" + user.username
+							+ "', '" + user.hash + "', '" + user.firstName
+							+ "', '" + user.lastName + "', '" + cookie + "');";
 
 					User.query(cmd, function(err, results) {
 						if (err) {
@@ -72,13 +91,19 @@ module.exports = function() {
 						'You must provide a password.');
 			}
 
-			User.findOne({username : req.body.username}).exec(function(err, user) {
+			var userInput = {
+					username: req.body.username,
+					password: req.body.password
+			};
+			userInput = sails.globals.encode(userInput);
+			
+			User.findOne({username : userInput.username}).exec(function(err, user) {
 				if (user === undefined)
 					return sails.globals.jsonFailure(req, res, 'User was not found.');
 				if (err)
 					return sails.globals.jsonFailure(req, res, err);
 
-				bcrypt.compare(req.body.password, user.saltedPassword, function(err, result) {
+				bcrypt.compare(userInput.password, user.saltedPassword, function(err, result) {
 					if (result) {
 						var cookie = sails.globals.generateCookie();
 						var cmd = "CALL `updateCookie` ('" + user.id + "', '" + cookie + "');";

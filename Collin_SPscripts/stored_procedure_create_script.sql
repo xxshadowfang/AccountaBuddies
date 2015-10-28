@@ -233,8 +233,6 @@ CREATE DEFINER=`root`@`%` PROCEDURE `registerUser`(
     IN _salt nvarchar(255),
     IN _FirstName nvarchar(50),
     IN _LastName nvarchar(50),
-    IN _Age int(11),
-    IN _Gender varchar(10),
     IN _cookie nvarchar(50)
 )
 BEGIN
@@ -253,8 +251,8 @@ BEGIN
 		END IF;
 
    
-    INSERT INTO user (username, saltedPassword,firstName,lastName,age,gender,cookie) 
-    VALUES (_username, _salt,_FirstName,_LastName,_Age,_Gender,_cookie);
+    INSERT INTO user (username, saltedPassword,firstName,lastName,cookie) 
+    VALUES (_username, _salt,_FirstName,_LastName,_cookie);
 	
     SELECT id FROM user WHERE username = _username LIMIT 1;
 END $$

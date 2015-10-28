@@ -13,7 +13,8 @@ module.exports = function() {
 				type : 'string',
 				email : true,
 				unique : true,
-				required : true
+				required : true,
+				maxLength : 255
 			},
 			saltedPassword : {
 				type : 'string',
