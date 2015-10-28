@@ -13,7 +13,13 @@ module.exports = function() {
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL createGroup('"+ req.cookies.id +"', '"+ req.body.name +"', '"+ req.body.motto +"');";
+				var group = {
+						name: req.body.name,
+						motto: req.body.motto
+				}
+				group = sails.globals.encode(group);
+				
+				cmd = "CALL createGroup('"+ req.cookies.id +"', '"+ group.name +"', '"+ group.motto +"');";
 				
 				Group.query(cmd, function(err, results) {
 					if (err)
@@ -42,7 +48,11 @@ module.exports = function() {
 						return sails.globals.jsonFailure(req, res, 'Group was not found.');
 					if (err)
 						return sails.globals.jsonFailure(req, res, err);
-
+					
+					// TODO: I am unsure how we want to handle this when you have arrays inside an object. (array of users)
+					// How should I decode it and reconstruct it back to the client?
+					
+					//console.log(group);
 					return sails.globals.jsonSuccess(req, res, group);
 				});
 			}
