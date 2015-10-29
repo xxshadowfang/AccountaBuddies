@@ -109,8 +109,8 @@ BEGIN
         
     CALL doesUserExist(_userId);
     
-    INSERT INTO goal (userId, `status`, `name`, description)
-    VALUES (_userId, _status, _name, _description);
+    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description)
+    VALUES (_userId, _status, _name, 0, 0, _description);
     
     SELECT id
     FROM goal
@@ -334,4 +334,66 @@ BEGIN
 		`name` = _name,
 		description = _description
 	WHERE id = _goalId;
+END $$
+
+-- addStepToGoal
+CREATE DEFINER=`root`@`%` PROCEDURE `addStepToGoal`(
+	IN _goalId int(11),
+	IN _title varchar(30),
+    IN _description varchar(255),
+    IN _duration int(11),
+    IN _sequence int(11)
+)
+BEGIN
+	if (_title = 'undefined') THEN SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'title was null';
+        END IF;
+	if (_description = 'undefined') THEN SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'description was null';
+        END IF;
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'goalId was null';
+        END IF;
+	if (_sequence = 'undefined') THEN SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'sequence was null';
+        END IF;
+        
+	CALL doesGoalExist(_goalId);
+    
+    INSERT INTO step (goalId, title, description, sequence, progress, amountWorked)
+    VALUES (_goalId, _title, _description, _sequence, 0, 0);
+    
+    SELECT id
+    FROM step
+    WHERE goalId = _goalId AND `title` = _title;
+END $$
+
+-- removeStepFromGoal
+CREATE DEFINER=`root`@`%` PROCEDURE `removeStepFromGoal`(
+	IN _goalId int(11),
+	IN _stepId int(11),
+    IN _userId int(11)
+)
+BEGIN
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'goalId was null';
+        END IF;
+	if (_stepId = 'undefined') THEN SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'stepId was null';
+        END IF;
+    if (_userId = 'undefined') THEN SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+    
+    CALL doesUserExist(_userId);
+	CALL doesGoalExist(_goalId);
+    
+    if (SELECT userId FROM goal WHERE id = _goalId <> _userId)
+    THEN 
+		SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'You don\'t own that goal';
+        END IF;
+    
+    DELETE FROM step
+    WHERE id = _stepId;
 END $$

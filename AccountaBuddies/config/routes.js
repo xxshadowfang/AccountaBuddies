@@ -53,7 +53,7 @@ module.exports.routes = {
 		action: 'register'
 	},
 	
-	'GET /user/:id': {
+	'GET /user/get': {
 		controller: 'user',
 		action: 'find'
 	},
@@ -86,6 +86,16 @@ module.exports.routes = {
 	'POST /goal/delete/:id': {
 		controller: 'goal',
 		action: 'delete'
+	},
+	
+	'POST /goal/addStep': {
+		controller: 'goal',
+		action: 'addStep'
+	},
+	
+	'POST /goal/removeStep': {
+		controller: 'goal',
+		action: 'removeStep'
 	},
 	
 	'POST /comment/create/:goalId' : {
