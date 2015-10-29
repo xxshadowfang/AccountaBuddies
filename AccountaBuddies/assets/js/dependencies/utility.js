@@ -87,6 +87,24 @@ Util.userSetting = function(params,callback){
 };
 
 
+Util.user = function (callback){
+  $.ajax({
+    method:"GET",
+    url: "/user/get"
+  })
+    .done(function(body){
+      if(body.success){
+        console.log("get user succeeded");
+      }
+
+      else{
+        console.log(body.content);
+      }
+
+      callback(body);
+    })
+}
+
 Util.postGoal = function(name,text,steps,callback){
   $.ajax({
     method:'POST',
