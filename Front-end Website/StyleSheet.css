@@ -58,3 +58,7 @@ th, td {
     padding: 15px;
     border: 1px groove yellow;
 }
+
+td:hover {
+    cursor: pointer;
+}
