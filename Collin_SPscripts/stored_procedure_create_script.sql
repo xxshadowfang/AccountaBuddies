@@ -425,4 +425,16 @@ BEGIN
         age = _age,
         gender = _gender
     WHERE id = _userID;
-END
+END $$
+
+-- doesStepExist
+DROP PROCEDURE IF EXISTS `updateUserInfo` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `doesStepExist`(
+    IN _stepId int
+)
+BEGIN
+	IF ((SELECT COUNT(*) FROM step WHERE id = _stepId)) = 0 THEN
+        SIGNAL SQLSTATE '20002'
+		SET MESSAGE_TEXT = 'Step does not exist';
+		END IF;
+END $$

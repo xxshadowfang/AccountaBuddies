@@ -33,6 +33,7 @@ module.exports.bootstrap = function(cb) {
 			20000: "Goal does not exist.",
 			29000: "goalId was null.",
 			29001: "Goal name was null.",
+			20002: "Step does not exist.",
 			25000: "You must be the owner of this goal for that action.",
 			29002: "Title was null.",
 			29003: "Description was null.",

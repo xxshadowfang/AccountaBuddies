@@ -130,7 +130,7 @@ module.exports = function() {
 							return sails.globals.jsonSuccess(req, res);
 						});
 					} else {
-						return sails.globals.jsonFailure(req, res, 'Password did not match');
+						return sails.globals.jsonFailure(req, res, 'Password did not match.');
 					}
 				});
 			});
@@ -140,17 +140,22 @@ module.exports = function() {
 			var cookie = req.cookies.cookie;
 			var id = req.cookies.id;
 
-			delete sails.globals.cookieCache[cookie];
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
+					req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				delete sails.globals.cookieCache[cookie];
 
-			var cmd = "CALL `updateCookie` ('" + id + "', '');";
-			User.query(cmd, function(err, results) {
-				if (err) {
-					var errMsg = sails.globals.errorCodes[String(err.sqlState)];
-					return sails.globals.jsonFailure(req, res, errMsg);
-				}
-
-				return sails.globals.jsonSuccess(req, res);
-			});
+				var cmd = "CALL `updateCookie` ('" + id + "', '');";
+				User.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+	
+					return sails.globals.jsonSuccess(req, res);
+				});
+			}
 		}
 
 	}

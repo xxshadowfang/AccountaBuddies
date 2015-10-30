@@ -9,6 +9,9 @@ module.exports = function() {
 			if (!req.body.description) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a description');
 			}
+			if (!req.body.steps) {
+				return sails.globals.jsonFailure(req, res, 'You must provide step(s)');
+			}
 
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {
