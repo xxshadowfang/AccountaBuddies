@@ -22,6 +22,34 @@ module.exports.bootstrap = function(cb) {
 	sails.globals.test = sails.globals.test || {};
 	sails.globals.test.request = request;
 	
+	sails.globals.errorCodes = {
+			10000: "User does not exist.",
+			19000: "userId was null.",
+			19001: "Username was null.",
+			19002: "Password was null.",
+			19003: "Cookie was null.",
+			15000: "Username already exists.",
+			
+			20000: "Goal does not exist.",
+			29000: "goalId was null.",
+			29001: "Goal name was null.",
+			25000: "You must be the owner of this goal for that action.",
+			29002: "Title was null.",
+			29003: "Description was null.",
+			29004: "Sequence was null.",
+			29005: "stepId was null.",
+			
+			39000: "groupId was null.",
+			39001: "Group name was null.",
+			39002: "Group motto was null.",
+			30001: "User is already in this group.",
+			35000: "You must be the owner of this group to delete it.",
+			35001: "User must be in this group to remove them.",
+			
+			49000: "commentId was null.",
+			45000: "You must be the owner of this comment to delete it."
+	};
+	
 	sails.globals.encode = function(inputObj) {
 		for (var key in inputObj) {
 			if (inputObj.hasOwnProperty(key)) {

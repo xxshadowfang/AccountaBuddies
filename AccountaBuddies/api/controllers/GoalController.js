@@ -24,9 +24,11 @@ module.exports = function() {
 				cmd = "CALL createGoal('"+ req.cookies.id +"', '"+ 1 +"', '"+ goal.name +"', '"+ goal.description +"');";
 				
 				Goal.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
-					
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+						
 					var goalId = results[0][0].id;
 					
 					// add steps
@@ -47,8 +49,10 @@ module.exports = function() {
 						+ "', '"+ step.duration +"', '"+ sequence +"');";
 						
 						Step.query(cmd, function(err, results) {
-							if (err)
-								return sails.globals.jsonFailure(req, res, err);
+							if (err) {
+								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+								return sails.globals.jsonFailure(req, res, errMsg);
+							}
 						});
 					});
 					
@@ -69,8 +73,10 @@ module.exports = function() {
 				Goal.findOne({id : req.param('id')}).exec(function(err, goal) {
 					if (goal === undefined)
 						return sails.globals.jsonFailure(req, res, 'Goal was not found.');
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 
 					retGoal = {
 							id : goal.id,
@@ -96,8 +102,10 @@ module.exports = function() {
 				cmd = "CALL `deleteGoal` ('"+ req.param('id') +"', '"+ req.cookies.id +"');";
 
 				Goal.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					return sails.globals.jsonSuccess(req, res);
 				});
@@ -121,8 +129,10 @@ module.exports = function() {
 				cmd = "CALL `updateGoal` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ goal.status +"', '"+ goal.name +"', '"+ goal.description +"');";
 
 				Goal.query(cmd, function(err, results) {
-					if (err) 
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					return sails.globals.jsonSuccess(req, res);
 				});
@@ -162,8 +172,10 @@ module.exports = function() {
 						+ "', '"+ step.duration +"', '"+ step.sequence +"');";
 
 				Step.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 
 					var stepId = results[0][0].id;
 					return sails.globals.jsonSuccess(req, res, {id : stepId});
@@ -187,8 +199,10 @@ module.exports = function() {
 				cmd = "CALL `removeStepFromGoal` ('"+ req.body.goalId +"', '"+ req.body.id +"', '"+ req.cookies.id +"');";
 				
 				Step.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					return sails.globals.jsonSuccess(req, res);
 				});

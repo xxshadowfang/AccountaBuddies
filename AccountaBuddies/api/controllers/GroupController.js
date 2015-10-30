@@ -22,8 +22,10 @@ module.exports = function() {
 				cmd = "CALL createGroup('"+ req.cookies.id +"', '"+ group.name +"', '"+ group.motto +"');";
 				
 				Group.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					var groupId = results[0][0].id;
 					
@@ -46,9 +48,10 @@ module.exports = function() {
 				.exec(function(err, group) {
 					if (group === undefined)
 						return sails.globals.jsonFailure(req, res, 'Group was not found.');
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
-					
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					// TODO: I am unsure how we want to handle this when you have arrays inside an object. (array of users)
 					// How should I decode it and reconstruct it back to the client?
 					
@@ -69,9 +72,11 @@ module.exports = function() {
 				cmd = "CALL addUserToGroup('"+ req.cookies.id +"', '"+ req.param('groupId') +"');";
 			
 				Group.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
-					
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+						
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}			
@@ -88,8 +93,10 @@ module.exports = function() {
 				cmd = "CALL removeUserFromGroup('"+ req.cookies.id +"', '"+ req.param('groupId') +"');";
 			
 				Group.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					return sails.globals.jsonSuccess(req, res);
 				});
@@ -106,9 +113,11 @@ module.exports = function() {
 				cmd = "CALL `deleteGroup` ('"+ req.param('id') +"', '"+ req.cookies.id +"');";
 
 				Goal.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
-					
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+						
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}

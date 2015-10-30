@@ -23,7 +23,8 @@ module.exports = function() {
 
 				Comment.query(cmd, function(err, results) {
 					if (err) {
-						return sails.globals.jsonFailure(req, res, err);
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
 					}
 					
 					var commentId = results[0][0].id;
@@ -46,8 +47,10 @@ module.exports = function() {
 				Comment.findOne({id : req.param('id')}).exec(function(err, comment) {
 					if (comment === undefined)
 						return sails.globals.jsonFailure(req, res, 'Comment was not found.');
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					retComment = {
 						id : comment.id,
@@ -75,8 +78,10 @@ module.exports = function() {
 				cmd = "CALL `deleteGoalComment` ('"+ req.param('id') +"', '"+ req.cookies.id +"');";
 
 				Goal.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					return sails.globals.jsonSuccess(req, res);
 				});

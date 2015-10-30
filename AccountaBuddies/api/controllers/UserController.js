@@ -4,18 +4,24 @@ module.exports = function() {
 	return {
 
 		find : function(req, res) {
+			/*
+			 * Commented out while we only let users see their own profile/goals
+			 * 
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
 			}
+			*/
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				User.findOne({id : req.param('id')}).exec(function(err, user) {
+				User.findOne({id : req.cookies.id}).exec(function(err, user) {
 					if (user === undefined)
 						return sails.globals.jsonFailure(req, res, 'User was not found.');
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 	
 					retUser = {
 							id : user.id,
@@ -63,7 +69,8 @@ module.exports = function() {
 
 					User.query(cmd, function(err, results) {
 						if (err) {
-							return sails.globals.jsonFailure(req, res, err);
+							var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+							return sails.globals.jsonFailure(req, res, errMsg);
 						}
 
 						var userId = results[0][0].id;
@@ -100,8 +107,10 @@ module.exports = function() {
 			User.findOne({username : userInput.username}).exec(function(err, user) {
 				if (user === undefined)
 					return sails.globals.jsonFailure(req, res, 'User was not found.');
-				if (err)
-					return sails.globals.jsonFailure(req, res, err);
+				if (err) {
+					var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+					return sails.globals.jsonFailure(req, res, errMsg);
+				}
 
 				bcrypt.compare(userInput.password, user.saltedPassword, function(err, result) {
 					if (result) {
@@ -110,7 +119,8 @@ module.exports = function() {
 
 						User.query(cmd, function(err, results) {
 							if (err) {
-								return sails.globals.jsonFailue(req, res, err);
+								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+								return sails.globals.jsonFailure(req, res, errMsg);
 							}
 
 							res.cookie('cookie', cookie);
@@ -135,7 +145,8 @@ module.exports = function() {
 			var cmd = "CALL `updateCookie` ('" + id + "', '');";
 			User.query(cmd, function(err, results) {
 				if (err) {
-					return sails.globals.jsonFailue(req, res, err);
+					var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+					return sails.globals.jsonFailure(req, res, errMsg);
 				}
 
 				return sails.globals.jsonSuccess(req, res);
