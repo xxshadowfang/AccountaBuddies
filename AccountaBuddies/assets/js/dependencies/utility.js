@@ -126,7 +126,6 @@ Util.postGoal = function(name,text,steps,callback){
 };
 
 
-
 Util.generateStep = function(title,points,goalDate){
   return {
     title:title,
