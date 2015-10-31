@@ -1,42 +1,33 @@
 module.exports = function() {
 	return {
-	connection: 'accountaBuddiesMYSQL',
+		connection: 'accountaBuddiesMYSQL',
 		attributes: {
 			id: {
 				type: 'integer',
 				autoIncrement: true,
 				primaryKey: true
 			},
-			userId: {
+			goalId: {
 				type: 'integer',
-				model: 'User'
+				model: 'Goal'
 			},
-			status: {
-				type: 'integer',
-				defaultsTo: 1,
-				enum: [1, 2, 3]
-			},
-			name: {
+			title: {
 				type: 'string',
-				maxLength: 50,
 				required: true
 			},
 			description: {
 				type: 'string',
-				maxLength: 255,
 				required: true
 			},
-			comments: {
-				collection: 'Comment',
-				via: 'goalId'
+			progress: {
+				type: 'double'
 			},
-			duration: {
+			amountWorked: {
 				type: 'integer'
 			},
-			numSteps: {
+			sequence: {
 				type: 'integer'
 			}
-			// privacy: 'STRING'
 		}
 	}
 }();

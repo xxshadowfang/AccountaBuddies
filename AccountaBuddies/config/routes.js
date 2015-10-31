@@ -50,12 +50,13 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  	'POST /user/register': {
+
+   	'POST /user/register': {
 		controller: 'user',
 		action: 'register'
 	},
 
-	'GET /user/:id': {
+	'GET /user/get': {
 		controller: 'user',
 		action: 'find'
 	},
@@ -89,19 +90,54 @@ module.exports.routes = {
 		controller: 'goal',
 		action: 'delete'
 	},
-	
+
+	'POST /goal/addStep': {
+		controller: 'goal',
+		action: 'addStep'
+	},
+
+	'POST /goal/removeStep': {
+		controller: 'goal',
+		action: 'removeStep'
+	},
+
 	'POST /comment/create/:goalId' : {
 		controller: 'comment',
 		action: 'create'
 	},
-	
+
 	'GET /comment/:id' : {
 		controller: 'comment',
 		action: 'find'
 	},
-	
+
 	'POST /comment/delete/:id' : {
 		controller: 'comment',
+		action: 'delete'
+	},
+
+	'POST /group/create' : {
+		controller: 'group',
+		action: 'create'
+	},
+
+	'GET /group/:id' : {
+		controller: 'group',
+		action: 'find'
+	},
+
+	'POST /group/join' : {
+		controller: 'group',
+		action: 'addUser'
+	},
+
+	'POST /group/leave' : {
+		controller: 'group',
+		action: 'removeUser'
+	},
+
+	'POST /group/delete' : {
+		controller: 'group',
 		action: 'delete'
 	}
 };

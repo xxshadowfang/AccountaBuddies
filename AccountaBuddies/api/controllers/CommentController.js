@@ -10,16 +10,26 @@ module.exports = function() {
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL addGoalComment('"+ req.cookies.id +"', '"+ req.param('goalId') +"', '"
-										+ req.body.text +"', '"+ req.body.rating +"', '"+ req.body.nsfw +"');";
+				var comment = {
+						goalId: req.param('goalId'),
+						text: req.body.text,
+						rating: req.body.rating,
+						nsfw: req.body.nsfw
+				}
+				comment = sails.globals.encode(comment);
 				
-				Goal.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+				cmd = "CALL addGoalComment('"+ req.cookies.id +"', '"+ comment.goalId +"', '"
+										+ comment.text +"', '"+ comment.rating +"', '"+ comment.nsfw +"');";
+
+				Comment.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
-					var goalId = results[0][0].id;
+					var commentId = results[0][0].id;
 					
-					return sails.globals.jsonSuccess(req, res, {id : goalId});
+					return sails.globals.jsonSuccess(req, res, {id : commentId});
 				});
 			}
 		},
@@ -34,13 +44,26 @@ module.exports = function() {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				Comment.find({id : req.param('id')}).exec(function(err, comment) {
+				Comment.findOne({id : req.param('id')}).exec(function(err, comment) {
 					if (comment === undefined)
 						return sails.globals.jsonFailure(req, res, 'Comment was not found.');
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
-					return sails.globals.jsonSuccess(req, res, comment);
+					retComment = {
+						id : comment.id,
+						goalId : comment.goalId,
+						userId : comment.userId,
+						text : comment.text,
+						rating : comment.rating,
+						nsfw : comment.nsfw
+					}
+					
+					retComment = sails.globals.decode(retComment);
+					
+					return sails.globals.jsonSuccess(req, res, retComment);
 				});
 			}
 		},
@@ -55,8 +78,10 @@ module.exports = function() {
 				cmd = "CALL `deleteGoalComment` ('"+ req.param('id') +"', '"+ req.cookies.id +"');";
 
 				Goal.query(cmd, function(err, results) {
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 					
 					return sails.globals.jsonSuccess(req, res);
 				});
