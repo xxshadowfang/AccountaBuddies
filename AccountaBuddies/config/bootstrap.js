@@ -14,7 +14,70 @@ module.exports.bootstrap = function(cb) {
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
 	var uuid = require('uuid');
+	var mysql = require('mysql');
+	var request = require('supertest');
+	
 	sails.globals = sails.globals || {};
+	
+	sails.globals.test = sails.globals.test || {};
+	sails.globals.test.request = request;
+	
+	sails.globals.errorCodes = {
+			10000: "User does not exist.",
+			19000: "userId was null.",
+			19001: "Username was null.",
+			19002: "Password was null.",
+			19003: "Cookie was null.",
+			15000: "Username already exists.",
+			
+			20000: "Goal does not exist.",
+			29000: "goalId was null.",
+			29001: "Goal name was null.",
+			20002: "Step does not exist.",
+			25000: "You must be the owner of this goal for that action.",
+			29002: "Title was null.",
+			29003: "Description was null.",
+			29004: "Sequence was null.",
+			29005: "stepId was null.",
+			
+			39000: "groupId was null.",
+			39001: "Group name was null.",
+			39002: "Group motto was null.",
+			30001: "User is already in this group.",
+			35000: "You must be the owner of this group to delete it.",
+			35001: "User must be in this group to remove them.",
+			
+			49000: "commentId was null.",
+			45000: "You must be the owner of this comment to delete it."
+	};
+	
+	sails.globals.encode = function(inputObj) {
+		for (var key in inputObj) {
+			if (inputObj.hasOwnProperty(key)) {
+				inputObj[key] = String(inputObj[key]).replace(/&/g, '&amp;')
+	               .replace(/</g, '&lt;')
+	               .replace(/>/g, '&gt;')
+	               .replace(/"/g, '&quot;')
+	               .replace(/'/g, '&apos;'); 
+			}
+		}
+		
+		return inputObj;
+	}
+	
+	sails.globals.decode = function(inputObj) {
+		for (var key in inputObj) {
+			if (inputObj.hasOwnProperty(key)) {
+				inputObj[key] = String(inputObj[key]).replace(/&apos;/g, "'")
+	               .replace(/&quot;/g, '"')
+	               .replace(/&gt;/g, '>')
+	               .replace(/&lt;/g, '<')
+	               .replace(/&amp;/g, '&');  
+			}
+		}
+		
+		return inputObj;
+	}
 	
 	sails.globals.generateCookie = function() {
 		return uuid.v4();
@@ -50,7 +113,6 @@ module.exports.bootstrap = function(cb) {
 	// wasn't sure how this should be done, but sails.globals.cookieCache
 	// is a key:value pair [cookie:userId] 
 	getCookieCache = function() {
-		var mysql = require('mysql');
 		var conn = mysql.createConnection({
 			host: 'localhost',
 			user: 'root',

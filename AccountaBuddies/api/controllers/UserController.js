@@ -1,23 +1,41 @@
 module.exports = function() {
 	var bcrypt = require('bcryptjs');
-
+	
 	return {
 
 		find : function(req, res) {
+			/*
+			 * Commented out while we only let users see their own profile/goals
+			 * 
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
 			}
+			*/
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				User.findOne({id : req.param('id')}).exec(function(err, user) {
+				User.findOne({id : req.cookies.id}).exec(function(err, user) {
 					if (user === undefined)
 						return sails.globals.jsonFailure(req, res, 'User was not found.');
-					if (err)
-						return sails.globals.jsonFailure(req, res, err);
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
 	
-					return sails.globals.jsonSuccess(req, res, user);
+					retUser = {
+							id : user.id,
+							username: user.username,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							age: user.age,
+							gender: user.gender,
+							createdAt: user.createdAt
+					};
+					
+					retUser = sails.globals.decode(retUser);
+					
+					return sails.globals.jsonSuccess(req, res, retUser);
 				});
 			}
 		},
@@ -36,15 +54,23 @@ module.exports = function() {
 				bcrypt.hash(req.body.password, salt, function(err, hash) {
 					var cookie = sails.globals.generateCookie();
 
-					var cmd = "CALL `registerUser` ('" + req.body.username
-							+ "', '" + hash + "', '" + req.body.firstName
-							+ "', '" + req.body.lastName + "', '"
-							+ req.body.age + "', '" + req.body.gender + "', '"
-							+ cookie + "');";
+					var user = {
+							username: req.param('username'),
+							hash: hash,
+							firstName: req.body.firstName,
+							lastName: req.body.lastName							
+					}
+					
+					user = sails.globals.encode(user);
+
+					var cmd = "CALL `registerUser` ('" + user.username
+							+ "', '" + user.hash + "', '" + user.firstName
+							+ "', '" + user.lastName + "', '" + cookie + "');";
 
 					User.query(cmd, function(err, results) {
 						if (err) {
-							return sails.globals.jsonFailure(req, res, err);
+							var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+							return sails.globals.jsonFailure(req, res, errMsg);
 						}
 
 						var userId = results[0][0].id;
@@ -72,20 +98,29 @@ module.exports = function() {
 						'You must provide a password.');
 			}
 
-			User.findOne({username : req.body.username}).exec(function(err, user) {
+			var userInput = {
+					username: req.body.username,
+					password: req.body.password
+			};
+			userInput = sails.globals.encode(userInput);
+			
+			User.findOne({username : userInput.username}).exec(function(err, user) {
 				if (user === undefined)
 					return sails.globals.jsonFailure(req, res, 'User was not found.');
-				if (err)
-					return sails.globals.jsonFailure(req, res, err);
+				if (err) {
+					var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+					return sails.globals.jsonFailure(req, res, errMsg);
+				}
 
-				bcrypt.compare(req.body.password, user.saltedPassword, function(err, result) {
+				bcrypt.compare(userInput.password, user.saltedPassword, function(err, result) {
 					if (result) {
 						var cookie = sails.globals.generateCookie();
 						var cmd = "CALL `updateCookie` ('" + user.id + "', '" + cookie + "');";
 
 						User.query(cmd, function(err, results) {
 							if (err) {
-								return sails.globals.jsonFailue(req, res, err);
+								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+								return sails.globals.jsonFailure(req, res, errMsg);
 							}
 
 							res.cookie('cookie', cookie);
@@ -95,7 +130,7 @@ module.exports = function() {
 							return sails.globals.jsonSuccess(req, res);
 						});
 					} else {
-						return sails.globals.jsonFailure(req, res, 'Password did not match');
+						return sails.globals.jsonFailure(req, res, 'Password did not match.');
 					}
 				});
 			});
@@ -105,16 +140,22 @@ module.exports = function() {
 			var cookie = req.cookies.cookie;
 			var id = req.cookies.id;
 
-			delete sails.globals.cookieCache[cookie];
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
+					req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				delete sails.globals.cookieCache[cookie];
 
-			var cmd = "CALL `updateCookie` ('" + id + "', '');";
-			User.query(cmd, function(err, results) {
-				if (err) {
-					return sails.globals.jsonFailue(req, res, err);
-				}
-
-				return sails.globals.jsonSuccess(req, res);
-			});
+				var cmd = "CALL `updateCookie` ('" + id + "', '');";
+				User.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+	
+					return sails.globals.jsonSuccess(req, res);
+				});
+			}
 		}
 
 	}
