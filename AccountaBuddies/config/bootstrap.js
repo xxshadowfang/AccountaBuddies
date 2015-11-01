@@ -26,6 +26,7 @@ module.exports.bootstrap = function(cb) {
 			19003: "Cookie was null.",
 			15000: "Username already exists.",
 			15001: "You must be the owner of this user to delete it.",
+			15002: "You must be the owner of this user to update it.",
 			19004: "loginId was null.",
 			
 			20000: "Goal does not exist.",

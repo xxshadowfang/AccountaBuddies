@@ -176,6 +176,61 @@ module.exports = function() {
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
+		},
+		
+		update : function(req, res) {
+			if (!req.param('id')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
+			}
+			
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				User.findOne({id : req.param('id')}).exec(function(err, user) {
+					if (user === undefined)
+						return sails.globals.jsonFailure(req, res, 'User does not exist.');
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+	
+					retUser = {
+							id : user.id,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							age: user.age,
+							gender: user.gender
+					};
+					
+					retUser = sails.globals.decode(retUser);
+					
+					if (req.param('firstName')) {
+						retUser.firstName = req.param('firstName');
+					}
+					if (req.param('lastName')) {
+						retUser.lastName = req.param('lastName');
+					}
+					if (req.param('age')) {
+						retUser.age = req.param('age');
+					}
+					if (req.param('gender')) {
+						retUser.gender = req.param('gender');
+					}
+					
+					retUser = sails.globals.encode(retUser);
+					
+					cmd = "CALL `updateUserInfo` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ retUser.firstName +"', '"+ retUser.lastName +"', '"+ retUser.age +"', '"+ retUser.gender +"');";
+
+					User.query(cmd, function(err, results) {
+						if (err) {
+							var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+							return sails.globals.jsonFailure(req, res, errMsg);
+						}
+
+						return sails.globals.jsonSuccess(req, res, results[0][0]);
+					});
+				});
+			}
 		}
 	}
 }();
