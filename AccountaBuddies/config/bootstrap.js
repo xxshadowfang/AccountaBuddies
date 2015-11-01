@@ -15,12 +15,8 @@ module.exports.bootstrap = function(cb) {
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
 	var uuid = require('uuid');
 	var mysql = require('mysql');
-	var request = require('supertest');
 	
 	sails.globals = sails.globals || {};
-	
-	sails.globals.test = sails.globals.test || {};
-	sails.globals.test.request = request;
 	
 	sails.globals.errorCodes = {
 			10000: "User does not exist.",
