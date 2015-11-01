@@ -68,6 +68,11 @@ module.exports.routes = {
 		action: 'logout'
 	},
 	
+	'POST /user/delete': {
+		controller: 'user',
+		action: 'delete'
+	},
+	
 	'POST /goal/create': {
 		controller: 'goal',
 		action: 'create'

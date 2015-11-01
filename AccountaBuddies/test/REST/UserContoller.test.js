@@ -113,21 +113,34 @@ describe('UserController Integration Tests', function() {
 				success: true,
 				body: {
 					content: {
-						id: 2
+						id: 3
 					}
 				}
-			})
-			.end(function(err, res) {
-				if (err) return done(err);
-				done();
-			});
+			}, done);
 		});
-	});	
+	});
+	
+	describe('Delete User', function() {
+		it('should deny non-existing user to be deleted', function(done) {
+			user.post('/user/delete').send({
+				id: 5
+			})
+			.expect(200, {
+				success: false,
+				content: 'User does not exist.'
+			}, done);
+		});
+		
+		it('should allow user to be deleted', function(done) {
+			user.post('/user/delete').send({
+				id: 3
+			})
+			.expect(200, {
+				success: true,
+				body: {
+					content: ''
+				}
+			}, done);
+		})
+	});
 });
-
-//afterEach(function() {
-//	if (this.currentTest.state == 'failed') {
-//		console.log("we failed!!")
-//		return -1;
-//	}
-//});

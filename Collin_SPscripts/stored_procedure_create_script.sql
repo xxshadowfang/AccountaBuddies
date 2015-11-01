@@ -438,3 +438,28 @@ BEGIN
 		SET MESSAGE_TEXT = 'Step does not exist';
 		END IF;
 END $$
+
+-- deleteUser
+DROP PROCEDURE IF EXISTS `deleteUser` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `deleteUser`(
+	IN _userId int,
+    IN _loginId int
+)
+BEGIN
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+	if (_loginId = 'undefined') THEN SIGNAL SQLSTATE '19004'
+        SET MESSAGE_TEXT = 'loginId was null';
+        END IF;
+    
+	CALL doesUserExist(_userId);
+    
+    if (SELECT id FROM user WHERE id = _userId) != _loginId THEN
+		SIGNAL SQLSTATE '15001'
+        SET MESSAGE_TEXT = 'You must be the owner of this user to delete it.';
+		END IF;
+       
+    DELETE FROM user
+    WHERE id = _userId;
+END $$

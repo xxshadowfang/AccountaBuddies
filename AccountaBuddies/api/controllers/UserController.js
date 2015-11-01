@@ -156,7 +156,26 @@ module.exports = function() {
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
-		}
+		},
+		
+		'delete' : function(req, res) {
+			if (!req.param('id')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
+			}
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				cmd = "CALL `deleteUser` ('"+ req.param('id') +"', '"+ req.cookies.id +"');";
 
+				User.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+					
+					return sails.globals.jsonSuccess(req, res);
+				});
+			}
+		}
 	}
 }();

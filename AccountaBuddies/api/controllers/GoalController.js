@@ -12,6 +12,9 @@ module.exports = function() {
 			if (!req.body.steps) {
 				return sails.globals.jsonFailure(req, res, 'You must provide step(s)');
 			}
+			if (req.body.steps.constructor !== Array) {
+				return sails.globals.jsonFailure(req, res, 'You must send in an array of steps');
+			}
 
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {
@@ -35,7 +38,7 @@ module.exports = function() {
 					var goalId = results[0][0].id;
 					
 					// add steps
-					var steps = req.body.steps;
+					var steps = req.body.steps;					
 					var sequence = 0;
 					steps.forEach(function(step) {
 						sequence++;
