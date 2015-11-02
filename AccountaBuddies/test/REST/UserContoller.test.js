@@ -123,7 +123,6 @@ describe('UserController Integration Tests', function() {
 	describe('Update User', function() {
 		it('should allow user to be updated', function(done) {
 			user.post('/user/update').send({
-				id: 3,
 				age: 33,
 				firstName: 'update this'
 			})
@@ -137,16 +136,6 @@ describe('UserController Integration Tests', function() {
 						gender: 'U'
 					}
 				}
-			}, done);
-		});
-		
-		it('should deny user update for non-existing user', function(done) {
-			user.post('/user/update').send({
-				id: 21
-			})
-			.expect(200, {
-				success: false,
-				content: 'User does not exist.'
 			}, done);
 		});
 	});
