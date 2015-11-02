@@ -405,7 +405,8 @@ END $$
 -- updateUserInfo`
 DROP PROCEDURE IF EXISTS `updateUserInfo` $$
 CREATE DEFINER=`root`@`%` PROCEDURE `updateUserInfo`(
-    IN _userID int, 
+    IN _loginId int,
+    IN _userId int, 
     IN _firstName varchar(255),
     IN _lastName varchar(255),
     IN _age int,
@@ -415,8 +416,15 @@ BEGIN
 	if (_userID = 'undefined') THEN SIGNAL SQLSTATE '19000'
 		SET MESSAGE_TEXT = 'userID was NULL';
         END IF;
+	
+    if (_loginID = 'undefined') THEN SIGNAL SQLSTATE '19004'
+		SET MESSAGE_TEXT = 'loginID was NULL';
+        END IF;
         
-	CALL doesUserExist(_userId);
+	if (SELECT id FROM user WHERE id = _userId) != _loginId THEN
+		SIGNAL SQLSTATE '15002'
+        SET MESSAGE_TEXT = 'You must be the owner of this user for that action.';
+		END IF;
 
     UPDATE user
     SET updatedAt = now(),
@@ -424,7 +432,9 @@ BEGIN
         lastName = _lastName,
         age = _age,
         gender = _gender
-    WHERE id = _userID;
+    WHERE id = _userId;
+	
+	SELECT firstName, lastName, age, gender FROM user WHERE id = _userId;
 END $$
 
 -- doesStepExist
@@ -437,4 +447,29 @@ BEGIN
         SIGNAL SQLSTATE '20002'
 		SET MESSAGE_TEXT = 'Step does not exist';
 		END IF;
+END $$
+
+-- deleteUser
+DROP PROCEDURE IF EXISTS `deleteUser` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `deleteUser`(
+	IN _userId int,
+    IN _loginId int
+)
+BEGIN
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+	if (_loginId = 'undefined') THEN SIGNAL SQLSTATE '19004'
+        SET MESSAGE_TEXT = 'loginId was null';
+        END IF;
+    
+	CALL doesUserExist(_userId);
+    
+    if (SELECT id FROM user WHERE id = _userId) != _loginId THEN
+		SIGNAL SQLSTATE '15001'
+        SET MESSAGE_TEXT = 'You must be the owner of this user to delete it.';
+		END IF;
+       
+    DELETE FROM user
+    WHERE id = _userId;
 END $$
