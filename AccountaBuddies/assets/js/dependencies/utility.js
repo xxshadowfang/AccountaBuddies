@@ -6,6 +6,11 @@ var Util = Util || {};
 Util.debug = false;
 Util.id = null;
 
+Util.isInt = function(str){
+  var n = ~~Number(str);
+  return String(n) === str && n >= 0;
+};
+
 
 Util.login = function(username,password,callback){
      $.ajax({
@@ -66,6 +71,19 @@ Util.register = function(username,password,firstName,lastName,callback){
       });
 };
 
+Util.getUser = function(callback){
+  $.ajax({
+    method:'GET',
+    url :'/user/get'}).done(function(body){
+    if (body.success) {
+      console.log("get user information succeeded");
+    }
+    else {
+      console.log(body.content);
+    }
+    callback(body);
+  })
+};
 
 Util.userSetting = function(params,callback){
   $.ajax({
@@ -111,7 +129,7 @@ Util.postGoal = function(name,text,steps,callback){
     url:'/goal/create',
     data:{
       name:name,
-      text:text,
+      description:text,
       steps:steps
     }
   }).done(function(body){

@@ -76,17 +76,17 @@ module.exports.routes = {
 		action: 'create'
 	},
 
-	'GET /goal/:id': {
+	'GET /goal': {
 		controller: 'goal',
 		action: 'find'
 	},
 
-	'POST /goal/update/:id': {
+	'POST /goal/update': {
 		controller: 'goal',
 		action: 'update'
 	},
 
-	'POST /goal/delete/:id': {
+	'POST /goal/delete': {
 		controller: 'goal',
 		action: 'delete'
 	},
@@ -139,5 +139,16 @@ module.exports.routes = {
 	'POST /group/delete' : {
 		controller: 'group',
 		action: 'delete'
-	}
+	},
+  '/goal/createPage':{
+    view:'CreateGoal'
+  },
+
+  '/user/modifyPage':{
+    view:'ModifyUserInfo'
+  },
+  '/user/profile':{
+    view:"ProfileGoal"
+  }
+
 };
