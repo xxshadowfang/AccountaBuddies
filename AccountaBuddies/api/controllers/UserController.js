@@ -182,15 +182,11 @@ module.exports = function() {
 			}
 		},
 		
-		update : function(req, res) {
-			if (!req.param('id')) {
-				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
-			}
-			
+		update : function(req, res) {			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				User.findOne({id : req.param('id')}).exec(function(err, user) {
+				User.findOne({id : req.cookies.id}).exec(function(err, user) {
 					if (user === undefined)
 						return sails.globals.jsonFailure(req, res, 'User does not exist.');
 					if (err) {
@@ -209,21 +205,25 @@ module.exports = function() {
 					retUser = sails.globals.decode(retUser);
 					
 					if (req.param('firstName')) {
+						console.log('setting fname')
 						retUser.firstName = req.param('firstName');
 					}
 					if (req.param('lastName')) {
+						console.log('setting lname')
 						retUser.lastName = req.param('lastName');
 					}
 					if (req.param('age')) {
+						console.log('setting age')
 						retUser.age = req.param('age');
 					}
 					if (req.param('gender')) {
+						console.log('setting gender')
 						retUser.gender = req.param('gender');
 					}
 					
 					retUser = sails.globals.encode(retUser);
 					
-					cmd = "CALL `updateUserInfo` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ retUser.firstName +"', '"+ retUser.lastName +"', '"+ retUser.age +"', '"+ retUser.gender +"');";
+					cmd = "CALL `updateUserInfo` ('"+ req.cookies.id +"', '"+ retUser.firstName +"', '"+ retUser.lastName +"', '"+ retUser.age +"', '"+ retUser.gender +"');";
 
 					User.query(cmd, function(err, results) {
 						if (err) {

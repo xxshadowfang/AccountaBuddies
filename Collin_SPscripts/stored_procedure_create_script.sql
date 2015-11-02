@@ -50,11 +50,7 @@ BEGIN
     INSERT INTO `comment` (goalId, userId, `text`, rating, nsfw, createdAt, updatedAt)
     VALUES (_goalId, _userId, _text, _rating, _nsfw, now(), now());
     
-    SELECT id
-    FROM `comment`
-    WHERE goalId = _goalId
-    AND userId = _userId
-    AND `text` = _text;
+    SELECT last_insert_id() AS `id`;
 END $$
 
 -- addUserToGroup
@@ -112,9 +108,7 @@ BEGIN
     INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt)
     VALUES (_userId, _status, _name, 0, 0, _description, now(), now());
     
-    SELECT id
-    FROM goal
-    WHERE userId = _userId AND `name` = _name;
+    SELECT last_insert_id() AS `id`;
 END $$
 
 -- createGroup
@@ -142,10 +136,7 @@ BEGIN
 	
     CALL addUserToGroup(_userId, last_insert_id());
     
-	SELECT id
-	FROM `group`
-	WHERE userId = _userId
-	AND `name` = _name;
+	SELECT last_insert_id() AS `id`;
 END $$
 
 -- deleteGoal
@@ -247,16 +238,23 @@ BEGIN
     if (_cookie = 'undefined') THEN SIGNAL SQLSTATE '19003'
         SET MESSAGE_TEXT = 'cookie was null.';
         END IF;
-        
+    
+	if (_FirstName = 'undefined') THEN 
+		SET _FirstName = '';
+        END IF;
+    if (_LastName = 'undefined') THEN
+		SET _LastName = '';
+        END IF;
+		
 	if (SELECT COUNT(*) FROM user WHERE username = _username) = 1 THEN SIGNAL SQLSTATE '15000'
 		SET MESSAGE_TEXT = 'username already exists.';
 		END IF;
 
    
-    INSERT INTO user (username, saltedPassword,firstName,lastName,cookie, createdAt, updatedAt) 
-    VALUES (_username, _salt,_FirstName,_LastName,_cookie, now(), now());
+    INSERT INTO user (username, saltedPassword,firstName,lastName,cookie, createdAt, updatedAt, age, gender) 
+    VALUES (_username, _salt,_FirstName,_LastName,_cookie, now(), now(), -1, 'U');
 	
-    SELECT id FROM user WHERE username = _username LIMIT 1;
+    SELECT last_insert_id() AS `id`;
 END $$
 
 -- removeUserFromGroup
@@ -348,6 +346,8 @@ CREATE  PROCEDURE `addStepToGoal`(
     IN _sequence int(11)
 )
 BEGIN
+	DECLARE numberSteps INT;
+    
 	if (_title = 'undefined') THEN SIGNAL SQLSTATE '29002'
         SET MESSAGE_TEXT = 'title was null';
         END IF;
@@ -366,9 +366,14 @@ BEGIN
     INSERT INTO step (goalId, title, description, sequence, progress, amountWorked, createdAt, updatedAt)
     VALUES (_goalId, _title, _description, _sequence, 0, 0, now(), now());
     
-    SELECT id
-    FROM step
-    WHERE goalId = _goalId AND `title` = _title;
+    SET numberSteps = (SELECT numSteps FROM goal WHERE id = _goalId);
+    SET numberSteps = numberSteps + 1;
+    
+    UPDATE goal
+    SET numSteps = numberSteps
+    WHERE id = _goalId;
+    
+    SELECT last_insert_id() AS `id`;
 END $$
 
 -- removeStepFromGoal
@@ -389,6 +394,7 @@ BEGIN
         SET MESSAGE_TEXT = 'userId was null.';
         END IF;
     
+	CALL doesStepExist(_stepId);
     CALL doesUserExist(_userId);
 	CALL doesGoalExist(_goalId);
     
@@ -406,25 +412,15 @@ END $$
 DROP PROCEDURE IF EXISTS `updateUserInfo` $$
 CREATE  PROCEDURE `updateUserInfo`(
     IN _loginId int,
-    IN _userId int, 
     IN _firstName varchar(255),
     IN _lastName varchar(255),
     IN _age int,
     IN _gender varchar(1)
 )
 BEGIN
-	if (_userID = 'undefined') THEN SIGNAL SQLSTATE '19000'
-		SET MESSAGE_TEXT = 'userID was NULL';
-        END IF;
-	
     if (_loginID = 'undefined') THEN SIGNAL SQLSTATE '19004'
 		SET MESSAGE_TEXT = 'loginID was NULL';
         END IF;
-        
-	if (SELECT id FROM user WHERE id = _userId) != _loginId THEN
-		SIGNAL SQLSTATE '15002'
-        SET MESSAGE_TEXT = 'You must be the owner of this user for that action.';
-		END IF;
 
     UPDATE user
     SET updatedAt = now(),
@@ -432,14 +428,19 @@ BEGIN
         lastName = _lastName,
         age = _age,
         gender = _gender
-    WHERE id = _userId;
+    WHERE id = _loginId;
 	
-	SELECT firstName, lastName, age, gender FROM user WHERE id = _userId;
+	SELECT firstName, lastName, age, gender FROM user WHERE id = _loginId;
 END $$
 
 -- doesStepExist
+<<<<<<< HEAD
 DROP PROCEDURE IF EXISTS `updateUserInfo` $$
 CREATE  PROCEDURE `doesStepExist`(
+=======
+DROP PROCEDURE IF EXISTS `doesStepExist` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `doesStepExist`(
+>>>>>>> collin
     IN _stepId int
 )
 BEGIN
@@ -472,4 +473,21 @@ BEGIN
        
     DELETE FROM user
     WHERE id = _userId;
+END $$
+
+-- getGoalList
+DROP PROCEDURE IF EXISTS `getGoalList` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `getGoalList`(
+	IN _userId int
+)
+BEGIN
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+       
+    CALL doesUserExist(_userId);   
+	-- TODO: change this to be a real value for progress
+	SELECT `name`, createdAt, numSteps
+    FROM goal
+    WHERE userId = _userId;
 END $$
