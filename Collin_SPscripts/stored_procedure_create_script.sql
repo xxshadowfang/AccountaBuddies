@@ -1,7 +1,7 @@
 DELIMITER $$
 -- doesGoalExist
 DROP PROCEDURE IF EXISTS `doesGoalExist` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `doesGoalExist`(
+CREATE  PROCEDURE `doesGoalExist`(
 	IN _goalId int
 )
 BEGIN
@@ -13,7 +13,7 @@ END $$
 
 -- doesUserExist
 DROP PROCEDURE IF EXISTS `doesUserExist` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `doesUserExist`(
+CREATE  PROCEDURE `doesUserExist`(
 	IN _userId int
 )
 BEGIN
@@ -25,7 +25,7 @@ END $$
 
 -- addGoalComment
 DROP PROCEDURE IF EXISTS `addGoalComment` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `addGoalComment`(
+CREATE  PROCEDURE `addGoalComment`(
 	IN _userId int,
     IN _goalId int,
     IN _text varchar(255),
@@ -59,7 +59,7 @@ END $$
 
 -- addUserToGroup
 DROP PROCEDURE IF EXISTS `addUserToGroup` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `addUserToGroup`(
+CREATE  PROCEDURE `addUserToGroup`(
 	IN _userId int,
     IN _groupId int
 )
@@ -84,7 +84,7 @@ END $$
 
 -- cacheCookies
 DROP PROCEDURE IF EXISTS `cacheCookies` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `cacheCookies`()
+CREATE  PROCEDURE `cacheCookies`()
 BEGIN
 	SELECT id, cookie
     FROM user
@@ -93,7 +93,7 @@ END $$
 
 -- createGoal
 DROP PROCEDURE IF EXISTS `createGoal` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `createGoal`(
+CREATE  PROCEDURE `createGoal`(
 	IN _userId int(11),
     IN _status int(11),
     IN _name varchar(50),
@@ -119,7 +119,7 @@ END $$
 
 -- createGroup
 DROP PROCEDURE IF EXISTS `createGroup` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `createGroup`(
+CREATE  PROCEDURE `createGroup`(
 	IN _userId int(11),
 	IN _name varchar(255),
 	IN _motto varchar(255)
@@ -150,7 +150,7 @@ END $$
 
 -- deleteGoal
 DROP PROCEDURE IF EXISTS `deleteGoal` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `deleteGoal`(
+CREATE  PROCEDURE `deleteGoal`(
 	IN _goalId int,
     IN _userId int
 )
@@ -177,7 +177,7 @@ END $$
 
 -- deleteGoalComment
 DROP PROCEDURE IF EXISTS `deleteGoalComment` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `deleteGoalComment`(
+CREATE  PROCEDURE `deleteGoalComment`(
 	IN _commentId int,
     IN _userId int
 )
@@ -202,7 +202,7 @@ END $$
 
 -- deleteGroup
 DROP PROCEDURE IF EXISTS `deleteGroup` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `deleteGroup`(
+CREATE  PROCEDURE `deleteGroup`(
 	IN _groupId int,
     IN _userId int
 )
@@ -230,7 +230,7 @@ END $$
 
 -- registerUser
 DROP PROCEDURE IF EXISTS `registerUser` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `registerUser`(
+CREATE  PROCEDURE `registerUser`(
     IN _username nvarchar(50), 
     IN _salt nvarchar(255),
     IN _FirstName nvarchar(50),
@@ -261,7 +261,7 @@ END $$
 
 -- removeUserFromGroup
 DROP PROCEDURE IF EXISTS `removeUserFromGroup` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `removeUserFromGroup`(
+CREATE  PROCEDURE `removeUserFromGroup`(
 	IN _userId int,
     IN _groupId int
 )
@@ -284,7 +284,7 @@ END $$
 
 -- updateCookie
 DROP PROCEDURE IF EXISTS `updateCookie` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `updateCookie`(
+CREATE  PROCEDURE `updateCookie`(
     IN _userID int, 
     IN _cookie varchar(50)
 )
@@ -307,7 +307,7 @@ END $$
 
 -- updateGoal
 DROP PROCEDURE IF EXISTS `updateGoal` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `updateGoal`(
+CREATE  PROCEDURE `updateGoal`(
 	IN _goalId int,
 	IN _userId int,
     IN _status int,
@@ -340,7 +340,7 @@ END $$
 
 -- addStepToGoal
 DROP PROCEDURE IF EXISTS `addStepToGoal` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `addStepToGoal`(
+CREATE  PROCEDURE `addStepToGoal`(
 	IN _goalId int(11),
 	IN _title varchar(30),
     IN _description varchar(255),
@@ -373,7 +373,7 @@ END $$
 
 -- removeStepFromGoal
 DROP PROCEDURE IF EXISTS `removeStepFromGoal` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `removeStepFromGoal`(
+CREATE  PROCEDURE `removeStepFromGoal`(
 	IN _goalId int(11),
 	IN _stepId int(11),
     IN _userId int(11)
@@ -404,7 +404,7 @@ END $$
 
 -- updateUserInfo`
 DROP PROCEDURE IF EXISTS `updateUserInfo` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `updateUserInfo`(
+CREATE  PROCEDURE `updateUserInfo`(
     IN _loginId int,
     IN _userId int, 
     IN _firstName varchar(255),
@@ -439,7 +439,7 @@ END $$
 
 -- doesStepExist
 DROP PROCEDURE IF EXISTS `updateUserInfo` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `doesStepExist`(
+CREATE  PROCEDURE `doesStepExist`(
     IN _stepId int
 )
 BEGIN
@@ -451,7 +451,7 @@ END $$
 
 -- deleteUser
 DROP PROCEDURE IF EXISTS `deleteUser` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `deleteUser`(
+CREATE  PROCEDURE `deleteUser`(
 	IN _userId int,
     IN _loginId int
 )

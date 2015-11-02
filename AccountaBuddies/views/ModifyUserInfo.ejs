@@ -2,7 +2,7 @@
 <script src ="/js/ModifyUserInfo.js"></script>
 <body>
 <div class="header">
-  <span> <img src="logo.png" height="98"/> </span>
+  <span> <img src="/images/logo.png" height="98"/> </span>
   <span id="headerTitle">Edit Your Profile Information</span>
   <span class="right"></span>
 </div>
@@ -19,16 +19,16 @@
     <dd><input type="number" id="age" min=14 placeholder="CURRENT_AGE"/></dd>
     <dt>Gender</dt>
     <dd>
-      <input type="radio" name="gender"/> : Male <br/>
-      <input type="radio" name="gender"/> : Female <br/>
-      <input type="radio" name="gender"/> : Other <br/>
+      <input type="radio" name="gender" id = "maleRadio"/> : Male <br/>
+      <input type="radio" name="gender" id = "femaleRadio"/> : Female <br/>
+      <input type="radio" name="gender" id = "otherRadio"/> : Other <br/>
     </dd>
     <!--For gender, check which gender they already have set (if they do), and set checked="true" for that input-->
   </dl>
   <br/>
-  <input type="submit" value="Update Information"/>
+  <button type="button" id = "updateInformation">Update Information</button>
 </form>
 
 <br/>
-<a href="ProfileGoal.ejs">Discard changes and return to your profile page</a>
+<a href="/user/profile">Discard changes and return to your profile page</a>
 

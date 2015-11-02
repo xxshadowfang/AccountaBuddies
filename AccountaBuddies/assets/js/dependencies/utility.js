@@ -209,7 +209,34 @@ Util.createGroup = function(name,motto,interests,privacy,groupInfo){
       privacy:privacy,
       groupInfo:groupInfo
     }
+  }).done(function(body){
+    if(body.success){
+      console.log('createGroup succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+
   })
 }
 
 
+Util.getGoalList = function(callback){
+  $.ajax({
+    method:'GET',
+    url:'/goal/getList',
+    data : {}
+  }).done(function(body){
+    if(body.success){
+      console.log('get goal list succeeded');
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+  })
+
+}

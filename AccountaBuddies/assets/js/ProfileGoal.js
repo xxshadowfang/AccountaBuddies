@@ -44,6 +44,11 @@ $(document).ready(function(){
   });
 
 
+
+  Util.getGoalList(function(body){
+      console.log(body);
+  });
+
   $("#goalList").append(
     template({name:"goalName",date:"2015/10/30",progress:"65",id:"1",numSteps:"5"})
   )

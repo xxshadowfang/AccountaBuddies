@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
   console.log('homepage');
-  $("#btn-submit").click(function(){
+  $("#register-btn").click(function(){
     var username = $("#input-username").val();
     var password = $("#input-password").val();
     var confirm = $("#input-confirm").val();

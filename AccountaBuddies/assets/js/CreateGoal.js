@@ -52,14 +52,14 @@ $(document).ready(function () {
     console.log({name:name,description:description,steps:steps});
 
 
-    //Util.postGoal(name, description, steps, function (body) {
-    //  if (body.success) {
-    //    alert('posting goal succeeded');
-    //  }
-    //  else {
-    //    alert(body.content);
-    //  }
-    //})
+    Util.postGoal(name, description, steps, function (body) {
+      if (body.success) {
+        alert('posting goal succeeded');
+      }
+      else {
+        alert(body.content);
+      }
+    })
   });
 
 
