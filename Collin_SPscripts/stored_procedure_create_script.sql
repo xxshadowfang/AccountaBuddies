@@ -487,7 +487,7 @@ BEGIN
        
     CALL doesUserExist(_userId);   
 	-- TODO: change this to be a real value for progress
-	SELECT `name`, createdAt, numSteps
+	SELECT id, `name`, createdAt, numSteps
     FROM goal
     WHERE userId = _userId;
 END $$
