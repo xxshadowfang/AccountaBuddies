@@ -32,7 +32,8 @@ module.exports = function() {
 				Goal.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
-						return sails.globals.jsonFailure(req, res, errMsg);
+						console.log(err);
+						return sails.globals.jsonFailure(req, res);
 					}
 						
 					var goalId = results[0][0].id;
@@ -57,6 +58,7 @@ module.exports = function() {
 						Step.query(cmd, function(err, results) {
 							if (err) {
 								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+								console.log(err);
 								return sails.globals.jsonFailure(req, res, errMsg);
 							}
 						});
@@ -94,6 +96,22 @@ module.exports = function() {
 					retGoal = sails.globals.encode(retGoal);
 					
 					return sails.globals.jsonSuccess(req, res, retGoal);
+				});
+			}
+		},
+		
+		list : function(req, res) {			
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				cmd = "CALL `getGoalList` ('"+ req.cookies.id +"');";
+				Goal.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+					
+					return sails.globals.jsonSuccess(req, res, results[0]);
 				});
 			}
 		},
