@@ -15,12 +15,8 @@ module.exports.bootstrap = function(cb) {
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
 	var uuid = require('uuid');
 	var mysql = require('mysql');
-	var request = require('supertest');
 	
 	sails.globals = sails.globals || {};
-	
-	sails.globals.test = sails.globals.test || {};
-	sails.globals.test.request = request;
 	
 	sails.globals.errorCodes = {
 			10000: "User does not exist.",
@@ -29,6 +25,9 @@ module.exports.bootstrap = function(cb) {
 			19002: "Password was null.",
 			19003: "Cookie was null.",
 			15000: "Username already exists.",
+			15001: "You must be the owner of this user to delete it.",
+			15002: "You must be the owner of this user to update it.",
+			19004: "loginId was null.",
 			
 			20000: "Goal does not exist.",
 			29000: "goalId was null.",

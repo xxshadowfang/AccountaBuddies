@@ -60,6 +60,21 @@ describe('GoalController Integration Tests', function() {
 			}, done);
 		});
 		
+		it('should deny goal for non-array of steps', function(done) {
+			user.post('/goal/create').send({
+				name : 'First Goal',
+				description : 'This is the description',
+				steps: {
+					title: 'first step',
+					description: 'descript'
+				}
+			})
+			.expect(200, {
+				success : false,
+				content: 'You must send in an array of steps'
+			}, done);
+		});
+		
 		it('should deny goal for undefined description', function(done) {
 			user.post('/goal/create').send({
 				name : 'First Goal',
@@ -220,6 +235,49 @@ describe('GoalController Integration Tests', function() {
 					content: ''
 				}
 			}, done);
+		});
+	});
+	
+	describe('Deleting Goals', function() {
+		it('should deny goal to be deleted with invalid id', function(done) {
+			user.post('/goal/delete').send({
+				id: 10
+			})
+			.expect(200, {
+				success: false,
+				content: 'Goal does not exist.'
+			}, done);
+		});
+		
+		it('should deny goal to be deleted with no id', function(done) {
+			user.post('/goal/delete').send({})
+			.expect(200, {
+				success: false,
+				content: 'You must provide a goal id.'
+			}, done);
+		});
+		
+		it('should deny goal to be deleted if user doesn\'t own goal', function(done) {
+			var userId;
+			user.post('/user/register').send({
+				username : 'newuser',
+				password : 'test'
+			}).expect(200)
+			.end(function() {
+				user.post('/goal/delete').send({
+					id: 1
+				})
+				.expect(200, {
+					success: false,
+					content: 'You must be the owner of this goal for that action.'
+				})
+				.end(function() {
+					user.post('/user/delete').send({
+						id: 4
+					})
+					.expect(200, done);
+				});
+			});
 		});
 	});
 });
