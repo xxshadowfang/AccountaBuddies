@@ -226,7 +226,7 @@ Util.createGroup = function(name,motto,interests,privacy,groupInfo){
 Util.getGoalList = function(callback){
   $.ajax({
     method:'GET',
-    url:'/goal/getList',
+    url:'/goal/list',
     data : {}
   }).done(function(body){
     if(body.success){
