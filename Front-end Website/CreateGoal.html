@@ -7,10 +7,15 @@
 </head>
 <body>
     <div class="header">
-        <span> <img src="logo.png" height="98" /> </span>
-        <span id="headerTitle">Create Your Own Goal</span>
-        <span class="right"></span>
-    </div>
+    <span> <img src="logo.png" height="98" /> </span>
+    <span id="headerTitle">Create Your Own Goal</span>
+    <span class="right" float="right">
+        <a href="ProfileGoal.html">View your profile</a> | 
+        <a href="CreateGoal.html" class="selected">Create a goal</a> | 
+        <a href="Groups.html">Groups [Not implemented]</a> | 
+        <a href="index.html">Logout </a>
+    </span>
+</div>
 
     <div id="leftGoalPost">
     <form id="form1">
@@ -21,7 +26,18 @@
             <br />
             <dd><input type="submit" value="Create Goal" /></dd>
         </dl> <br />
-    </form>
+    </form> <br /> <br /> <br />
+    <div id="instructions">
+        <em><strong>Instructions:</strong>
+            <ul>
+                <li>Type in a goal title and description in the boxes on the left.</li>
+                <li>Add steps to the goal by entering in the information on the right and hitting "Add Step".</li>
+                <li>Continue adding as many steps as you would like.</li>
+                <li>Once you are satisfied with the steps entered, click "Create Goal" on the left.</li>
+            </ul> 
+            Note: do <strong>NOT</strong> click "Create Goal" before adding the steps you want to the goal.  Each goal must have at least one step added before it can be created.
+        </em>
+    </div>
     </div>
 
     <div id="rightGoalSteps">
@@ -44,7 +60,7 @@
         <div id="goalStepsDisplay">
             <!--BOX STARTS HERE-->
             <div class="boxed">
-                <span id="stepNum">1</span>.&nbsp;<span id="stepName">Name of Step</span>&nbsp;<button id="deleteStep" value="X" border="1px solid black">X</button>
+                <span id="stepNum">1</span>.&nbsp;<span id="stepName">Name of Step</span>&nbsp;<button id="deleteStep" value="X" border="1px solid black" float="right">X</button>
                 <br /><br />
                 <span id="duration">5 hours</span>
             </div>

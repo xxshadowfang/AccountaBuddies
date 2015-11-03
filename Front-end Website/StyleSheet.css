@@ -1,6 +1,6 @@
 ﻿body {
     padding-top: 100px;
-    background-color: #F0F0F0;
+    background-color: #b7cfe0;
 }
 
 .header {
@@ -23,29 +23,27 @@
     height: 86vh;
     float:left;
     padding:5px;
-    background-color: red;
+    border-right: 1px solid gray;
 }
 
 #rightGoalSteps {
     float: left;
     width: 72vw;
     padding: 10px;
-    background-color: lightgreen;
     height: 86vh;
 }
 
 #goalStepsPost {
     height: 50vh;
-    background-color: yellowgreen;
 }
 
 #goalStepsDisplay {
-    background-color: deepskyblue;
     height: 34vh;
 }
 
 .boxed {
-    border: 2px solid gold;
+    background-color: #88d9ff;
+    border: 2px solid #205071;
     height: 100px;
     display: inline-block;
 }
@@ -55,10 +53,33 @@
 }
 
 th, td {
-    padding: 15px;
-    border: 1px groove yellow;
+    padding: 10px;
+    border: 1px groove #205071;
+}
+
+th {
+    background-color: #6fc0ff;    
+}
+
+td {
+    background-color: #88d9ff;  
 }
 
 td:hover {
     cursor: pointer;
+}
+
+.right {
+    float: right;
+    font-size: 24px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+a.selected {
+    border: 1px dotted blue;
+}
+
+dt {
+    font-weight: bold;
 }
