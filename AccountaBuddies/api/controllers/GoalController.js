@@ -94,7 +94,7 @@ module.exports = function() {
 							createdAt : goal.createdAt,
 							numSteps : goal.numSteps
 					}
-					retGoal = sails.globals.encode(retGoal);
+					retGoal = sails.globals.decode(retGoal);
 					
 					return sails.globals.jsonSuccess(req, res, retGoal);
 				});

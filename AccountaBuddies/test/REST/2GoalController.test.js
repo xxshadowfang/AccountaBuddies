@@ -213,36 +213,36 @@ describe('GoalController Integration Tests', function() {
 			});
 		});
 		
-//		it('should list no goals for user with id 2', function(done) {
-//			user.post('/user/logout').send({})
-//			.expect(200)
-//			.end(function(err, results) {
-//				if (err) return done(err);
-//				
-//				user.post('/user/login').send({
-//					username: 'newuser',
-//					password: 'test'
-//				})
-//				.expect(200)
-//				.end(function(err, results) {					
-//					user.get('/goal/list')
-//					.send()
-//					.expect(200)
-//					.end(function(err, results) {
-//						if (err) return done(err);
-//						var goals = results.res.body;
-//						
-//						console.log(goals);
-//						
-//						user.post('/user/login').send({
-//							username: 'collin',
-//							password: 'test'
-//						})
-//						.expect(200, done);
-//					})
-//				});
-//			});
-//		});
+		it('should list no goals for user with id 2', function(done) {
+			user.post('/user/logout').send({})
+			.expect(200)
+			.end(function(err, results) {
+				if (err) return done(err);
+				
+				user.post('/user/login').send({
+					username: 'collin2',
+					password: 'test'
+				})
+				.expect(200)
+				.end(function(err, results) {					
+					user.get('/goal/list')
+					.send()
+					.expect(200)
+					.end(function(err, results) {
+						if (err) return done(err);
+						var goals = results.res.body;
+						
+						console.log(goals);
+						
+						user.post('/user/login').send({
+							username: 'collin',
+							password: 'test'
+						})
+						.expect(200, done);
+					})
+				});
+			});
+		});
 	});
 	
 	describe('Adding and Removing Steps from Goals', function() {

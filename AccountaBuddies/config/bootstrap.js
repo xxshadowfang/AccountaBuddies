@@ -39,6 +39,7 @@ module.exports.bootstrap = function(cb) {
 			29004: "Sequence was null.",
 			29005: "stepId was null.",
 			
+			30000: "Group does not exist.",
 			39000: "groupId was null.",
 			39001: "Group name was null.",
 			39002: "Group motto was null.",
@@ -46,6 +47,7 @@ module.exports.bootstrap = function(cb) {
 			30001: "User is already in this group.",
 			35000: "You must be the owner of this group to delete it.",
 			35001: "User must be in this group to remove them.",
+			35002: "Invalid group password.",
 			
 			49000: "commentId was null.",
 			45000: "You must be the owner of this comment to delete it."

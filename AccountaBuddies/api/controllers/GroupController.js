@@ -51,34 +51,43 @@ module.exports = function() {
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				// TODO: Use stored procedure
-				Group.findOne({id : req.param('id')})
-				.populate('users')
-				.exec(function(err, group) {
-					if (group === undefined)
-						return sails.globals.jsonFailure(req, res, 'Group was not found.');
+				cmd = "CALL `getGroupInfo`('"+ req.cookies.id +"', '"+ req.param('id') +"');";
+				
+				Group.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					// TODO: I am unsure how we want to handle this when you have arrays inside an object. (array of users)
-					// How should I decode it and reconstruct it back to the client?
 					
-					//console.log(group);
+					var groupInfo = results[0][0];
+					var userInfo = results[1][0];
+					
+					var group = {
+							name: groupInfo.name,
+							description: groupInfo.description,
+							motto: groupInfo.motto,
+							isOwner: userInfo.isOwner,
+							isJoined: userInfo.isJoined
+					}
+					group = sails.globals.decode(group);
+					
 					return sails.globals.jsonSuccess(req, res, group);
 				});
 			}
 		},
 		
 		addUser : function(req, res) {
-			if (!req.param('groupId')) {
+			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a group id');
+			}
+			if (!req.param('password')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a group password');
 			}
 			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL addUserToGroup('"+ req.cookies.id +"', '"+ req.param('groupId') +"');";
+				cmd = "CALL addUserToGroup('"+ req.cookies.id +"', '"+ req.param('id') +"', '"+ req.param('password') +"');";
 			
 				Group.query(cmd, function(err, results) {
 					if (err) {

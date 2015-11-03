@@ -8,7 +8,18 @@ describe('UserController Integration Tests', function() {
 		user.post('/user/register').send({
 			username : 'collin',
 			password : 'test'
-		}).expect(200, done);
+		}).expect(200)
+		.end(function(err, res) {
+			if (err) return done(err);
+			user.post('/user/register').send({
+				username : 'collin2',
+				password : 'test'
+			}).expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				done();
+			})
+		});
 	});
 	
 	describe('Login and Logout tests', function() {
@@ -113,7 +124,7 @@ describe('UserController Integration Tests', function() {
 				success: true,
 				body: {
 					content: {
-						id: 2
+						id: 3
 					}
 				}
 			}, done);
@@ -171,7 +182,7 @@ describe('UserController Integration Tests', function() {
 		
 		it('should allow user to be deleted', function(done) {
 			user.post('/user/delete').send({
-				id: 2
+				id: 3
 			})
 			.expect(200, {
 				success: true,

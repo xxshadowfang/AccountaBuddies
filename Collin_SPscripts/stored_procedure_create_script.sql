@@ -57,9 +57,11 @@ END $$
 DROP PROCEDURE IF EXISTS `addUserToGroup` $$
 CREATE DEFINER=`root`@`%` PROCEDURE `addUserToGroup`(
 	IN _userId int,
-    IN _groupId int
+    IN _groupId int,
+    IN _password varchar(255)
 )
 BEGIN
+	DECLARE numUsers int;
 	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
@@ -71,11 +73,21 @@ BEGIN
 		SIGNAL SQLSTATE '30001'
         SET MESSAGE_TEXT = 'user is already in this group';
         END IF;
+	
+    IF (SELECT `password` FROM `group` WHERE id = _groupId) <> _password THEN SIGNAL SQLSTATE '35002'
+		SET MESSAGE_TEXT = 'invalid group password';
+        END IF;
         
 	INSERT INTO group_users__user_groups (group_users, user_groups)
     VALUES (
 		_groupId, _userId
     );
+    
+    SET numUsers = (SELECT COUNT(*) FROM group_users__user_groups WHERE group_users = _groupId);
+    
+    UPDATE `group`
+    SET userCount = numUsers
+    WHERE id = _groupId;
 END $$
 
 -- cacheCookies
@@ -142,7 +154,7 @@ BEGIN
 	INSERT INTO `group` (userId, `name`, motto, userCount, createdAt, updatedAt, description, `password`)
 	VALUES (_userId, _name, _motto, 1, now(), now(), _description, _password);
 	
-    CALL addUserToGroup(_userId, last_insert_id());
+    CALL addUserToGroup(_userId, last_insert_id(), _password);
     
 	SELECT last_insert_id() AS `id`;
 END $$
@@ -272,6 +284,7 @@ CREATE DEFINER=`root`@`%` PROCEDURE `removeUserFromGroup`(
     IN _groupId int
 )
 BEGIN
+	DECLARE numUsers int;
 	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
         SET MESSAGE_TEXT = 'userId was null';
         END IF;
@@ -286,6 +299,12 @@ BEGIN
         
 	DELETE FROM `group_users__user_groups`
     WHERE group_users = _groupId AND user_groups = _userId;
+    
+    SET numUsers = (SELECT COUNT(*) FROM group_users__user_groups WHERE group_users = _groupId);
+    
+    UPDATE `group`
+    SET userCount = numUsers
+    WHERE id = _groupId;
 END $$
 
 -- updateCookie
@@ -392,6 +411,7 @@ CREATE DEFINER=`root`@`%` PROCEDURE `removeStepFromGoal`(
     IN _userId int(11)
 )
 BEGIN
+	DECLARE numberSteps int;
 	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '29000'
         SET MESSAGE_TEXT = 'goalId was null.';
         END IF;
@@ -406,14 +426,33 @@ BEGIN
     CALL doesUserExist(_userId);
 	CALL doesGoalExist(_goalId);
     
-    if (SELECT userId FROM goal WHERE id = _goalId <> _userId)
+    if (SELECT userId FROM goal WHERE id = _goalId) <> _userId
     THEN 
 		SIGNAL SQLSTATE '25000'
         SET MESSAGE_TEXT = 'You must be the owner of this goal for that action.';
         END IF;
+
+	SET numberSteps = (SELECT numSteps FROM goal WHERE id = _goalId);
+    SET numberSteps = numberSteps - 1;
+    
+    UPDATE goal
+    SET numSteps = numberSteps
+    WHERE id = _goalId;
     
     DELETE FROM step
     WHERE id = _stepId;
+END $$
+
+-- doesGroupExist
+DROP PROCEDURE IF EXISTS `doesGroupExist` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `doesGroupExist`(
+	IN _groupId int
+)
+BEGIN
+	IF ((SELECT COUNT(*) FROM `group` WHERE id = _groupId)) = 0 THEN
+        SIGNAL SQLSTATE '30000'
+		SET MESSAGE_TEXT = 'Group does not exist';
+		END IF;
 END $$
 
 -- updateUserInfo`
@@ -493,4 +532,34 @@ BEGIN
 	SELECT id, `name`, createdAt, numSteps
     FROM goal
     WHERE userId = _userId;
+END $$
+
+-- getGroupInfo
+DROP PROCEDURE IF EXISTS `getGroupInfo` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `getGroupInfo`(
+	IN _userId int(11),
+	IN _groupId int(11)
+)
+BEGIN
+	DECLARE isOwner int;
+	DECLARE isJoined int;
+        
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+	if (_groupId = 'undefined') THEN SIGNAL SQLSTATE '39000'
+        SET MESSAGE_TEXT = 'groupId was null';
+        END IF;
+        
+	CALL doesGroupExist(_groupId);
+	CALL doesUserExist(_userId);
+    
+    SET isOwner = (SELECT COUNT(*) FROM `group` WHERE id = _groupId AND userId = _userId);
+    SET isJoined = (SELECT COUNT(*) FROM `group_users__user_groups` WHERE group_users = _groupId AND user_groups = _userId);
+    
+    SELECT `name`, description, motto
+    FROM `group`
+    WHERE id = _groupId;
+    
+    SELECT isOwner, isJoined;
 END $$
