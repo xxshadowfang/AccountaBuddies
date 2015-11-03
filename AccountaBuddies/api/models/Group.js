@@ -20,6 +20,12 @@ module.exports = function() {
 				type : 'string',
 				maxLength : 50
 			},
+			description : {
+				type : 'string'
+			},
+			password : {
+				type : 'string'
+			},
 			userCount : {
 				type : 'integer',
 				defaultsTo : 1

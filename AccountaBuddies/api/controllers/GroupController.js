@@ -8,21 +8,30 @@ module.exports = function() {
 			if (!req.body.motto) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a motto');
 			}
+			if (!req.body.description) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a description');
+			}
 			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
+				var password = '';
+				if (req.body.password) password = req.body.password;
+				
 				var group = {
 						name: req.body.name,
-						motto: req.body.motto
+						motto: req.body.motto,
+						description: req.body.description,
+						password: password
 				}
 				group = sails.globals.encode(group);
 				
-				cmd = "CALL createGroup('"+ req.cookies.id +"', '"+ group.name +"', '"+ group.motto +"');";
+				cmd = "CALL createGroup('"+ req.cookies.id +"', '"+ group.name +"', '"+ group.motto +"', '"+ group.description +"', '"+ group.password +"');";
 				
 				Group.query(cmd, function(err, results) {
 					if (err) {
+						console.log(err);
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}

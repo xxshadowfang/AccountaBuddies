@@ -42,6 +42,7 @@ module.exports.bootstrap = function(cb) {
 			39000: "groupId was null.",
 			39001: "Group name was null.",
 			39002: "Group motto was null.",
+			39003: "Group description was null.",
 			30001: "User is already in this group.",
 			35000: "You must be the owner of this group to delete it.",
 			35001: "User must be in this group to remove them.",

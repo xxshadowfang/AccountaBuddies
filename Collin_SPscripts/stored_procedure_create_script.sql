@@ -116,7 +116,9 @@ DROP PROCEDURE IF EXISTS `createGroup` $$
 CREATE DEFINER=`root`@`%` PROCEDURE `createGroup`(
 	IN _userId int(11),
 	IN _name varchar(255),
-	IN _motto varchar(255)
+	IN _motto varchar(255),
+    IN _description varchar(255),
+    IN _password varchar(255)
 )
 BEGIN
 	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
@@ -128,11 +130,17 @@ BEGIN
 	IF (_motto = 'undefined') THEN SIGNAL SQLSTATE '39002'
 		SET MESSAGE_TEXT = 'group motto was null';
 		END IF;
+	IF (_password = 'undefined') THEN
+		SET _password = '';
+		END IF;
+	IF (_description = 'undefined') THEN SIGNAL SQLSTATE '39003'
+		SET MESSAGE_TEXT = 'group description was null';
+		END IF;
         
 	CALL doesUserExist(_userId);
 	
-	INSERT INTO `group` (userId, `name`, motto, userCount, createdAt, updatedAt)
-	VALUES (_userId, _name, _motto, 1, now(), now());
+	INSERT INTO `group` (userId, `name`, motto, userCount, createdAt, updatedAt, description, `password`)
+	VALUES (_userId, _name, _motto, 1, now(), now(), _description, _password);
 	
     CALL addUserToGroup(_userId, last_insert_id());
     
