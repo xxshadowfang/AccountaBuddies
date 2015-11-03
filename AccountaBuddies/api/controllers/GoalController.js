@@ -32,7 +32,6 @@ module.exports = function() {
 				Goal.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
-						console.log(err);
 						return sails.globals.jsonFailure(req, res);
 					}
 						
@@ -58,7 +57,6 @@ module.exports = function() {
 						Step.query(cmd, function(err, results) {
 							if (err) {
 								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
-								console.log(err);
 								return sails.globals.jsonFailure(req, res, errMsg);
 							}
 						});
