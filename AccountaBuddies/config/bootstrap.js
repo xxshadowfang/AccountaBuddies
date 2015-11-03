@@ -40,6 +40,7 @@ module.exports.bootstrap = function(cb) {
 			29005: "stepId was null.",
 			
 			30000: "Group does not exist.",
+			30002: "filter was null.",
 			39000: "groupId was null.",
 			39001: "Group name was null.",
 			39002: "Group motto was null.",

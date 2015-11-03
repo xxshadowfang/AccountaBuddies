@@ -563,3 +563,38 @@ BEGIN
     
     SELECT isOwner, isJoined;
 END $$
+
+-- getGroupList
+DROP PROCEDURE IF EXISTS `getGroupList` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `getGroupList`(
+	IN _userId int(11),
+    IN _joined int
+)
+BEGIN
+	IF (_userId = 'undefined') THEN SIGNAL SQLSTATE '10000'
+		SET MESSAGE_TEXT = 'user id is null.';
+        END IF;
+    
+	if (_joined = '0') THEN
+		-- bring back all groups saying whether user is owner or joined
+        SELECT `name`, motto, userCount, userId AS ownerId, user_groups AS isJoined
+        FROM (
+			SELECT * FROM group_users__user_groups
+            WHERE user_groups = _userId
+        ) as filtered
+        RIGHT JOIN `group`
+        ON (`group`.id = group_users);
+        
+        END IF;
+        
+	if (_joined = '1') THEN
+		CALL doesUserExist(_userId);
+		-- bring back just groups that users are in
+		SELECT `name`, motto, userCount, userId AS ownerId
+			FROM `group`
+			JOIN group_users__user_groups
+			ON (`group`.id = group_users__user_groups.group_users)
+			WHERE group_users__user_groups.user_groups = _userId;
+			
+        END IF;
+END $$
