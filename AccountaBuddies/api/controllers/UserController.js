@@ -205,19 +205,15 @@ module.exports = function() {
 					retUser = sails.globals.decode(retUser);
 					
 					if (req.param('firstName')) {
-						console.log('setting fname')
 						retUser.firstName = req.param('firstName');
 					}
 					if (req.param('lastName')) {
-						console.log('setting lname')
 						retUser.lastName = req.param('lastName');
 					}
 					if (req.param('age')) {
-						console.log('setting age')
 						retUser.age = req.param('age');
 					}
 					if (req.param('gender')) {
-						console.log('setting gender')
 						retUser.gender = req.param('gender');
 					}
 					

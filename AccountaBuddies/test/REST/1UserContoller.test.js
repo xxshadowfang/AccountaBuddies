@@ -8,7 +8,18 @@ describe('UserController Integration Tests', function() {
 		user.post('/user/register').send({
 			username : 'collin',
 			password : 'test'
-		}).expect(200, done);
+		}).expect(200)
+		.end(function(err, res) {
+			if (err) return done(err);
+			user.post('/user/register').send({
+				username : 'collin2',
+				password : 'test'
+			}).expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				done();
+			})
+		});
 	});
 	
 	describe('Login and Logout tests', function() {
@@ -134,6 +145,24 @@ describe('UserController Integration Tests', function() {
 						firstName: 'update this',
 						lastName: '',
 						gender: 'U'
+					}
+				}
+			}, done);
+		});
+		
+		it('should allow user to be updated', function(done) {
+			user.post('/user/update').send({
+				lastName: 'LastName',
+				gender: 'M'
+			})
+			.expect(200, {
+				success: true,
+				body: {
+					content: {
+						age: 33,
+						firstName: 'update this',
+						lastName: 'LastName',
+						gender: 'M'
 					}
 				}
 			}, done);

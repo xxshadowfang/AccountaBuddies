@@ -46,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/api/controllers/GoalController.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-13.074074">
-              <caret line="125" column="27" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="27" />
+              <caret line="126" column="27" selection-start-line="126" selection-start-column="21" selection-end-line="126" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -62,14 +62,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProfileGoal.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ProfileGoal.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/ProfileGoal.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19430052">
+            <state vertical-scroll-proportion="0.0">
               <caret line="58" column="39" selection-start-line="58" selection-start-column="39" selection-end-line="58" selection-end-column="39" />
               <folding>
                 <element signature="e#0#38#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/bootstrap.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.48834196">
+              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,7 +98,7 @@
         <entry file="file://$PROJECT_DIR$/api/controllers/UserController.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-7.037037">
-              <caret line="101" column="44" selection-start-line="101" selection-start-column="44" selection-end-line="101" selection-end-column="44" />
+              <caret line="97" column="44" selection-start-line="97" selection-start-column="44" selection-end-line="97" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -129,7 +139,6 @@
         <option value="$PROJECT_DIR$/views/ModifyUserInfo.html" />
         <option value="$PROJECT_DIR$/views/ProfileGoal.html" />
         <option value="$PROJECT_DIR$/views/CreateGoal.ejs" />
-        <option value="$PROJECT_DIR$/config/bootstrap.js" />
         <option value="$PROJECT_DIR$/views/login.ejs" />
         <option value="$PROJECT_DIR$/assets/js/CreateGoal.js" />
         <option value="$PROJECT_DIR$/assets/js/ModifyUserInfo.js" />
@@ -140,6 +149,7 @@
         <option value="$PROJECT_DIR$/assets/js/homepage.js" />
         <option value="$PROJECT_DIR$/assets/js/dependencies/utility.js" />
         <option value="$PROJECT_DIR$/assets/js/ProfileGoal.js" />
+        <option value="$PROJECT_DIR$/config/bootstrap.js" />
       </list>
     </option>
   </component>
@@ -158,8 +168,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="111" />
-    <option name="y" value="128" />
+    <option name="x" value="-72" />
+    <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
   </component>
@@ -594,15 +604,15 @@
       <workItem from="1446407531247" duration="386000" />
       <workItem from="1446408248992" duration="520000" />
       <workItem from="1446409158253" duration="33000" />
-      <workItem from="1446411061318" duration="7381000" />
+      <workItem from="1446411061318" duration="7499000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31527000" />
+    <option name="totallyTimeSpent" value="31645000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="111" y="128" width="1440" height="873" extended-state="1" />
+    <frame x="-72" y="23" width="1440" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -889,14 +899,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/bootstrap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6620776">
-          <caret line="129" column="6" selection-start-line="129" selection-start-column="6" selection-end-line="129" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/ModifyUserInfo.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -992,7 +994,7 @@
     <entry file="file://$PROJECT_DIR$/api/controllers/UserController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.037037">
-          <caret line="101" column="44" selection-start-line="101" selection-start-column="44" selection-end-line="101" selection-end-column="44" />
+          <caret line="97" column="44" selection-start-line="97" selection-start-column="44" selection-end-line="97" selection-end-column="44" />
           <folding />
         </state>
       </provider>
@@ -1008,7 +1010,7 @@
     <entry file="file://$PROJECT_DIR$/api/controllers/GoalController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-13.074074">
-          <caret line="125" column="27" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="27" />
+          <caret line="126" column="27" selection-start-line="126" selection-start-column="21" selection-end-line="126" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1031,11 +1033,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/ProfileGoal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19430052">
+        <state vertical-scroll-proportion="0.0">
           <caret line="58" column="39" selection-start-line="58" selection-start-column="39" selection-end-line="58" selection-end-column="39" />
           <folding>
             <element signature="e#0#38#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/bootstrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48834196">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
