@@ -91,7 +91,8 @@ module.exports = function() {
 							name : goal.name,
 							status : goal.status,
 							description : goal.description,
-							createdAt : goal.createdAt
+							createdAt : goal.createdAt,
+							numSteps : goal.numSteps
 					}
 					retGoal = sails.globals.encode(retGoal);
 					
@@ -100,7 +101,7 @@ module.exports = function() {
 			}
 		},
 		
-		list : function(req, res) {			
+		list : function(req, res) {
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {

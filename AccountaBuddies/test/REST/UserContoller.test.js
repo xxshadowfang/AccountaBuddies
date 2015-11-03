@@ -138,6 +138,24 @@ describe('UserController Integration Tests', function() {
 				}
 			}, done);
 		});
+		
+		it('should allow user to be updated', function(done) {
+			user.post('/user/update').send({
+				lastName: 'LastName',
+				gender: 'M'
+			})
+			.expect(200, {
+				success: true,
+				body: {
+					content: {
+						age: 33,
+						firstName: 'update this',
+						lastName: 'LastName',
+						gender: 'M'
+					}
+				}
+			}, done);
+		});
 	});
 	
 	describe('Delete User', function() {

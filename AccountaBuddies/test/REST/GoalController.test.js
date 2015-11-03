@@ -1,3 +1,5 @@
+var expect = require('chai').expect;
+
 describe('GoalController Integration Tests', function() {
 	var user;
 	
@@ -12,7 +14,7 @@ describe('GoalController Integration Tests', function() {
 	});
 
 	describe('Goal posting tests', function() {
-		it('should allow user to post goal', function(done) {
+		it('should allow user to post goal with 1 step', function(done) {
 			user.post('/goal/create').send({
 				name : 'First Goal',
 				description : 'This is the description',
@@ -28,6 +30,43 @@ describe('GoalController Integration Tests', function() {
 				body : {
 					content : {
 						id : 1
+					}
+				}
+			}, done);
+		});
+		
+		it('should allow user to post goal 1 step', function(done) {
+			user.post('/goal/create').send({
+				name : 'goal name for 5 steps',
+				description : 'goal descript',
+				steps: [
+					{
+						title: "2-first step",
+						description: "descript"
+					},
+					{
+						title: "2-second step",
+						description: "descripti"
+					},
+					{
+						title: "2-third step",
+						description: "descriptio"
+					},
+					{
+						title: "2-fourth step",
+						description: "description"
+					},
+					{
+						title: "2-fifth step",
+						description: "description!"
+					}
+				]
+			})
+			.expect(200, {
+				success : true,
+				body : {
+					content : {
+						id : 2
 					}
 				}
 			}, done);
@@ -125,6 +164,87 @@ describe('GoalController Integration Tests', function() {
 		});
 	});
 	
+	describe('Reading goals', function() {
+		it('should recognize goal 1 has 1 step', function(done) {
+			user.get("/goal/find?id=1")
+			.send()
+			.expect(200)
+			.end(function(err, results) {
+				if (err) return done(err);
+				var goal = results.res.body.body.content;
+				
+				expect(goal.name).to.be.a('string');
+				expect(goal.id).to.equal('1');
+				expect(goal.numSteps).to.equal('1');
+				
+				done();
+			});
+		});
+		
+		it('should recognize goal 2 has 5 steps', function(done) {
+			user.get("/goal/find?id=2")
+			.send()
+			.expect(200)
+			.end(function(err, results) {
+				if (err) return done(err);
+				var goal = results.res.body.body.content;
+				
+				expect(goal.name).to.be.a('string');
+				expect(goal.id).to.equal('2');
+				expect(goal.numSteps).to.equal('5');
+				
+				done();
+			});
+		});
+		
+		it('should list goals for user with id 1', function(done) {
+			user.get('/goal/list')
+			.send()
+			.expect(200)
+			.end(function(err, results) {
+				if (err) return done(err);
+				var goals = results.res.body.body.content;
+				
+				expect(goals.length).to.equal(2);
+				expect(goals[0].id).to.equal(1);
+				expect(goals[1].id).to.equal(2);
+				
+				done();
+			});
+		});
+		
+//		it('should list no goals for user with id 2', function(done) {
+//			user.post('/user/logout').send({})
+//			.expect(200)
+//			.end(function(err, results) {
+//				if (err) return done(err);
+//				
+//				user.post('/user/login').send({
+//					username: 'newuser',
+//					password: 'test'
+//				})
+//				.expect(200)
+//				.end(function(err, results) {					
+//					user.get('/goal/list')
+//					.send()
+//					.expect(200)
+//					.end(function(err, results) {
+//						if (err) return done(err);
+//						var goals = results.res.body;
+//						
+//						console.log(goals);
+//						
+//						user.post('/user/login').send({
+//							username: 'collin',
+//							password: 'test'
+//						})
+//						.expect(200, done);
+//					})
+//				});
+//			});
+//		});
+	});
+	
 	describe('Adding and Removing Steps from Goals', function() {
 		it('should allow step to be added to a goal', function(done) {
 			user.post('/goal/addStep').send({
@@ -137,7 +257,7 @@ describe('GoalController Integration Tests', function() {
 				success: true,
 				body: {
 					content: {
-						id: 2
+						id: 7
 					}
 				}
 			}, done);
@@ -171,7 +291,7 @@ describe('GoalController Integration Tests', function() {
 			user.post('/goal/addStep').send({
 				title: 'title',
 				description: 'descript',
-				goalId: '2',
+				goalId: '4',
 				sequence: '3'
 			})
 			.expect(200, {
@@ -205,7 +325,7 @@ describe('GoalController Integration Tests', function() {
 		it('should deny step to be removed with invalid goal id', function(done) {
 			user.post('/goal/removeStep').send({
 				id: 1,
-				goalId: 2
+				goalId: 4
 			})
 			.expect(200, {
 				success: false,
@@ -254,6 +374,18 @@ describe('GoalController Integration Tests', function() {
 			.expect(200, {
 				success: false,
 				content: 'You must provide a goal id.'
+			}, done);
+		});
+		
+		it('should allow goal to be deleted', function(done) {
+			user.post('/goal/delete').send({
+				id: 2
+			})
+			.expect(200, {
+				success: true,
+				body: {
+					content: ''
+				}
 			}, done);
 		});
 		
