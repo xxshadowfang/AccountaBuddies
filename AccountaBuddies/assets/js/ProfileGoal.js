@@ -66,7 +66,20 @@ $(document).ready(function(){
           template({name:name,date:createDate,progress:progress,id:id,numSteps:numSteps})
         )
 
+
+        $("#deleteGoal"+id).click(function(){
+          Util.deleteGoal(id,function(body){
+            if(body.success){
+              alert('delete goal succeeded');
+              $('#table'+id).remove();
+            }
+            else{
+              alert(body.content);
+            }
+          })
+        })
       })
+
 
 
   });

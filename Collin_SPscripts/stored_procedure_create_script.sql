@@ -434,13 +434,9 @@ BEGIN
 END $$
 
 -- doesStepExist
-<<<<<<< HEAD
-DROP PROCEDURE IF EXISTS `updateUserInfo` $$
-CREATE  PROCEDURE `doesStepExist`(
-=======
+
 DROP PROCEDURE IF EXISTS `doesStepExist` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `doesStepExist`(
->>>>>>> collin
+CREATE PROCEDURE `doesStepExist`(
     IN _stepId int
 )
 BEGIN
@@ -477,7 +473,7 @@ END $$
 
 -- getGoalList
 DROP PROCEDURE IF EXISTS `getGoalList` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `getGoalList`(
+CREATE PROCEDURE `getGoalList`(
 	IN _userId int
 )
 BEGIN

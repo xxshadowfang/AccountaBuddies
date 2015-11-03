@@ -13,7 +13,12 @@ $(document).ready(function(){
     }
     console.log("start register")
     Util.register(username,password,"X","Y",function(body){
-
+        if (body.success){
+          alert("register succeeded");
+        }
+        else{
+          alert(body.content);
+        }
     })
 
 

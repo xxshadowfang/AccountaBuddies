@@ -174,10 +174,10 @@ Util.updateGoal = function(name,text,steps,id){
 
 
 
-Util.deleteGoal = function(id){
+Util.deleteGoal = function(id,callback){
   $.ajax({
     method:'POST',
-    url:'/goal/delete?goalID='+id,
+    url:'/goal/delete?id='+id,
     data:{}
   }).done(function(body){
     if(body.success){
