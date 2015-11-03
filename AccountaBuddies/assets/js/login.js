@@ -11,6 +11,7 @@ $(document).ready(function(){
     Util.login(username,password,function(body){
       if(body.success){
         alert('logged in');
+
         console.log($.cookie('cookie'));
       }
 

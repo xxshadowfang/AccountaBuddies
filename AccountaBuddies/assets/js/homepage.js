@@ -15,6 +15,7 @@ $(document).ready(function(){
     Util.register(username,password,"X","Y",function(body){
         if (body.success){
           alert("register succeeded");
+          window.location = "/login";
         }
         else{
           alert(body.content);

@@ -3,21 +3,6 @@
     background-color: #F0F0F0;
 }
 
-.header {
-    height: 100px;
-    position:fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #FFFFFF;
-    border-bottom: 2px solid blue;
- }
-
-#headerTitle {
-    font-size: 20px;
-    font-weight: bold;
-}
-
 * {
     border-radius: 5px;
 }
@@ -35,3 +20,93 @@
   height: 20px;
   border-radius: 10px;
 }
+
+
+
+body {
+    padding-top: 100px;
+    background-color: #b7cfe0;
+}
+
+.header {
+    height: 100px;
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-bottom: 2px solid blue;
+ }
+
+#headerTitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#leftGoalPost {
+    width: 23vw;
+    height: 86vh;
+    float:left;
+    padding:5px;
+    border-right: 1px solid gray;
+}
+
+#rightGoalSteps {
+    float: left;
+    width: 72vw;
+    padding: 10px;
+    height: 86vh;
+}
+
+#goalStepsPost {
+    height: 50vh;
+}
+
+#goalStepsDisplay {
+    height: 34vh;
+}
+
+.boxed {
+    background-color: #88d9ff;
+    border: 2px solid #205071;
+    height: 100px;
+    display: inline-block;
+}
+
+* {
+    border-radius: 5px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px groove #205071;
+}
+
+th {
+    background-color: #6fc0ff;    
+}
+
+td {
+    background-color: #88d9ff;  
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+.right {
+    float: right;
+    font-size: 24px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+a.selected {
+    border: 1px dotted blue;
+}
+
+dt {
+    font-weight: bold;
+}
+
+
