@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <title></title>
+</head>
+<body>
+    <div class="header">
+    <span> <img src="logo.png" height="98" /> </span>
+    <span id="headerTitle">[Name of Group]</span>
+    <span class="right" float="right">
+        <a href="ProfileGoal.html">View your profile</a> | 
+        <a href="CreateGoal.html">Create a goal</a> | 
+        <a href="Groups.html" class="selected">Groups</a> | 
+        <a href="index.html">Logout </a>
+    </span>
+</div>
+
+    <div id="leftGoalPost">
+        <h1 class="center">Create a Group</h1>
+        <dl>
+            <dt>Name: </dt>
+            <dd><span id="groupName">Test Group Name</span></dd>
+            <dt>Description: </dt> 
+            <dd> <span id="groupDescription">This group is a sample test group created with mock data.  The description would go here once it is made.</span></dd>
+            <dt>Motto: </dt>
+            <dd><span id="motto">Complete goals and win!</span></dd>
+        </dl> <br />
+
+        <button id="join/leave"> Join this group!</button>
+        <!-- If person is in this group, change text to "Leave this group?" -->
+    </div>
+
+    <div id="rightGoalSteps">
+        <h1 class="center">Members (<em>XX</em>)</h1>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+            </tr>
+            <tr> <!-- Make row clickable to go to the specific goal view page -->
+                <td>Disasterpiece</td>
+                <td>Danny</td>
+            </tr>
+
+            <tr>
+                <td>KMD Legion</td>
+                <td>Kaoli</td>
+            </tr>
+            
+            <tr>
+                <td>StretchyLungs</td>
+                <td>Tim</td>
+            </tr>
+
+        </table>
+
+    </div>
+</body>
+</html>
+

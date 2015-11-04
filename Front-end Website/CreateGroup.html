@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <title></title>
+</head>
+<body>
+    <div class="header">
+    <span> <img src="logo.png" height="98" /> </span>
+    <span id="headerTitle">Create A Group</span>
+    <span class="right" float="right">
+        <a href="ProfileGoal.html">View your profile</a> | 
+        <a href="CreateGoal.html">Create a goal</a> | 
+        <a href="Groups.html" class="selected">Groups</a> | 
+        <a href="index.html">Logout </a>
+    </span>
+</div>
+
+    <div id="leftGoalPost">
+    <form id="form1">
+        <h1 class="center">Create a Group</h1>
+        <dl>
+            <dt>Name: </dt><dd><input type="text" name="groupName" /></dd>
+            <dt>Description: </dt> <dd> <textarea name="groupDescription" rows="4" cols="50" id="goalDesc" form="form1" ></textarea> </dd>
+            <dt>Motto: </dt><dd><input type="text" name="motto" /></dd>
+            <dt>Password: </dt><dd><input type="password" name="groupPassword" /></dd>
+            <br />
+            <dd><input type="submit" value="Create Goal" /></dd>
+        </dl> <br />
+    </form>
+    </div>
+
+    <div id="rightGoalSteps">
+        <!-- Temporary placeholder, can add content to right side (privacy, category etc.) in here-->
+    </div>
+</body>
+</html>
+
