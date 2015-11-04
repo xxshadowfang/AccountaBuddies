@@ -358,4 +358,55 @@ describe('GroupController Integration Tests', function() {
 			});
 		});
 	});
+	
+	describe('Reading groups (members)', function() {
+		it('should deny group member list without group id', function(done) {
+			user.get('/group/members')
+			.send({})
+			.expect(200, {
+				success: false,
+				content: 'You must provide a group id'
+			}, done);
+		});
+		
+		it('should deny group member list with invalid group id', function(done) {
+			user.get('/group/members?id=1')
+			.send({})
+			.expect(200, {
+				success: false,
+				content: 'Group does not exist.'
+			}, done);
+		});
+		
+		it('should return one member for group two', function(done) {
+			user.get('/group/members?id=2')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var members = res.body.body.content;
+				
+				expect(members.length).to.equal(1);
+				expect(members[0].username).to.equal('collin');
+				
+				done();
+			});
+		});
+		
+		it('should return two members for group three', function(done) {
+			user.get('/group/members?id=3')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var members = res.body.body.content;
+				
+				expect(members.length).to.equal(2);
+				expect(members[0].username).to.equal('collin');
+				expect(members[1].username).to.equal('collin2');
+				
+				done();
+			});
+		});
+	});
 });

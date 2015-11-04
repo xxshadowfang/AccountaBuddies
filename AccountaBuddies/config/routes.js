@@ -143,6 +143,11 @@ module.exports.routes = {
 		action: 'list'
 	},
 	
+	'GET /group/members/:id' : {
+		controller: 'group',
+		action: 'members'
+	},
+	
 	'POST /group/join' : {
 		controller: 'group',
 		action: 'addUser'

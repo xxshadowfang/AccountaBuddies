@@ -94,6 +94,7 @@ module.exports = function() {
 
 					var groupInfo = results[0];
 					var groups = {items: []};
+					
 					for (var i = 0; i < groupInfo.length; i++) {
 						groups.items[i] = sails.globals.decode(groupInfo[i]);
 						
@@ -112,6 +113,34 @@ module.exports = function() {
 					}
 					
 					return sails.globals.jsonSuccess(req, res, groups.items);
+				});
+			}
+		},
+		
+		members : function(req, res) {
+			if (!req.param('id')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a group id');
+			}
+			
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				cmd = "CALL `getGroupMembers`('"+ req.param('id') +"');";
+				
+				Group.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+
+					var groupMembers = results[0];
+					var members = {items: []};
+					
+					for (var i = 0; i < groupMembers.length; i++) {
+						members.items[i] = sails.globals.decode(groupMembers[i]);
+					}
+					
+					return sails.globals.jsonSuccess(req, res, members.items);
 				});
 			}
 		},
