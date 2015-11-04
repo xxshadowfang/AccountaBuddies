@@ -170,14 +170,14 @@ module.exports = function() {
 		},
 		
 		removeUser : function(req, res) {
-			if (!req.param('groupId')) {
+			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a group id');
 			}
 			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL removeUserFromGroup('"+ req.cookies.id +"', '"+ req.param('groupId') +"');";
+				cmd = "CALL removeUserFromGroup('"+ req.cookies.id +"', '"+ req.param('id') +"');";
 			
 				Group.query(cmd, function(err, results) {
 					if (err) {

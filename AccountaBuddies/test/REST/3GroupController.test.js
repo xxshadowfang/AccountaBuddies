@@ -409,4 +409,64 @@ describe('GroupController Integration Tests', function() {
 			});
 		});
 	});
+	
+	describe('Leave group', function() {
+		it('should deny user from leaving group without group id', function(done) {
+			user.post('/group/leave')
+			.send({})
+			.expect(200, {
+				success : false,
+				content: 'You must provide a group id'
+			}, done);
+		});
+		
+		it('should deny user from leaving group they are not in', function(done) {
+			user.post('/user/login')
+			.send({
+				username: 'collin2',
+				password: 'test'
+			})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				user.post('/group/leave')
+				.send({
+					id : 2
+				})
+				.expect(200, {
+					success : false,
+					content: 'User must be in this group to remove them.'
+				}, done);
+			});
+		});
+		
+		it('should allow user to leave group', function(done) {
+			user.post('/group/leave')
+			.send({
+				id : 3
+			})
+			.expect(200, {
+				success : true,
+				body: {
+					content: ''
+				}
+			})
+			.end(function(err, res) {
+				if (err) return done(err);
+				
+				user.get('/group/members?id=3')
+				.send({})
+				.expect(200)
+				.end(function(err, res) {
+					if (err) return done(err);
+					var members = res.body.body.content;
+					
+					expect(members.length).to.equal(1);
+					expect(members[0].username).to.equal('collin');
+					
+					done();
+				});
+			});
+		});
+	});
 });
