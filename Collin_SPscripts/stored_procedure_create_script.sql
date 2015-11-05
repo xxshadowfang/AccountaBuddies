@@ -393,8 +393,7 @@ BEGIN
     INSERT INTO step (goalId, title, description, sequence, progress, amountWorked, createdAt, updatedAt)
     VALUES (_goalId, _title, _description, _sequence, 0, 0, now(), now());
     
-    SET numberSteps = (SELECT numSteps FROM goal WHERE id = _goalId);
-    SET numberSteps = numberSteps + 1;
+	SET numberSteps = (SELECT COUNT(*) FROM step WHERE goalId = _goalId);
     
     UPDATE goal
     SET numSteps = numberSteps
@@ -431,16 +430,15 @@ BEGIN
 		SIGNAL SQLSTATE '25000'
         SET MESSAGE_TEXT = 'You must be the owner of this goal for that action.';
         END IF;
-
-	SET numberSteps = (SELECT numSteps FROM goal WHERE id = _goalId);
-    SET numberSteps = numberSteps - 1;
+    
+    DELETE FROM step
+    WHERE id = _stepId;
+    
+    SET numberSteps = (SELECT COUNT(*) FROM step WHERE goalId = _goalId);
     
     UPDATE goal
     SET numSteps = numberSteps
     WHERE id = _goalId;
-    
-    DELETE FROM step
-    WHERE id = _stepId;
 END $$
 
 -- doesGroupExist
@@ -562,4 +560,57 @@ BEGIN
     WHERE id = _groupId;
     
     SELECT isOwner, isJoined;
+END $$
+
+-- getGroupList
+DROP PROCEDURE IF EXISTS `getGroupList` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `getGroupList`(
+	IN _userId int(11),
+    IN _joined int
+)
+BEGIN
+	IF (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+		SET MESSAGE_TEXT = 'user id is null.';
+        END IF;
+    
+	if (_joined = '0') THEN
+		-- bring back all groups saying whether user is owner or joined
+        SELECT `name`, motto, userCount, userId AS ownerId, user_groups AS isJoined
+        FROM (
+			SELECT * FROM group_users__user_groups
+            WHERE user_groups = _userId
+        ) as filtered
+        RIGHT JOIN `group`
+        ON (`group`.id = group_users);
+        
+        END IF;
+        
+	if (_joined = '1') THEN
+		CALL doesUserExist(_userId);
+		-- bring back just groups that users are in
+		SELECT `name`, motto, userCount, userId AS ownerId
+			FROM `group`
+			JOIN group_users__user_groups
+			ON (`group`.id = group_users__user_groups.group_users)
+			WHERE group_users__user_groups.user_groups = _userId;
+			
+        END IF;
+END $$
+
+-- getGroupMembers
+DROP PROCEDURE IF EXISTS `getGroupMembers` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `getGroupMembers`(
+	IN _groupId int(11)
+)
+BEGIN
+	IF (_groupId = 'undefined') THEN SIGNAL SQLSTATE '39000'
+		SET MESSAGE_TEXT = 'user id is null.';
+        END IF;
+    
+    CALL doesGroupExist(_groupId);
+    
+    SELECT username, firstName
+    FROM user JOIN group_users__user_groups
+    ON user.id = group_users__user_groups.user_groups
+    WHERE group_users__user_groups.group_users = _groupId;
 END $$

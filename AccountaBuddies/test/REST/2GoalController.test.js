@@ -227,12 +227,14 @@ describe('GoalController Integration Tests', function() {
 				.end(function(err, results) {					
 					user.get('/goal/list')
 					.send()
-					.expect(200)
+					.expect(200, {
+						success: true,
+						body: {
+							content: []
+						}
+					})
 					.end(function(err, results) {
 						if (err) return done(err);
-						var goals = results.res.body;
-						
-						console.log(goals);
 						
 						user.post('/user/login').send({
 							username: 'collin',
