@@ -197,9 +197,9 @@ describe('GroupController Integration Tests', function() {
 		});
 	});
 	
-	describe('Reading groups', function() {
+	describe('Reading groups (find)', function() {
 		it('should deny group to be read without id', function(done) {
-			user.post('/group/find')
+			user.get('/group/find')
 			.send({})
 			.expect(200, {
 				success: false,
@@ -208,7 +208,7 @@ describe('GroupController Integration Tests', function() {
 		});
 		
 		it('should find that group 1 does not exist anymore', function(done) {
-			user.post('/group/find?id=1')
+			user.get('/group/find?id=1')
 			.send({})
 			.expect(200, {
 				success: false,
@@ -217,7 +217,7 @@ describe('GroupController Integration Tests', function() {
 		});
 		
 		it('should find group 2 correctly', function(done) {
-			user.post('/group/find?id=2')
+			user.get('/group/find?id=2')
 			.send({})
 			.expect(200)
 			.end(function(err, res) {
@@ -233,7 +233,7 @@ describe('GroupController Integration Tests', function() {
 		});
 		
 		it('should find group 3 correctly', function(done) {
-			user.post('/group/find?id=3')
+			user.get('/group/find?id=3')
 			.send({})
 			.expect(200)
 			.end(function(err, res) {
@@ -245,6 +245,227 @@ describe('GroupController Integration Tests', function() {
 				expect(group.motto).to.equal('never ever give up');
 				
 				done();
+			});
+		});
+	});
+	
+	describe('Reading groups (list)', function() {		
+		it('should deny group to be listed without filter option', function(done) {
+			user.get('/group/list')
+			.send({})
+			.expect(200, {
+				success: false,
+				content: 'You must provide a filter parameter'
+			}, done);
+		});
+		
+		it('should return all groups and user-joined/owned information for user two', function(done) {
+			user.get('/group/list?filter=0')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var groups = res.body.body.content;
+				
+				expect(groups.length).to.equal(2);
+				
+				expect(groups[0].name).to.equal('group name');
+				expect(groups[0].userCount).to.equal('1');
+				expect(groups[0].isJoined).to.equal(false);
+				expect(groups[0].isOwner).to.equal(false);
+				
+				expect(groups[1].name).to.equal('group 3 name');
+				expect(groups[1].userCount).to.equal('2');
+				expect(groups[1].isJoined).to.equal(true);
+				expect(groups[1].isOwner).to.equal(false);
+				
+				done();
+			});
+		});
+		
+		it('should return user-joined groups for user two', function(done) {
+			user.get('/group/list?filter=1')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var groups = res.body.body.content;
+				
+				expect(groups.length).to.equal(1);
+				
+				expect(groups[0].name).to.equal('group 3 name');
+				expect(groups[0].userCount).to.equal('2');
+				expect(groups[0].isJoined).to.equal(true);
+				expect(groups[0].isOwner).to.equal(false);
+				
+				done();
+			});
+		});
+		
+		it('should return user-joined groups for user one', function(done) {
+			user.post('/user/login')
+			.send({
+				username: 'collin',
+				password: 'test'
+			})
+			.expect(200)
+			.end(function(err, res) {
+				user.get('/group/list?filter=1')
+				.send({})
+				.expect(200)
+				.end(function(err, res) {
+					if (err) return done(err);
+					var groups = res.body.body.content;
+					
+					expect(groups.length).to.equal(2);
+					
+					expect(groups[0].name).to.equal('group name');
+					expect(groups[0].userCount).to.equal('1');
+					expect(groups[0].isJoined).to.equal(true);
+					expect(groups[0].isOwner).to.equal(true);
+					
+					expect(groups[1].name).to.equal('group 3 name');
+					expect(groups[1].userCount).to.equal('2');
+					expect(groups[1].isJoined).to.equal(true);
+					expect(groups[1].isOwner).to.equal(true);
+					
+					done();
+				});
+			});
+		});
+		
+		it('should return all groups for user one', function(done) {
+			user.get('/group/list?filter=0')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var groups = res.body.body.content;
+				
+				expect(groups.length).to.equal(2);
+				
+				expect(groups[0].name).to.equal('group name');
+				expect(groups[0].userCount).to.equal('1');
+				expect(groups[0].isJoined).to.equal(true);
+				expect(groups[0].isOwner).to.equal(true);
+				
+				expect(groups[1].name).to.equal('group 3 name');
+				expect(groups[1].userCount).to.equal('2');
+				expect(groups[1].isJoined).to.equal(true);
+				expect(groups[1].isOwner).to.equal(true);
+				
+				done();
+			});
+		});
+	});
+	
+	describe('Reading groups (members)', function() {
+		it('should deny group member list without group id', function(done) {
+			user.get('/group/members')
+			.send({})
+			.expect(200, {
+				success: false,
+				content: 'You must provide a group id'
+			}, done);
+		});
+		
+		it('should deny group member list with invalid group id', function(done) {
+			user.get('/group/members?id=1')
+			.send({})
+			.expect(200, {
+				success: false,
+				content: 'Group does not exist.'
+			}, done);
+		});
+		
+		it('should return one member for group two', function(done) {
+			user.get('/group/members?id=2')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var members = res.body.body.content;
+				
+				expect(members.length).to.equal(1);
+				expect(members[0].username).to.equal('collin');
+				
+				done();
+			});
+		});
+		
+		it('should return two members for group three', function(done) {
+			user.get('/group/members?id=3')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var members = res.body.body.content;
+				
+				expect(members.length).to.equal(2);
+				expect(members[0].username).to.equal('collin');
+				expect(members[1].username).to.equal('collin2');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('Leave group', function() {
+		it('should deny user from leaving group without group id', function(done) {
+			user.post('/group/leave')
+			.send({})
+			.expect(200, {
+				success : false,
+				content: 'You must provide a group id'
+			}, done);
+		});
+		
+		it('should deny user from leaving group they are not in', function(done) {
+			user.post('/user/login')
+			.send({
+				username: 'collin2',
+				password: 'test'
+			})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				user.post('/group/leave')
+				.send({
+					id : 2
+				})
+				.expect(200, {
+					success : false,
+					content: 'User must be in this group to remove them.'
+				}, done);
+			});
+		});
+		
+		it('should allow user to leave group', function(done) {
+			user.post('/group/leave')
+			.send({
+				id : 3
+			})
+			.expect(200, {
+				success : true,
+				body: {
+					content: ''
+				}
+			})
+			.end(function(err, res) {
+				if (err) return done(err);
+				
+				user.get('/group/members?id=3')
+				.send({})
+				.expect(200)
+				.end(function(err, res) {
+					if (err) return done(err);
+					var members = res.body.body.content;
+					
+					expect(members.length).to.equal(1);
+					expect(members[0].username).to.equal('collin');
+					
+					done();
+				});
 			});
 		});
 	});

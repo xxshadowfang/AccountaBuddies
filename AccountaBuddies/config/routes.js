@@ -138,9 +138,20 @@ module.exports.routes = {
 		action: 'create'
 	},
 
-	'GET /group/:id' : {
+
+	'GET /group/find/:id' : {
 		controller: 'group',
 		action: 'find'
+	},
+
+	'GET /group/list/:filter' : {
+		controller: 'group',
+		action: 'list'
+	},
+
+	'GET /group/members/:id' : {
+		controller: 'group',
+		action: 'members'
 	},
 
 	'POST /group/join' : {
