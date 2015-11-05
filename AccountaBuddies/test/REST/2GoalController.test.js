@@ -176,6 +176,7 @@ describe('GoalController Integration Tests', function() {
 				expect(goal.name).to.be.a('string');
 				expect(goal.id).to.equal('1');
 				expect(goal.numSteps).to.equal('1');
+				expect(goal.steps.length).to.equal(1);
 				
 				done();
 			});
@@ -192,6 +193,7 @@ describe('GoalController Integration Tests', function() {
 				expect(goal.name).to.be.a('string');
 				expect(goal.id).to.equal('2');
 				expect(goal.numSteps).to.equal('5');
+				expect(goal.steps.length).to.equal(5);
 				
 				done();
 			});
