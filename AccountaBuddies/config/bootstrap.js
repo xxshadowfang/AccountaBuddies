@@ -119,8 +119,8 @@ module.exports.bootstrap = function(cb) {
 		var conn = mysql.createConnection({
 			host: 'localhost',
 			user: 'root',
-			password: '',
-			database: 'accounta_buddies'
+			password: 'AccountaBuddies',
+			database: 'devAccountaBuddies'
 		});
 		
 		conn.connect();
