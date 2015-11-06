@@ -1,0 +1,58 @@
+﻿body {
+    padding-top: 100px;
+    background-color: #F0F0F0;
+}
+
+.header {
+    height: 100px;
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-bottom: 2px solid blue;
+ }
+
+#headerTitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#leftGoalPost {
+  width: 23vw;
+  height: 86vh;
+  float:left;
+  padding:5px;
+  border-right: 1px solid gray;
+}
+
+#rightGoalSteps {
+  float: left;
+  width: 72vw;
+  padding: 10px;
+  height: 86vh;
+}
+
+#goalStepsPost {
+    height: 50vh;
+}
+
+#goalStepsDisplay {
+    height: 34vh;
+}
+
+.boxed {
+  background-color: #88d9ff;
+  border: 2px solid #205071;
+  height: 100px;
+  display: inline-block;
+}
+
+* {
+    border-radius: 5px;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px groove yellow;
+}

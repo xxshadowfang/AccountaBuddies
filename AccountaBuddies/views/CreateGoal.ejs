@@ -1,0 +1,55 @@
+﻿<link rel="stylesheet" type="text/css" href="/styles/StyleSheet1.css"/>
+<script src ="/js/CreateGoal.js"></script>
+<div class="header">
+  <span> <img src="/images/logo.png" height="98"/> </span>
+  <span id="headerTitle">Create Your Own Goal</span>
+  <span class="right"> <%include template.ejs%></span>
+</div>
+
+<div id="leftGoalPost">
+  <form id="form1">
+    <h1 class="center">Create a Goal</h1>
+    <dl>
+      <dt>Name:</dt>
+      <dd><input type="text" id="goalName"/></dd>
+      <dt>Description:</dt>
+      <dd><textarea id="goalText" rows="4" cols="40" id="goalDesc" form="form1"></textarea></dd>
+      <br/>
+      <button type="button" id = "createGoal">Create Goal</button>
+    </dl>
+    <br/>
+  </form>
+</div>
+
+<div id="rightGoalSteps">
+  <div id="goalStepsPost">
+    <h2>New Step</h2>
+
+    <form id="steps">
+      <dl>
+        <dt>Name:</dt>
+        <dd><input type="text" id="stepName"/></dd>
+        <dt>Description:</dt>
+        <dd><textarea id="stepText" rows="4" cols="50" id="stepDesc" form="steps"></textarea></dd>
+        <dt>Duration (in hours):</dt>
+        <dd><input type="number" min="1" id="stepDuration"/></dd>
+        <br/>
+        <button type="button" id = "addStep">Add Step</button>
+      </dl>
+      <br/>
+    </form>
+  </div>
+  <hr/>
+  <div id="goalStepsDisplay">
+    <!--BOX STARTS HERE-->
+
+    <!--BOX ENDS HERE-->
+    <!--<div class="boxed">-->
+      <!--<span id="stepNum">2</span>.&nbsp;<span id="stepName">Step 2</span>&nbsp;-->
+      <!--<button id="deleteStep" value="X" border="1px solid black">X</button>-->
+      <!--<br/><br/>-->
+      <!--<span id="duration">3 hours</span>-->
+    <!--</div>-->
+  </div>
+</div>
+

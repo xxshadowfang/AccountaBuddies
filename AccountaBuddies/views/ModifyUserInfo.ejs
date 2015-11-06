@@ -1,0 +1,34 @@
+﻿<link rel="stylesheet" type="text/css" href="/styles/StyleSheet1.css"/>
+<script src ="/js/ModifyUserInfo.js"></script>
+<body>
+<div class="header">
+  <span> <img src="/images/logo.png" height="98"/> </span>
+  <span id="headerTitle">Edit Your Profile Information</span>
+  <span class="right"> <%include template.ejs%></span>
+</div>
+
+<h2 text-align="center">Modify Your Profile</h2>
+
+<form id="profileModification">
+  <dl>
+    <dt>First Name</dt>
+    <dd><input type="text" id="firstName" placeholder="CURRENT_FIRST_NAME"/></dd>
+    <dt>Last Name</dt>
+    <dd><input type="text" id="lastName" placeholder="CURRENT_LAST_NAME"/></dd>
+    <dt>Age</dt>
+    <dd><input type="number" id="age" min=14 placeholder="CURRENT_AGE"/></dd>
+    <dt>Gender</dt>
+    <dd>
+      <input type="radio" name="gender" id = "maleRadio"/> : Male <br/>
+      <input type="radio" name="gender" id = "femaleRadio"/> : Female <br/>
+      <input type="radio" name="gender" id = "otherRadio"/> : Other <br/>
+    </dd>
+    <!--For gender, check which gender they already have set (if they do), and set checked="true" for that input-->
+  </dl>
+  <br/>
+  <button type="button" id = "updateInformation">Update Information</button>
+</form>
+
+<br/>
+<a href="/user/profile">Discard changes and return to your profile page</a>
+

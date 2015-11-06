@@ -34,8 +34,12 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
 
+
+  '/login': {
+    view: 'login'
+  },
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -45,5 +49,123 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
+
+   	'POST /user/register': {
+		controller: 'user',
+		action: 'register'
+	},
+
+	'GET /user/get': {
+		controller: 'user',
+		action: 'find'
+	},
+
+	'POST /user/login': {
+		controller: 'user',
+		action: 'login'
+	},
+
+	'POST /user/logout': {
+		controller: 'user',
+		action: 'logout'
+	},
+
+
+	'POST /user/delete': {
+		controller: 'user',
+		action: 'delete'
+	},
+
+	'POST /user/update': {
+		controller: 'user',
+		action: 'update'
+	},
+
+	'POST /goal/create': {
+		controller: 'goal',
+		action: 'create'
+	},
+
+
+	'GET /goal/find/:id': {
+		controller: 'goal',
+		action: 'find'
+	},
+
+	'GET /goal/list': {
+		controller: 'goal',
+		action: 'list'
+	},
+
+	'POST /goal/update/:id': {
+		controller: 'goal',
+		action: 'update'
+	},
+
+	'POST /goal/delete': {
+		controller: 'goal',
+		action: 'delete'
+	},
+
+	'POST /goal/addStep': {
+		controller: 'goal',
+		action: 'addStep'
+	},
+
+	'POST /goal/removeStep': {
+		controller: 'goal',
+		action: 'removeStep'
+	},
+
+	'POST /comment/create/:goalId' : {
+		controller: 'comment',
+		action: 'create'
+	},
+
+	'GET /comment/:id' : {
+		controller: 'comment',
+		action: 'find'
+	},
+
+	'POST /comment/delete/:id' : {
+		controller: 'comment',
+		action: 'delete'
+	},
+
+	'POST /group/create' : {
+		controller: 'group',
+		action: 'create'
+	},
+
+	'GET /group/:id' : {
+		controller: 'group',
+		action: 'find'
+	},
+
+	'POST /group/join' : {
+		controller: 'group',
+		action: 'addUser'
+	},
+
+	'POST /group/leave' : {
+		controller: 'group',
+		action: 'removeUser'
+	},
+
+	'POST /group/delete' : {
+		controller: 'group',
+		action: 'delete'
+	},
+  '/goal/createPage':{
+    view:'CreateGoal'
+  },
+
+  '/user/modifyPage':{
+    view:'ModifyUserInfo'
+  },
+  '/user/profile':{
+    view:"ProfileGoal"
+  }
 
 };
