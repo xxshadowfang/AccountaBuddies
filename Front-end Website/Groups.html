@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <title></title>
+</head>
+<body>
+    <div class="header">
+        <span> <img src="logo.png" height="98" /> </span>
+        <span id="headerTitle">Group List</span>
+        <span class="right">
+            <a class="selected" href="ProfileGoal.html">View your profile</a> | 
+            <a href="CreateGoal.html">Create a goal</a> | 
+            <a href="Groups.html">Groups</a> | 
+            <a href="index.html">Logout </a>
+        </span>
+    </div>
+
+    <!-- I'm not sure how to make the checkbox itself invisible while showing the checkbox.-->
+    <span class="switch" display="inline-block">
+        Group Visibility (All/Mine): 
+      <input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-yes-no" type="checkbox" opacity="0" display="none">
+      <label for="cmn-toggle-7" data-on="My Groups" data-off="All Groups"></label>
+    </span>
+
+    <span display="block" float="left" padding-left="200px" width="500px">
+    </span>
+
+    <span display="inline-block">
+        <button id="createGroup">Create a Group</button>
+    </span>
+
+
+<div id="allGroups">
+    <h1><u>All Groups</u></h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Motto</th>
+            <th>Number of Users</th>
+            <th>Creation Date</th>
+            <th>Join/Leave?</th>
+        </tr>
+        <tr> <!-- Make row clickable to go to the specific goal view page -->
+            <td>Group Name</td>
+            <td>We're a group of dumb people trying to accomplish goals.</td>
+            <td>5</td>
+            <td>January 17, 20xx</td>
+            <td><button id="joinLeave">Join!</button></td> <!-- Change to "Leave?" if user is a member-->
+        </tr>
+    </table>
+
+</div>
+
+<div id="myGroups" class="invisible">
+    <h1><u>My Groups</u></h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Motto</th>
+            <th>Number of Users</th>
+            <th>Creation Date</th>
+            <th>Leave?</th>
+        </tr>
+        <tr> <!-- Make row clickable to go to the specific goal view page -->
+            <td>Group Name</td>
+            <td>We're a group of dumb people trying to accomplish goals.</td>
+            <td>5</td>
+            <td>January 17, 20xx</td>
+            <td><button id="joinLeave">Leave?</button></td>
+        </tr>
+    </table>
+
+</div>
+
+
+</body>
+</html>
+
