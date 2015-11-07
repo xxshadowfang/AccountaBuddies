@@ -78,6 +78,7 @@ module.exports = function() {
 				// TODO: Use stored procedure
 				Goal.findOne({id : req.param('id')})
 				.populate('steps')
+				.populate('comments')
 				.exec(function(err, goal) {
 					if (goal === undefined)
 						return sails.globals.jsonFailure(req, res, 'Goal was not found.');
@@ -91,6 +92,11 @@ module.exports = function() {
 						steps.push(sails.globals.decode(step));
 					});
 					
+					comments = [];
+					goal.comments.forEach(function(comment) {
+						comments.push(sails.globals.decode(comment));
+					});
+					
 					retGoal = {
 							id : goal.id,
 							name : goal.name,
@@ -102,6 +108,7 @@ module.exports = function() {
 					
 					retGoal = sails.globals.decode(retGoal);
 					retGoal.steps = steps;
+					retGoal.comments = comments;
 					
 					return sails.globals.jsonSuccess(req, res, retGoal);
 				});
