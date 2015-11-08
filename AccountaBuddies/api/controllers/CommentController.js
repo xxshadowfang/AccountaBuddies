@@ -5,6 +5,9 @@ module.exports = function() {
 			if (!req.body.text) {
 				return sails.globals.jsonFailure(req, res, 'You must provide comment text');
 			}
+			if (!req.param('goalId')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a goal id');
+			}
 			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {

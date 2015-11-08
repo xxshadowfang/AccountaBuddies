@@ -35,6 +35,10 @@ module.exports = function() {
 			},
 			numSteps: {
 				type: 'integer'
+			},
+			steps: {
+				collection: 'Step',
+				via: 'goalId'
 			}
 			// privacy: 'STRING'
 		}
