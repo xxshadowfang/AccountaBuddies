@@ -45,8 +45,8 @@ module.exports.connections = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: '',
-    database: 'accounta_buddies'
+    password: 'AccountaBuddies',
+    database: 'devAccountaBuddies'
   },
 
   /***************************************************************************

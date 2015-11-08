@@ -35,7 +35,7 @@ describe('GoalController Integration Tests', function() {
 			}, done);
 		});
 		
-		it('should allow user to post goal 1 step', function(done) {
+		it('should allow user to post goal 5 steps', function(done) {
 			user.post('/goal/create').send({
 				name : 'goal name for 5 steps',
 				description : 'goal descript',
@@ -67,6 +67,27 @@ describe('GoalController Integration Tests', function() {
 				body : {
 					content : {
 						id : 2
+					}
+				}
+			}, done);
+		});
+		
+		it('should allow another goal to be posted', function(done) {
+			user.post('/goal/create').send({
+				name : 'Add comments to this goal',
+				description : 'This is the description',
+				steps: [
+					{
+						title: "add comments",
+						description: "comment on this"
+					}
+				]
+			})
+			.expect(200, {
+				success : true,
+				body : {
+					content : {
+						id : 3
 					}
 				}
 			}, done);
@@ -176,6 +197,7 @@ describe('GoalController Integration Tests', function() {
 				expect(goal.name).to.be.a('string');
 				expect(goal.id).to.equal('1');
 				expect(goal.numSteps).to.equal('1');
+				expect(goal.steps.length).to.equal(1);
 				
 				done();
 			});
@@ -192,6 +214,7 @@ describe('GoalController Integration Tests', function() {
 				expect(goal.name).to.be.a('string');
 				expect(goal.id).to.equal('2');
 				expect(goal.numSteps).to.equal('5');
+				expect(goal.steps.length).to.equal(5);
 				
 				done();
 			});
@@ -205,9 +228,10 @@ describe('GoalController Integration Tests', function() {
 				if (err) return done(err);
 				var goals = results.res.body.body.content;
 				
-				expect(goals.length).to.equal(2);
+				expect(goals.length).to.equal(3);
 				expect(goals[0].id).to.equal(1);
 				expect(goals[1].id).to.equal(2);
+				expect(goals[2].id).to.equal(3);
 				
 				done();
 			});
@@ -259,7 +283,7 @@ describe('GoalController Integration Tests', function() {
 				success: true,
 				body: {
 					content: {
-						id: 7
+						id: 8
 					}
 				}
 			}, done);

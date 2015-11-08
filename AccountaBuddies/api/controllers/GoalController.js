@@ -76,7 +76,10 @@ module.exports = function() {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: Use stored procedure
-				Goal.findOne({id : req.param('id')}).exec(function(err, goal) {
+				Goal.findOne({id : req.param('id')})
+				.populate('steps')
+				.populate('comments')
+				.exec(function(err, goal) {
 					if (goal === undefined)
 						return sails.globals.jsonFailure(req, res, 'Goal was not found.');
 					if (err) {
@@ -84,6 +87,16 @@ module.exports = function() {
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
 
+					steps = [];
+					goal.steps.forEach(function(step) {
+						steps.push(sails.globals.decode(step));
+					});
+					
+					comments = [];
+					goal.comments.forEach(function(comment) {
+						comments.push(sails.globals.decode(comment));
+					});
+					
 					retGoal = {
 							id : goal.id,
 							name : goal.name,
@@ -92,7 +105,10 @@ module.exports = function() {
 							createdAt : goal.createdAt,
 							numSteps : goal.numSteps
 					}
+					
 					retGoal = sails.globals.decode(retGoal);
+					retGoal.steps = steps;
+					retGoal.comments = comments;
 					
 					return sails.globals.jsonSuccess(req, res, retGoal);
 				});

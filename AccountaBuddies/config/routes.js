@@ -118,7 +118,8 @@ module.exports.routes = {
 		action: 'removeStep'
 	},
 
-	'POST /comment/create/:goalId' : {
+
+	'POST /comment/create' : {
 		controller: 'comment',
 		action: 'create'
 	},
