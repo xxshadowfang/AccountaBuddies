@@ -1,0 +1,27 @@
+<script src="/js/CreateGroup.js"></script>
+<link rel="stylesheet" type="text/css" href="/styles/StyleSheet.css" />
+<body>
+    <div class="header">
+    <span> <img src="/images/logo.png" height="98" /> </span>
+    <span id="headerTitle">Create A Group</span>
+      <span class="right"> <%include template.ejs%></span>
+</div>
+
+    <div id="leftGoalPost">
+    <form id="form1">
+        <h1 class="center">Create a Group</h1>
+        <dl>
+            <dt>Name: </dt><dd><input type="text" id="groupName" /></dd>
+            <dt>Description: </dt> <dd> <textarea id="groupDescription" rows="4" cols="50" id="goalDesc" form="form1" ></textarea> </dd>
+            <dt>Motto: </dt><dd><input type="text" id="motto" /></dd>
+            <dt>Password: </dt><dd><input type="password" id="groupPassword" /></dd>
+            <br />
+            <button type="button" id = "create-group-btn">Create Group</button>
+        </dl> <br />
+    </form>
+    </div>
+
+    <div id="rightGoalSteps">
+        <!-- Temporary placeholder, can add content to right side (privacy, category etc.) in here-->
+    </div>
+

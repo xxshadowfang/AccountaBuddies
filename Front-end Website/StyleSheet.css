@@ -14,7 +14,7 @@
  }
 
 #headerTitle {
-    font-size: 20px;
+    font-size: 50px;
     font-weight: bold;
 }
 
@@ -54,15 +54,21 @@
 
 th, td {
     padding: 10px;
-    border: 1px groove #205071;
+    
 }
 
 th {
     background-color: #6fc0ff;    
+    border: 1px groove #205071;
 }
 
 td {
     background-color: #88d9ff;  
+}
+
+td.stepDetails {
+  background-color: transparent;
+  border: none;
 }
 
 td:hover {

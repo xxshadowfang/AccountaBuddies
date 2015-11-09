@@ -51,6 +51,9 @@ module.exports.routes = {
   ***************************************************************************/
 
 
+
+
+
    	'POST /user/register': {
 		controller: 'user',
 		action: 'register'
@@ -178,6 +181,21 @@ module.exports.routes = {
   },
   '/user/profile':{
     view:"ProfileGoal"
-  }
+  },
+
+  '/group/createPage':{
+    view:"CreateGroup"
+  },
+
+  '/group/detailPage': 'RenderController.groupDetail',
+
+  '/group/listPage':{
+    view:"Groups"
+  },
+
+  '/goal/detailPage': 'RenderController.goalDetail'
+
+
+
 
 };
