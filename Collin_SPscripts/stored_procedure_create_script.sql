@@ -458,7 +458,7 @@ END $$
 
 -- doesGroupExist
 DROP PROCEDURE IF EXISTS `doesGroupExist` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `doesGroupExist`(
+CREATE logAnalysis PROCEDURE `doesGroupExist`(
 	IN _groupId int
 )
 BEGIN
@@ -550,7 +550,7 @@ END $$
 
 -- getGroupInfo
 DROP PROCEDURE IF EXISTS `getGroupInfo` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `getGroupInfo`(
+CREATE PROCEDURE `getGroupInfo`(
 	IN _userId int(11),
 	IN _groupId int(11)
 )
@@ -580,7 +580,7 @@ END $$
 
 -- getGroupList
 DROP PROCEDURE IF EXISTS `getGroupList` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `getGroupList`(
+CREATE logAnalysis PROCEDURE `getGroupList`(
 	IN _userId int(11),
     IN _joined int
 )
@@ -615,7 +615,7 @@ END $$
 
 -- getGroupMembers
 DROP PROCEDURE IF EXISTS `getGroupMembers` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `getGroupMembers`(
+CREATE logAnalysis PROCEDURE `getGroupMembers`(
 	IN _groupId int(11)
 )
 BEGIN
@@ -633,7 +633,7 @@ END $$
 
 -- updateGoalProgress
 DROP PROCEDURE IF EXISTS `updateGoalProgress` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `updateGoalProgress`(
+CREATE logAnalysis PROCEDURE `updateGoalProgress`(
     IN _goalId int
 )
 BEGIN
@@ -651,7 +651,7 @@ END $$
 
 -- updateStep
 DROP PROCEDURE IF EXISTS `updateStep` $$
-CREATE DEFINER=`root`@`%` PROCEDURE `updateStep`(
+CREATE logAnalysis PROCEDURE `updateStep`(
 	IN _stepId int,
     IN _userId int,
     IN _amountWorked int
