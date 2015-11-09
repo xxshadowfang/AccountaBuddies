@@ -15,5 +15,7 @@ $(document).ready(function(){
     })
   })
 
+  $.cookie
+
 
 });

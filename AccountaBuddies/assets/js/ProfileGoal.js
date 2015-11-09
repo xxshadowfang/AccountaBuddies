@@ -90,6 +90,7 @@ $(document).ready(function(){
 
 
 
+
   //
   //$("#goalList").append(
   //  template({name:"goalName1",date:"2015/10/25",progress:"45",id:"2",numSteps:"3"})
