@@ -26,6 +26,12 @@ var renderGroups = function(groupList){
     })
 
     $("#joinLeave"+id).click(false);
+    $("#password"+id).click(false);
+
+    if(isOwner){
+      return;
+    }
+
 
     $("#joinLeave"+id).click(function(){
       if(isJoined){
@@ -41,13 +47,15 @@ var renderGroups = function(groupList){
         })
       }
       else{
-        //TO DO !!!!!!!!
-        //TO DO
-        //TO DO
-        //TO DO
-
-        Util.joinGroup(id,"",function(body){
-
+        var password = $("#password"+id).val();
+        Util.joinGroup(id,password,function(body){
+            if(body.success){
+              alert("join group succeeded");
+              $(this).html("Leave");
+            }
+            else{
+              alert(body.content);
+            }
         })
       }
     })
@@ -83,8 +91,12 @@ var renderJoinedGroups = function(groupList){
       window.location = '/group/detailPage?id='+id;
     })
 
+    $("#password"+id).click(false);
+    $("#joinLeave"+id).click(false);
+
     $("#joinLeave"+id).click(function(){
       if(isJoined){
+        $(this).html("leave");
         Util.leaveGroup(id,function(body){
           if(body.success){
             alert("leaver Group Succeeded");
@@ -118,7 +130,8 @@ var template = _.template(`<tr id="tableRow<%=id%>">
 <td><%=motto%></td>
 <td><%=numUsers%></td>
 <td><%=date%></td>
-<td><button id="joinLeave<%=id%>"><%=buttonText%></button></td>
+<td><button id="joinLeave<%=id%>"><%=buttonText%></button> Password: <input type="text" id="password<%=id%>" /></td>
+
 </tr>`)
 
 $(document).ready(function(){

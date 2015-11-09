@@ -5,8 +5,8 @@
     <link rel="stylesheet" type="text/css" href="/styles/StyleSheet.css" />
     <div class="header">
     <span> <img src="/images/logo.png" height="98" /> </span>
-    <span id="headerTitle">[Name of Group]</span>
-      <span class="right"> <%include template.ejs%></span>
+    <span id="groupName">[Name of Group]</span>
+        <span class="right"> <%include template.ejs%></span>
 </div>
 
     <div id="leftGoalPost">
@@ -25,7 +25,7 @@
     </div>
 
     <div id="rightGoalSteps">
-        <h1 class="center">Members (<em>XX</em>)</h1>
+        <h1 class="center">Members (<em id="numMembers">XX</em>)</h1>
         <table id = "memberTable">
             <tr>
                 <th>Username</th>
