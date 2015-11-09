@@ -139,17 +139,6 @@ describe('GroupController Integration Tests', function() {
 			}, done);
 		});
 		
-		it('should deny user to be added to group without group password', function(done) {
-			user.post('/group/join')
-			.send({
-				id: 1
-			})
-			.expect(200, {
-				success: false,
-				content: 'You must provide a group password'
-			}, done);
-		});
-		
 		it('should deny user to be added to group that they are already in', function(done) {
 			user.post('/group/join')
 			.send({
