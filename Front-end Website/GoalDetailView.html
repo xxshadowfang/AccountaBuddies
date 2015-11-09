@@ -64,6 +64,8 @@
                     <dd><input type="number" readonly=true value=5 size=2 />
                         <button id="step1AddHours">+</button>
                         <button id="step1SubHours">-</button>
+                        <br />
+                        <button id="finalizeHours">Submit Modified Hours</button>
                     </dd>
                 </dl>
                 <button id="completeStep1">Mark step as completed</button>
@@ -86,12 +88,40 @@
                     <dd><input type="number" readonly=true value=7 size=2 />
                         <button id="step1AddHours">+</button>
                         <button id="step1SubHours">-</button>
+                        <br />
+                        <button id="finalizeHours">Submit Modified Hours</button>
+
                     </dd>
                 </dl>
                 <button id="completeStep2">Mark step as completed</button>
             </p></td></tr>
 
         </table>
+
+        <div id="comments">
+            <h2>Comments</h2>
+            <table>
+            <!-- individual comment and information -->
+            <tr>
+                <td class="stepDetails">Sample Username: </td>
+                <td class="stepDetails">Sample Comment Text</td>
+                <td class="stepDetails">Date</td>
+            </tr>
+            <!-- end of single comment -->
+
+            <tr>
+                <td class="stepDetails">Tim Anderson: </td>
+                <td class="stepDetails">Hey, this is a nice goal, just wanted to leave a comment here!</td>
+                <td class="stepDetails">11/08/2015</td>
+            </tr>
+            </table>
+            <br /> <br /> 
+            <strong>Leave a comment?</strong><br />
+            <textarea cols=40 rows=3 placeholder="Type your comment here..."></textarea> <br />
+            <button id="submitComment">Submit Comment</button>
+
+        </div>
+
     </div>
 </body>
 </html>
