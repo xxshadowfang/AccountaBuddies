@@ -42,23 +42,28 @@ describe('GoalController Integration Tests', function() {
 				steps: [
 					{
 						title: "2-first step",
-						description: "descript"
+						description: "descript",
+						duration: 4
 					},
 					{
 						title: "2-second step",
-						description: "descripti"
+						description: "descripti",
+						duration: 10
 					},
 					{
 						title: "2-third step",
-						description: "descriptio"
+						description: "descriptio",
+						duration: 1
 					},
 					{
 						title: "2-fourth step",
-						description: "description"
+						description: "description",
+						duration: 3
 					},
 					{
 						title: "2-fifth step",
-						description: "description!"
+						description: "description!",
+						duration: 5
 					}
 				]
 			})
@@ -79,7 +84,8 @@ describe('GoalController Integration Tests', function() {
 				steps: [
 					{
 						title: "add comments",
-						description: "comment on this"
+						description: "comment on this",
+						duration: 4
 					}
 				]
 			})
@@ -99,7 +105,8 @@ describe('GoalController Integration Tests', function() {
 				steps: [
 						{
 							title: "first step",
-							description: "descript"
+							description: "descript",
+							duration: 1
 						}
 					]
 			})
@@ -277,7 +284,8 @@ describe('GoalController Integration Tests', function() {
 				title: 'Title',
 				description: 'Description',
 				goalId: '1',
-				sequence: '3'
+				sequence: '3',
+				duration: 1
 			})
 			.expect(200, {
 				success: true,
@@ -293,7 +301,8 @@ describe('GoalController Integration Tests', function() {
 			user.post('/goal/addStep').send({
 				description: 'Description',
 				goalId: '1',
-				sequence: '3'
+				sequence: '3',
+				duration: 3
 			})
 			.expect(200, {
 				success: false,
@@ -305,7 +314,8 @@ describe('GoalController Integration Tests', function() {
 			user.post('/goal/addStep').send({
 				title: 'title',
 				goalId: '1',
-				sequence: '3'
+				sequence: '3',
+				duration: 5
 			})
 			.expect(200, {
 				success: false,
@@ -318,7 +328,8 @@ describe('GoalController Integration Tests', function() {
 				title: 'title',
 				description: 'descript',
 				goalId: '4',
-				sequence: '3'
+				sequence: '3',
+				duration: 5
 			})
 			.expect(200, {
 				success: false,
@@ -330,7 +341,8 @@ describe('GoalController Integration Tests', function() {
 			user.post('/goal/addStep').send({
 				title: 'title',
 				description: 'descript',
-				goalId: '2'
+				goalId: '2',
+				duration: 5
 			})
 			.expect(200, {
 				success: false,

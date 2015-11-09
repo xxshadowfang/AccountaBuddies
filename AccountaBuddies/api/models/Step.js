@@ -27,6 +27,9 @@ module.exports = function() {
 			},
 			sequence: {
 				type: 'integer'
+			},
+			duration: {
+				type: 'integer'
 			}
 		}
 	}

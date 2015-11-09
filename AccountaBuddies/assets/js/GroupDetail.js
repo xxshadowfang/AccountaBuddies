@@ -18,23 +18,33 @@ $(document).ready(function(){
     $("#groupDescription").html(content.description);
     $("#motto").html(content.motto);
 
-    if(content.isJoined!="0"){
-      $("#joinLeave").click(function(){
-        Util.joinGroup(1,123,function(body){
-          if(body.success){
-            alert("join group succeeded");
-            $("#joinLeave").html("Joined");
-            $("#joinLeave").click(false);
-          }
-          else{
-            alert(body.content);
-          }
-        })
-      })
 
+    if(content.isOwner=="1"){
+      $("#joinLeave").html("My Group");
     }
-    else{
-      $("#joinLeave").html("Joined");
+    else {
+
+
+      if (content.isJoined == "0") {
+        $("#joinLeave").click(function () {
+          Util.joinGroup(1, 123, function (body) {
+            if (body.success) {
+              alert("join group succeeded");
+              $("#joinLeave").html("Joined");
+              $("#joinLeave").click(false);
+            }
+            else {
+              alert(body.content);
+            }
+          })
+        })
+
+      }
+      else {
+        $("#joinLeave").html("Joined");
+      }
+
+
     }
 
   })
@@ -42,7 +52,7 @@ $(document).ready(function(){
   Util.getGroupMembers(id,function(body){
     if(body.success){
       var content = body.body.content;
-
+      console.log(content);
       content.forEach(function(e){
         var firstName = e.firstName || "None";
         var username = e.username || "None";

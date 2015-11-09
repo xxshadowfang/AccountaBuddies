@@ -78,6 +78,10 @@ $(document).ready(function(){
             }
           })
         })
+
+        $("#table"+id).click(function(){
+          window.location = '/goal/detailPage?id='+id;
+        })
       })
 
 

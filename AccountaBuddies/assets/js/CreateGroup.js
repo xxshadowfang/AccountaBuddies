@@ -18,6 +18,7 @@ $(document).ready(function(){
     Util.createGroup(name,motto,description,password,function(body){
       if(body.success){
         alert("create group succeeded")
+        window.location = '/group/listPage';
       }
       else{
         alert(body.content);

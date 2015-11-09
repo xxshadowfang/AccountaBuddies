@@ -25,8 +25,11 @@ var renderGroups = function(groupList){
       window.location = '/group/detailPage?id='+id;
     })
 
+    $("#joinLeave"+id).click(false);
+
     $("#joinLeave"+id).click(function(){
       if(isJoined){
+        $(this).html("leave");
         Util.leaveGroup(id,function(body){
           if(body.success){
             alert("leaver Group Succeeded");
@@ -43,7 +46,7 @@ var renderGroups = function(groupList){
         //TO DO
         //TO DO
 
-        Util.joinGroup(id,password,function(body){
+        Util.joinGroup(id,"",function(body){
 
         })
       }
