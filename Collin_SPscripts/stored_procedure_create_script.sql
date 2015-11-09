@@ -387,11 +387,14 @@ BEGIN
 	if (_sequence = 'undefined') THEN SIGNAL SQLSTATE '29004'
         SET MESSAGE_TEXT = 'sequence was null';
         END IF;
+	if (_duration = 'undefined') THEN
+		SET _duration = 1;
+        END IF;
         
 	CALL doesGoalExist(_goalId);
     
-    INSERT INTO step (goalId, title, description, sequence, progress, amountWorked, createdAt, updatedAt)
-    VALUES (_goalId, _title, _description, _sequence, 0, 0, now(), now());
+    INSERT INTO step (goalId, title, description, sequence, progress, amountWorked, createdAt, updatedAt, duration)
+    VALUES (_goalId, _title, _description, _sequence, 0, 0, now(), now(), _duration);
     
 	SET numberSteps = (SELECT COUNT(*) FROM step WHERE goalId = _goalId);
     
@@ -575,7 +578,7 @@ BEGIN
     
 	if (_joined = '0') THEN
 		-- bring back all groups saying whether user is owner or joined
-        SELECT `name`, motto, userCount, userId AS ownerId, user_groups AS isJoined
+        SELECT `group`.id, `name`, motto, userCount, userId AS ownerId, user_groups AS isJoined
         FROM (
 			SELECT * FROM group_users__user_groups
             WHERE user_groups = _userId
@@ -588,7 +591,7 @@ BEGIN
 	if (_joined = '1') THEN
 		CALL doesUserExist(_userId);
 		-- bring back just groups that users are in
-		SELECT `name`, motto, userCount, userId AS ownerId
+		SELECT `group`.id, `name`, motto, userCount, userId AS ownerId
 			FROM `group`
 			JOIN group_users__user_groups
 			ON (`group`.id = group_users__user_groups.group_users)

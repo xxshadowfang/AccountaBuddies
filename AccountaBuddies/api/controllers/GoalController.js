@@ -46,7 +46,8 @@ module.exports = function() {
 						var encodedStep = {
 								title: step.title,
 								description: step.description,
-								sequence: sequence
+								sequence: sequence,
+								duration: step.duration
 						}
 						encodedStep = sails.globals.encode(encodedStep);
 						
@@ -190,6 +191,9 @@ module.exports = function() {
 			}
 			if (!req.param('sequence')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a sequence.');
+			}
+			if (!req.param('duration')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a duration.');
 			}
 			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
