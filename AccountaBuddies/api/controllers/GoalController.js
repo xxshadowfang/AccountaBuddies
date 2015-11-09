@@ -104,7 +104,8 @@ module.exports = function() {
 							status : goal.status,
 							description : goal.description,
 							createdAt : goal.createdAt,
-							numSteps : goal.numSteps
+							numSteps : goal.numSteps,
+							progress: goal.progress
 					}
 					
 					retGoal = sails.globals.decode(retGoal);
@@ -240,6 +241,32 @@ module.exports = function() {
 						'You must be logged in to do this');
 			} else {
 				cmd = "CALL `removeStepFromGoal` ('"+ req.body.goalId +"', '"+ req.body.id +"', '"+ req.cookies.id +"');";
+				
+				Step.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+					
+					return sails.globals.jsonSuccess(req, res);
+				});
+			}
+		},
+		
+		updateStep: function(req, res) {
+			if (!req.param('id')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a step id.');
+			}
+			if (!req.param('amountWorked')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide an amount worked.');
+			}
+			
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
+					req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res,
+						'You must be logged in to do this');
+			} else {
+				cmd = "CALL `updateStep` ('"+ req.body.id +"', '"+ req.cookies.id +"', '"+ req.body.amountWorked +"');";
 				
 				Step.query(cmd, function(err, results) {
 					if (err) {

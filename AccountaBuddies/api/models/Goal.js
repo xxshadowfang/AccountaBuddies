@@ -39,6 +39,9 @@ module.exports = function() {
 			steps: {
 				collection: 'Step',
 				via: 'goalId'
+			},
+			progress: {
+				type: 'double'
 			}
 			// privacy: 'STRING'
 		}
