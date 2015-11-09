@@ -120,6 +120,12 @@ module.exports.routes = {
 	},
 
 
+
+	'POST /goal/updateStep': {
+		controller: 'goal',
+		action: 'updateStep'
+	},
+
 	'POST /comment/create' : {
 		controller: 'comment',
 		action: 'create'

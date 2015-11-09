@@ -186,6 +186,9 @@ BEGIN
        
 	CALL doesUserExist(_userId);
     
+    DELETE FROM step
+    WHERE goalId = _goalId;
+    
     DELETE FROM goal
     WHERE id = _goalId;
 END $$
@@ -626,4 +629,56 @@ BEGIN
     FROM user JOIN group_users__user_groups
     ON user.id = group_users__user_groups.user_groups
     WHERE group_users__user_groups.group_users = _groupId;
+END $$
+
+-- updateGoalProgress
+DROP PROCEDURE IF EXISTS `updateGoalProgress` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `updateGoalProgress`(
+    IN _goalId int
+)
+BEGIN
+	DECLARE _progress double;
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '29000'
+        SET MESSAGE_TEXT = 'goalId was null';
+        END IF;
+    
+    SET _progress = (SELECT SUM(amountWorked) / SUM(duration) FROM step WHERE goalId = _goalId);
+    
+    UPDATE goal
+    SET progress = _progress
+    WHERE id = _goalId;
+END $$
+
+-- updateStep
+DROP PROCEDURE IF EXISTS `updateStep` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `updateStep`(
+	IN _stepId int,
+    IN _userId int,
+    IN _amountWorked int
+)
+BEGIN
+	DECLARE _goalId int;
+	if (_stepId = 'undefined') THEN SIGNAL SQLSTATE '29005'
+        SET MESSAGE_TEXT = 'stepId was null';
+        END IF;
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+	if (_amountWorked = 'undefined') THEN SIGNAL SQLSTATE '29006'
+		SET MESSAGE_TEXT = 'amount worked was null';
+        END IF;
+	
+     
+	SET _goalId = (SELECT goalId FROM step WHERE id = _stepId);
+    
+	IF (SELECT COUNT(*) FROM `goal` WHERE id = _goalId AND userId = _userId) = 0 THEN SIGNAL SQLSTATE '25000'
+		SET MESSAGE_TEXT = 'you must be the owner of this goal for this action.';
+        END if;
+	
+    UPDATE step
+    SET amountWorked = _amountWorked,
+		progress = _amountWorked / duration
+    WHERE id = _stepId;
+    
+    CALL updateGoalProgress(_goalId);
 END $$

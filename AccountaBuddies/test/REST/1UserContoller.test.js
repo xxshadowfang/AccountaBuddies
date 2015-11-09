@@ -1,3 +1,5 @@
+var expect = require('chai').expect;
+
 describe('UserController Integration Tests', function() {
 	var user;
 	
@@ -128,6 +130,50 @@ describe('UserController Integration Tests', function() {
 					}
 				}
 			}, done);
+		});
+	});
+	
+	describe('Find User', function() {
+		it('should bring back this user\'s information with no id param', function(done) {
+			user.get('/user/get')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var user = res.body.body.content;
+				
+				expect(user.id).to.equal('3');
+				expect(user.username).to.equal('test');
+				done();
+			});
+		});
+		
+		it('should bring back user\'s information with id 2', function(done) {
+			user.get('/user/get?id=2')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var user = res.body.body.content;
+
+				expect(user.id).to.equal('2');
+				expect(user.username).to.equal('collin2');
+				done();
+			});
+		});
+		
+		it('should bring back user\'s information with id 1', function(done) {
+			user.get('/user/get?id=1')
+			.send({})
+			.expect(200)
+			.end(function(err, res) {
+				if (err) return done(err);
+				var user = res.body.body.content;
+
+				expect(user.id).to.equal('1');
+				expect(user.username).to.equal('collin');
+				done();
+			});
 		});
 	});
 	

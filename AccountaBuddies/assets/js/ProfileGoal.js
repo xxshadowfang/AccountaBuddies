@@ -24,7 +24,7 @@ $(document).ready(function(){
   var userId = window.location.search.substring(4)
   console.log(userId);
 
-  if(userId){
+  if(userId && userId != $.cookie('id')){
 
     $("#delete-btn").html("View");
 

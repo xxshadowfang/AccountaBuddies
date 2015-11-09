@@ -4,18 +4,16 @@ module.exports = function() {
 	return {
 
 		find : function(req, res) {
-			/*
-			 * Commented out while we only let users see their own profile/goals
-			 *
-			if (!req.param('id')) {
-				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
+			var userId = req.cookies.id;
+			if (req.param('id')) {
+				userId = req.param('id');
 			}
-			*/
+
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				User.findOne({id : req.cookies.id}).exec(function(err, user) {
+				User.findOne({id : userId}).exec(function(err, user) {
 					if (user === undefined)
 						return sails.globals.jsonFailure(req, res, 'User was not found.');
 
@@ -26,6 +24,7 @@ module.exports = function() {
 
 					retUser = {
 							id : user.id,
+							isOwner : user.id == req.cookies.id,
 							username: user.username,
 							firstName: user.firstName,
 							lastName: user.lastName,
@@ -157,15 +156,15 @@ module.exports = function() {
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
 
-					
+
 					res.cookie('cookie', '');
 					res.cookie('id', '');
-	
+
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
 		},
-		
+
 		'delete' : function(req, res) {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
@@ -180,13 +179,13 @@ module.exports = function() {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					
+
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
 		},
-		
-		update : function(req, res) {			
+
+		update : function(req, res) {
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
@@ -197,7 +196,7 @@ module.exports = function() {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-	
+
 					retUser = {
 							id : user.id,
 							firstName: user.firstName,
@@ -205,9 +204,9 @@ module.exports = function() {
 							age: user.age,
 							gender: user.gender
 					};
-					
+
 					retUser = sails.globals.decode(retUser);
-					
+
 					if (req.param('firstName')) {
 						retUser.firstName = req.param('firstName');
 					}
@@ -220,9 +219,9 @@ module.exports = function() {
 					if (req.param('gender')) {
 						retUser.gender = req.param('gender');
 					}
-					
+
 					retUser = sails.globals.encode(retUser);
-					
+
 					cmd = "CALL `updateUserInfo` ('"+ req.cookies.id +"', '"+ retUser.firstName +"', '"+ retUser.lastName +"', '"+ retUser.age +"', '"+ retUser.gender +"');";
 
 					User.query(cmd, function(err, results) {

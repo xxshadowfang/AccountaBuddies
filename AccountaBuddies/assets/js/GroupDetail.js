@@ -3,7 +3,7 @@
  */
 
 var id = groupId;
-var template = _.template(`<tr>
+var template = _.template(`<tr id="member<%=id%>">
                 <td><%=username%></td>
                 <td><%=firstName%></td>
             </tr>`);
@@ -21,6 +21,7 @@ $(document).ready(function(){
     if(content.isOwner=="1"){
       $("#joinLeave").html("My Group");
     }
+
     else {
 
 
@@ -56,10 +57,18 @@ $(document).ready(function(){
       content.forEach(function(e){
         var firstName = e.firstName || "None";
         var username = e.username || "None";
+        var id = e.id || "";
+
+
 
         $("#memberTable").append(
-          template({username:username,firstName:firstName})
+          template({username:username,firstName:firstName,id:id})
         )
+
+        $("#member"+id).click(function(){
+          window.location = "/user/profile?id="+id;
+        })
+
       })
 
     }
