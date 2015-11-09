@@ -4,18 +4,16 @@ module.exports = function() {
 	return {
 
 		find : function(req, res) {
-			/*
-			 * Commented out while we only let users see their own profile/goals
-			 * 
-			if (!req.param('id')) {
-				return sails.globals.jsonFailure(req, res, 'You must provide a user id.');
+			var userId = req.cookies.id; 
+			if (req.param('id')) {
+				userId = req.param('id');
 			}
-			*/
+
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: USE STORED PROCEDURE
-				User.findOne({id : req.cookies.id}).exec(function(err, user) {
+				User.findOne({id : userId}).exec(function(err, user) {
 					if (user === undefined)
 						return sails.globals.jsonFailure(req, res, 'User was not found.');
 					if (err) {
@@ -25,6 +23,7 @@ module.exports = function() {
 	
 					retUser = {
 							id : user.id,
+							isOwner : user.id == req.cookies.id,
 							username: user.username,
 							firstName: user.firstName,
 							lastName: user.lastName,

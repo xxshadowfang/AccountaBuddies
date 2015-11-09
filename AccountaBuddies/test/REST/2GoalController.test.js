@@ -450,4 +450,64 @@ describe('GoalController Integration Tests', function() {
 			});
 		});
 	});
+	
+	describe('Updating goal steps', function() {
+		it('should deny step update without amountWorked', function(done) {
+			user.post('/user/login')
+			.send({
+				username: 'collin',
+				password: 'test'
+			})
+			.end(function(err, res) {
+				if (err) return done(err);
+				user.post('/goal/updateStep')
+				.send({
+					id: 7
+				})
+				.expect(200, {
+					success: false,
+					content: 'You must provide an amount worked.'
+				}, done);
+			});
+		});
+		
+		it('should deny step update without step id', function(done) {
+			user.post('/goal/updateStep')
+			.send({
+				amountWorked: 4
+			})
+			.expect(200, {
+				success: false,
+				content: 'You must provide a step id.'
+			}, done);
+		});
+		
+		it('should allow step to be updated', function(done) {
+			user.post('/goal/updateStep')
+			.send({
+				id: 7,
+				amountWorked: 1
+			})
+			.expect(200, {
+				success: true,
+				body: {
+					content: ''
+				}
+			})
+			.end(function(err, res) {
+				if (err) return done(err);
+				user.get("/goal/find?id=3")
+				.send()
+				.expect(200)
+				.end(function(err, results) {
+					if (err) return done(err);
+					var goal = results.res.body.body.content;
+					
+					expect(goal.progress).to.equal('0.25');
+					
+					done();
+				});
+			});
+		});
+	});
 });
