@@ -1,0 +1,39 @@
+<script>
+  var groupId = <%=id %>
+</script>
+<script src="/js/GroupDetail.js"></script>
+    <link rel="stylesheet" type="text/css" href="/styles/StyleSheet.css" />
+    <div class="header">
+    <span> <img src="/images/logo.png" height="98" /> </span>
+    <span id="groupName">[Name of Group]</span>
+        <span class="right"> <%include template.ejs%></span>
+</div>
+
+    <div id="leftGoalPost">
+        <h1 class="center">Group Information</h1>
+        <dl>
+            <dt>Name: </dt>
+            <dd><span id="groupName">Test Group Name</span></dd>
+            <dt>Description: </dt>
+            <dd> <span id="groupDescription">This group is a sample test group created with mock data.  The description would go here once it is made.</span></dd>
+            <dt>Motto: </dt>
+            <dd><span id="motto">Complete goals and win!</span></dd>
+        </dl> <br />
+
+        <button id="joinLeave"> Join this group!</button>
+        Password:
+        <input type="text" id="password" />
+        <!-- If person is in this group, change text to "Leave this group?" -->
+    </div>
+
+    <div id="rightGoalSteps">
+        <h1 class="center">Members (<em id="numMembers">XX</em>)</h1>
+        <table id = "memberTable">
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+            </tr>
+        </table>
+
+    </div>
+

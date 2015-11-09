@@ -198,16 +198,16 @@ Util.postComment = function(){
 }
 
 
-Util.createGroup = function(name,motto,interests,privacy,groupInfo){
+Util.createGroup = function(name,motto,description,password,callback){
   $.ajax({
     method:'POST',
     url:'/group/create',
     data:{
       name:name,
       motto:motto,
-      interests:interests,
-      privacy:privacy,
-      groupInfo:groupInfo
+      description: description,
+      password: password
+
     }
   }).done(function(body){
     if(body.success){
@@ -239,4 +239,156 @@ Util.getGoalList = function(callback){
 
   })
 
+}
+
+
+Util.getGoal = function(id,callback){
+  $.ajax({
+    method:'GET',
+    url:'/goal/find?id='+id,
+    data : {}
+  }).done(function(body){
+    if(body.success){
+      console.log('get goal succeeded');
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+  })
+
+}
+
+
+Util.deleteGroup = function(GroupId,callback){
+  $.ajax({
+    method:'POST',
+    url:'/group/delete',
+    data:{
+      GroupID:GroupId
+    }
+  }).done(function(body){
+    if(body.success){
+      console.log('deleteGroup succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+  })
+}
+
+Util.joinGroup = function(id,password,callback){
+  $.ajax({
+    method:'POST',
+    url:'/group/join',
+    data:{
+      id:id,
+      password: password
+
+    }
+  }).done(function(body){
+    if(body.success){
+      console.log('join Group succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+
+  })
+};
+
+Util.leaveGroup = function(id,callback){
+  $.ajax({
+    method:'POST',
+    url:'/group/leave',
+    data:{
+      id:id
+    }
+  }).done(function(body){
+    if(body.success){
+      console.log('leave Group succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+
+  })
+}
+
+
+Util.findGroup = function(id,callback){
+  $.ajax({
+    method:'GET',
+    url:'/group/find?id='+id,
+    data:{}
+  }).done(function(body){
+    if(body.success){
+      console.log('find Group succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+
+  })
+}
+
+Util.getAllGroups = function(callback){
+  $.ajax({
+    method:'GET',
+    url:'/group/list/0',
+    data:{
+    }
+  }).done(function(body){
+    if(body.success){
+      console.log('get all Groups succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+
+
+  })
+}
+
+Util.GetJoinGroupList = function(callback){
+  $.ajax({
+    method:'GET',
+    url:'/group/list/1',
+    data:{
+    }
+  }).done(function(body){
+    if(body.success){
+      console.log('get joined Groups succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+  })
+}
+
+Util.getGroupMembers = function(id,callback){
+  $.ajax({
+    method:'GET',
+    url:'/group/members/?id='+id,
+
+  }).done(function(body){
+    if(body.success){
+      console.log('get joined Groups succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
+  })
 }

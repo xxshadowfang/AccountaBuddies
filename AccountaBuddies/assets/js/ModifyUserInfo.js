@@ -43,6 +43,7 @@ $(document).ready(function(){
       Util.userSetting(data,function(body){
         if(body.success){
           alert("update Succeeded");
+          window.location = '/user/profile';
         }
         else{
           alert(body.content);

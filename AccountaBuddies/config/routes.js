@@ -33,12 +33,12 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
+    view: 'login'
   },
 
 
-  '/login': {
-    view: 'login'
+  '/register':{
+    view: 'homepage'
   },
   /***************************************************************************
   *                                                                          *
@@ -49,6 +49,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
 
 
    	'POST /user/register': {
@@ -118,7 +119,8 @@ module.exports.routes = {
 		action: 'removeStep'
 	},
 
-	'POST /comment/create/:goalId' : {
+
+	'POST /comment/create' : {
 		controller: 'comment',
 		action: 'create'
 	},
@@ -138,9 +140,20 @@ module.exports.routes = {
 		action: 'create'
 	},
 
-	'GET /group/:id' : {
+
+	'GET /group/find/:id' : {
 		controller: 'group',
 		action: 'find'
+	},
+
+	'GET /group/list/:filter' : {
+		controller: 'group',
+		action: 'list'
+	},
+
+	'GET /group/members/:id' : {
+		controller: 'group',
+		action: 'members'
 	},
 
 	'POST /group/join' : {
@@ -166,6 +179,21 @@ module.exports.routes = {
   },
   '/user/profile':{
     view:"ProfileGoal"
-  }
+  },
+
+  '/group/createPage':{
+    view:"CreateGroup"
+  },
+
+  '/group/detailPage': 'RenderController.groupDetail',
+
+  '/group/listPage':{
+    view:"Groups"
+  },
+
+  '/goal/detailPage': 'RenderController.goalDetail'
+
+
+
 
 };

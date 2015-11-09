@@ -32,7 +32,6 @@ module.exports = function() {
 				Goal.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
-						console.log(err);
 						return sails.globals.jsonFailure(req, res);
 					}
 						
@@ -47,7 +46,8 @@ module.exports = function() {
 						var encodedStep = {
 								title: step.title,
 								description: step.description,
-								sequence: sequence
+								sequence: sequence,
+								duration: step.duration
 						}
 						encodedStep = sails.globals.encode(encodedStep);
 						
@@ -58,7 +58,6 @@ module.exports = function() {
 						Step.query(cmd, function(err, results) {
 							if (err) {
 								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
-								console.log(err);
 								return sails.globals.jsonFailure(req, res, errMsg);
 							}
 						});
@@ -78,7 +77,10 @@ module.exports = function() {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				// TODO: Use stored procedure
-				Goal.findOne({id : req.param('id')}).exec(function(err, goal) {
+				Goal.findOne({id : req.param('id')})
+				.populate('steps')
+				.populate('comments')
+				.exec(function(err, goal) {
 					if (goal === undefined)
 						return sails.globals.jsonFailure(req, res, 'Goal was not found.');
 					if (err) {
@@ -86,6 +88,16 @@ module.exports = function() {
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
 
+					steps = [];
+					goal.steps.forEach(function(step) {
+						steps.push(sails.globals.decode(step));
+					});
+					
+					comments = [];
+					goal.comments.forEach(function(comment) {
+						comments.push(sails.globals.decode(comment));
+					});
+					
 					retGoal = {
 							id : goal.id,
 							name : goal.name,
@@ -94,7 +106,10 @@ module.exports = function() {
 							createdAt : goal.createdAt,
 							numSteps : goal.numSteps
 					}
+					
 					retGoal = sails.globals.decode(retGoal);
+					retGoal.steps = steps;
+					retGoal.comments = comments;
 					
 					return sails.globals.jsonSuccess(req, res, retGoal);
 				});
@@ -176,6 +191,9 @@ module.exports = function() {
 			}
 			if (!req.param('sequence')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a sequence.');
+			}
+			if (!req.param('duration')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a duration.');
 			}
 			
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,

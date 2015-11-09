@@ -3,7 +3,6 @@
  */
 
 $(document).ready(function(){
-  console.log('homepage');
   $("#register-btn").click(function(){
     var username = $("#input-username").val();
     var password = $("#input-password").val();
@@ -15,13 +14,12 @@ $(document).ready(function(){
     Util.register(username,password,"X","Y",function(body){
         if (body.success){
           alert("register succeeded");
-          window.location = "/login";
+          window.location = "/user/profile";
         }
         else{
           alert(body.content);
         }
     })
-
 
   });
 });

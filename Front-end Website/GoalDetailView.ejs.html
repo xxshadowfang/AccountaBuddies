@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <title></title>
+</head>
+<body>
+    <div class="header">
+        <span> <img src="logo.png" height="98" /> </span>
+        <span id="headerTitle">Goal Name - Progress: 30%</span>
+        <span class="right">
+            <a href="ProfileGoal.html">View your profile</a> | 
+            <a href="CreateGoal.html">Create a goal</a> | 
+            <a href="Groups.html">Groups [Not implemented]</a> | 
+            <a href="index.html">Logout </a>
+        </span>
+    </div>
+
+    <div id="leftGoalPost">
+        <h2 text-align="center">Goal Description</h2>
+        <div id="goalDescriptionBox">
+            This will be the div that contains the text of the goal description.
+            This goal is very simple, and this is just a sample description page.
+        </div><br /> <br />
+        <dl>
+            <dt>Total planned time</dt>
+            <dd>43 hours</dd>
+        </dl>
+
+        <br /><br />
+        <button id="deleteGoal">Delete this goal?</button>
+
+    </div>
+
+    <div id="rightGoalSteps">
+        <h1 width="100px" display="inline-block"><u>Progress</u>
+            <span class="spacer" width="50xp"> &nbsp;&nbsp;&nbsp;</span>
+            <button id="completeGoal" display="inline-block">Mark all steps as completed</button>
+        </h1> 
+
+        <table>
+            <tr>
+                <th>Step Number</th>
+                <th>Progress</th>
+                <th>Step Name</th>
+                <th></th>
+            </tr>
+
+
+            <!-- BEGINNING OF STEP 1 DISPLAY -->
+
+            <tr> <!-- Make entire row clickable to show details? -->
+                <td>1</td>
+                <td><progress value="25" max="100"></progress></td>
+                <td>Complete this task</td>
+                <td><button id="expandGoal">Show Details</button></td> <!-- Change to Hide Details when clicked, and toggle visibility of div that comes directly after-->
+            </tr>
+            <tr><td class="stepDetails" colspan=4><p id="step1Details"> <!-- This should default to hidden-->
+                <dl>
+                    <dt>Description</dt>
+                    <dd>This is the description of the first step of this goal.</dd>
+                    <dt>Hours Spent</dt>
+                    <dd><input type="number" readonly=true value=5 size=2 />
+                        <button id="step1AddHours">+</button>
+                        <button id="step1SubHours">-</button>
+                    </dd>
+                </dl>
+                <button id="completeStep1">Mark step as completed</button>
+            </p></td></tr>
+
+            <!-- END OF STEP 1 DISPLAY -->
+
+
+            <tr> <!-- Make entire row clickable to show details? -->
+                <td>2</td>
+                <td><progress value="0" max="100"></progress></td>
+                <td>This is step two</td>
+                <td><button id="expandGoal">Show Details</button></td> <!-- Change to Hide Details when clicked, and toggle visibility of div that comes directly after-->
+            </tr>
+            <tr><td class="stepDetails" colspan=4><p id="step2Details">
+                <dl>
+                    <dt>Description</dt>
+                    <dd>This is the description of the second step of this goal.</dd>
+                    <dt>Hours Spent</dt>
+                    <dd><input type="number" readonly=true value=7 size=2 />
+                        <button id="step1AddHours">+</button>
+                        <button id="step1SubHours">-</button>
+                    </dd>
+                </dl>
+                <button id="completeStep2">Mark step as completed</button>
+            </p></td></tr>
+
+        </table>
+    </div>
+</body>
+</html>
+

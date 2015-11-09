@@ -55,6 +55,7 @@ $(document).ready(function () {
     Util.postGoal(name, description, steps, function (body) {
       if (body.success) {
         alert('posting goal succeeded');
+        window.location = '/user/profile';
       }
       else {
         alert(body.content);
@@ -91,5 +92,12 @@ $(document).ready(function () {
     repaintSteps();
 
   })
+
+  console.log($.cookie('cookie'));
+
+  if(!$.cookie('cookie')){
+    alert("Please Login first");
+    window.location = '/';
+  }
 
 });
