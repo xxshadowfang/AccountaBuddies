@@ -149,9 +149,6 @@ module.exports = function() {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a group id');
 			}
-			if (!req.param('password')) {
-				return sails.globals.jsonFailure(req, res, 'You must provide a group password');
-			}
 
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');

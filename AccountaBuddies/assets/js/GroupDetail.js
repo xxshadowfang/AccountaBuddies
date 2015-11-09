@@ -3,7 +3,6 @@
  */
 
 var id = groupId;
-var password = 123;
 var template = _.template(`<tr>
                 <td><%=username%></td>
                 <td><%=firstName%></td>
@@ -27,7 +26,7 @@ $(document).ready(function(){
 
       if (content.isJoined == "0") {
         $("#joinLeave").click(function () {
-          Util.joinGroup(1, 123, function (body) {
+          Util.joinGroup(id, $("#password").val(), function (body) {
             if (body.success) {
               alert("join group succeeded");
               $("#joinLeave").html("Joined");
@@ -53,9 +52,11 @@ $(document).ready(function(){
     if(body.success){
       var content = body.body.content;
       console.log(content);
+      $("#numMembers").html(content.length);
       content.forEach(function(e){
         var firstName = e.firstName || "None";
         var username = e.username || "None";
+
         $("#memberTable").append(
           template({username:username,firstName:firstName})
         )

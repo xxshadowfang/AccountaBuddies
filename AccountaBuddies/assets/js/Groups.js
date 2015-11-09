@@ -19,11 +19,11 @@ var renderGroups = function(groupList){
 
     $("#allGroupsTable").append(
       template({name:name,motto:motto,numUsers:userCount,date:date,buttonText:buttonText,id:id})
-    )
+    );
 
     $("#tableRow"+id).click(function(){
       window.location = '/group/detailPage?id='+id;
-    })
+    });
 
     $("#joinLeave"+id).click(false);
     $("#password"+id).click(false);
@@ -38,8 +38,8 @@ var renderGroups = function(groupList){
         $(this).html("leave");
         Util.leaveGroup(id,function(body){
           if(body.success){
-            alert("leaver Group Succeeded");
-            $(this).html("Join");
+            alert("leave Group Succeeded");
+            $("#joinLeave"+id).html("Join");
           }
           else{
             alert(body.content);
@@ -51,7 +51,7 @@ var renderGroups = function(groupList){
         Util.joinGroup(id,password,function(body){
             if(body.success){
               alert("join group succeeded");
-              $(this).html("Leave");
+              $("#joinLeave"+id).html("Leave");
             }
             else{
               alert(body.content);
@@ -63,7 +63,7 @@ var renderGroups = function(groupList){
 
 
   })
-}
+};
 
 
 
@@ -84,44 +84,33 @@ var renderJoinedGroups = function(groupList){
     buttonText = isOwner ? "My Group" : buttonText;
 
     $("#myGroupsTable").append(
-      template({name:name,motto:motto,numUsers:userCount,date:date,buttonText:buttonText,id:id})
+      joinedTemplate({name:name,motto:motto,numUsers:userCount,date:date,buttonText:buttonText,id:id})
     )
 
-    $("#tableRow"+id).click(function(){
+    $("#joinedTableRow"+id).click(function(){
       window.location = '/group/detailPage?id='+id;
-    })
+    });
 
     $("#password"+id).click(false);
-    $("#joinLeave"+id).click(false);
+    $("#joinedLeave"+id).click(false);
+    $("#joinedLeave"+id).click(function(){
 
-    $("#joinLeave"+id).click(function(){
-      if(isJoined){
         $(this).html("leave");
         Util.leaveGroup(id,function(body){
           if(body.success){
-            alert("leaver Group Succeeded");
+            alert("leave Group Succeeded");
             $(this).html("Join");
           }
           else{
             alert(body.content);
           }
         })
-      }
-      else{
-        //TO DO !!!!!!!!
-        //TO DO
-        //TO DO
-        //TO DO
-
-        Util.joinGroup(id,password,function(body){
-
-        })
-      }
+      })
     })
 
 
 
-  })
+
 }
 
 
@@ -132,7 +121,18 @@ var template = _.template(`<tr id="tableRow<%=id%>">
 <td><%=date%></td>
 <td><button id="joinLeave<%=id%>"><%=buttonText%></button> Password: <input type="text" id="password<%=id%>" /></td>
 
-</tr>`)
+</tr>`);
+
+
+var joinedTemplate = _.template(`<tr id="joinedTableRow<%=id%>">
+  <td><%=name %></td>
+<td><%=motto%></td>
+<td><%=numUsers%></td>
+<td><%=date%></td>
+<td><button id="joinedLeave<%=id%>"><%=buttonText%></button></td>
+
+</tr>`);
+
 
 $(document).ready(function(){
   $("#createGroup").click(function(){

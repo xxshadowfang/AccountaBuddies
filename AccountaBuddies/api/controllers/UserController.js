@@ -157,6 +157,10 @@ module.exports = function() {
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
 
+					
+					res.cookie('cookie', '');
+					res.cookie('id', '');
+	
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}

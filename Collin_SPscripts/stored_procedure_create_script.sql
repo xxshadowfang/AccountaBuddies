@@ -68,6 +68,10 @@ BEGIN
 	if (_groupId = 'undefined') THEN SIGNAL SQLSTATE '39000'
         SET MESSAGE_TEXT = 'groupId was null';
         END IF;
+    if (_password = 'undefined') THEN
+		SET _password = '';
+        END IF;
+	
         
 	IF (SELECT COUNT(*) FROM group_users__user_groups WHERE user_groups = _userId AND group_users = _groupId) != 0 THEN
 		SIGNAL SQLSTATE '30001'
@@ -295,6 +299,11 @@ BEGIN
 	IF (SELECT COUNT(*) FROM group_users__user_groups WHERE user_groups = _userId AND group_users = _groupId) = 0 THEN
 		SIGNAL SQLSTATE '35001'
         SET MESSAGE_TEXT = 'User must be in the group to remove them.';
+        END IF;
+        
+	IF (SELECT COUNT(*) FROM `group` WHERE userId = _userId AND id = _groupId) = 1 THEN
+		DELETE FROM `group`
+        WHERE id = _groupId;
         END IF;
         
 	DELETE FROM `group_users__user_groups`
