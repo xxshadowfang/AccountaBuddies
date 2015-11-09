@@ -23,6 +23,7 @@ module.exports = function() {
 	
 					retUser = {
 							id : user.id,
+							isOwner : user.id == req.cookies.id,
 							username: user.username,
 							firstName: user.firstName,
 							lastName: user.lastName,

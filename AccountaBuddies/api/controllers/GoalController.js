@@ -100,6 +100,7 @@ module.exports = function() {
 					
 					retGoal = {
 							id : goal.id,
+							isOwner : goal.id == req.cookies.id,
 							name : goal.name,
 							status : goal.status,
 							description : goal.description,
@@ -118,10 +119,15 @@ module.exports = function() {
 		},
 		
 		list : function(req, res) {
+			var id = req.cookies.id
+			if (req.param('id')) {
+				id = req.param('id');
+			}
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
-				cmd = "CALL `getGoalList` ('"+ req.cookies.id +"');";
+				cmd = "CALL `getGoalList` ('"+ id +"');";
+				
 				Goal.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
