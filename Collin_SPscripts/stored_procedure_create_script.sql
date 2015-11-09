@@ -301,6 +301,11 @@ BEGIN
         SET MESSAGE_TEXT = 'User must be in the group to remove them.';
         END IF;
         
+	IF (SELECT COUNT(*) FROM `group` WHERE userId = _userId AND id = _groupId) = 1 THEN
+		DELETE FROM `group`
+        WHERE id = _groupId;
+        END IF;
+        
 	DELETE FROM `group_users__user_groups`
     WHERE group_users = _groupId AND user_groups = _userId;
     
