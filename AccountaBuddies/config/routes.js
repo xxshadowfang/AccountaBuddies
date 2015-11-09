@@ -177,6 +177,8 @@ module.exports.routes = {
   '/user/modifyPage':{
     view:'ModifyUserInfo'
   },
+
+
   '/user/profile':{
     view:"ProfileGoal"
   },

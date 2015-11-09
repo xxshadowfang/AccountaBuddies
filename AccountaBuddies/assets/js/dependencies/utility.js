@@ -392,3 +392,41 @@ Util.getGroupMembers = function(id,callback){
     callback(body)
   })
 }
+
+
+Util.viewUser = function (id,callback){
+  $.ajax({
+    method:"GET",
+    url: "/user/get?id="+id
+  })
+    .done(function(body){
+      if(body.success){
+        console.log("get user succeeded");
+      }
+
+      else{
+        console.log(body.content);
+      }
+
+      callback(body);
+    })
+}
+
+
+Util.viewGoals = function (id,callback){
+  $.ajax({
+    method:"GET",
+    url: "/goal/list?id="+id
+  })
+    .done(function(body){
+      if(body.success){
+        console.log("get goals succeeded");
+      }
+
+      else{
+        console.log(body.content);
+      }
+
+      callback(body);
+    })
+}

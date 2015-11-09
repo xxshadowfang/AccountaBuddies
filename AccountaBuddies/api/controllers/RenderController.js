@@ -29,6 +29,19 @@ module.exports = {
   },
 
 
+  userProfile: function(req,res){
+    console.log("???");
+    if(req.param("id")){
+      var id = req.param("id");
+      res.view('ProfileGoal',{
+        userId:id
+      })
+    }
+    else{
+      res.view('ProfileGoal',{})
+    }
+  },
+
   goalDetail : function(req,res){
     if (!req.param("id")) {
       res.redirect('/');
