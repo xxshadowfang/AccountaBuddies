@@ -430,3 +430,22 @@ Util.viewGoals = function (id,callback){
       callback(body);
     })
 }
+
+
+
+Util.updateStep = function (id,amountWorked,callback){
+  $.ajax({
+    method:"POST",
+    url: "/goal/updateStep",
+    data:{id:id,amountWorked:amountWorked}
+  })
+    .done(function(body){
+      if(body.success){
+        console.log("update step succeeded");
+      }
+      else{
+        console.log(body.content);
+      }
+      callback(body);
+    })
+}

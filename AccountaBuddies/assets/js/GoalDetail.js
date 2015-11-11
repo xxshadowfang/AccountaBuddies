@@ -11,31 +11,34 @@ var template = _.template(
     <td><%=name%></td>
     <td><button id="expandStep<%=stepId%>">Show Details</button></td>
   </tr>
-  <tr><td class="stepDetails<%=stepId%>" colspan=4>
-    <p id="step1Details">
+  <tr><td class="stepDetails" id="detail<%=stepId%>" colspan=4>
+    <p id="stepDetails">
     <dl>
       <dt>Description</dt>
       <dd><%=description%></dd>
       <dt>Hours Spent</dt>
-      <dd><input type="number" readonly=true value=<%=hours%> size=2 />
-        <button id="step1AddHours<%=stepId%>">+</button>
-        <button id="step1SubHours<%stepId%>">-</button>
+      <dd><input type="number" id="hour<%=stepId%>" readonly=true value=<%=hours%>  size=2 />
+        <button id="stepAddHours<%=stepId%>">+</button>
+        <button id="stepSubHours<%=stepId%>">-</button>
+        <button id="finalizeHours<%=stepId%>" class="submit-btn">Submit Modified Hours</button>
       </dd>
     </dl>
     <button id="completeStep<%stepId%>">Mark step as completed</button>
     </p>
   </td></tr>`
 
-
-
 );
 
 
 $(document).ready(function(){
-  //$(".stepDetails").hide();
+  $(".stepDetails").hide();
+
+
+
 
   Util.getGoal(id,function(body){
     console.log(body.body.content);
+
 
     var content = body.body.content;
     var date = content.createdAt || 'None';
@@ -44,7 +47,36 @@ $(document).ready(function(){
     var name = content.name || 'None';
     var steps = content.steps || [];
     var status = content.status || 'None';
+    var isOwner = content.isOwner || false;
+    var progress = content.progress != "null"? content.progress : 0;
+    $("#stepsTable").html(
+      `<tr>
+        <th>Step Number</th>
+        <th>Progress</th>
+        <th>Step Name</th>
+        <th></th>
+      </tr>`
+    );
 
+
+    $("#goalDescriptionBox").html(description);
+    $("#headerTitle").html(name+"-progress "+progress+"%");
+    if(isOwner){
+      $(".leaveComment").fadeOut();
+      $("#deleteGoal").click(function(){
+        Util.deleteGoal(id,function(body){
+          if(body.success){
+            alert("delete succeeded");
+            window.location = '/user/profile';
+          }
+          else{
+            alert(body.content);
+          }
+        })
+      })
+
+      console.log("?");
+    }
 
     steps.forEach(function(e){
       var amountWorked = e.amountWorked;
@@ -53,8 +85,40 @@ $(document).ready(function(){
       var duration = e.duration;
       var progress = e.progress;
       var id = e.id;
+      var sequence = e.sequence;
+      var title = e.title;
+      $("#stepsTable").append(template({sequence:sequence,stepId:id,progress:progress,description:description,hours:amountWorked,name:title}));
+      $("#detail"+id).hide();
+      $("#expandStep"+id).click(function(){
+        $("#detail"+id).fadeToggle();
+      })
 
+      $("#stepAddHours"+id).click(function(){
+        $("#hour"+id).val(parseInt($("#hour"+id).val())+1);
+      });
 
+      $("#stepSubHours"+id).click(function(){
+        $("#hour"+id).val($("#hour"+id).val()-1);
+      });
+
+      $("#finalizeHours"+id).click(function(){
+        var hours = $("#hour"+id).val();
+        if(hours<0){
+          alert("hours spent cannot be smaller than 0!");
+        }
+        else{
+          Util.updateStep(id,hours,function(body){
+            if(body.success){
+              alert("update step succeed")
+            }
+            else{
+              alert(body.content);
+            }
+          })
+
+        }
+
+      })
     })
   })
 

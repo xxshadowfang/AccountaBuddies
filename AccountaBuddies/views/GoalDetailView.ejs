@@ -28,10 +28,10 @@
     <div id="rightGoalSteps">
         <h1 width="100px" display="inline-block"><u>Progress</u>
             <span class="spacer" width="50xp"> &nbsp;&nbsp;&nbsp;</span>
-            <button id="completeGoal" display="inline-block">Mark all steps as completed</button>
+            <button id="completeGoal" display="inline-block" >Mark all steps as completed</button>
         </h1>
 
-        <table>
+        <table id = "stepsTable">
             <tr>
                 <th>Step Number</th>
                 <th>Progress</th>
@@ -57,6 +57,7 @@
                     <dd><input type="number" readonly=true value=5 size=2 />
                         <button id="step1AddHours">+</button>
                         <button id="step1SubHours">-</button>
+
                     </dd>
                 </dl>
                 <button id="completeStep1">Mark step as completed</button>
@@ -86,5 +87,32 @@
             </td></tr>
 
         </table>
+
+      <div id="comments">
+        <h2>Comments</h2>
+        <table>
+          <!-- individual comment and information -->
+          <tr>
+            <td>Sample Username: </td>
+            <td>Sample Comment Text</td>
+            <td>Date</td>
+          </tr>
+          <!-- end of single comment -->
+
+          <tr>
+            <td>Tim Anderson: </td>
+            <td>Hey, this is a nice goal, just wanted to leave a comment here!</td>
+            <td>1/08/2015</td>
+          </tr>
+        </table >
+        <br /> <br />
+        <div class = "leaveComment">
+        <strong>Leave a comment?</strong><br />
+        <textarea cols=40 rows=3 placeholder="Type your comment here..."></textarea> <br />
+        <button id="submitComment">Submit Comment</button>
+        <div>
+      </div>
     </div>
+
+
 
