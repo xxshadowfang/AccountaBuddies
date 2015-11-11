@@ -39,7 +39,11 @@ BEGIN
 	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '29000'
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
-	
+	if(_rating = 'undefined') THEN 
+        SET _rating = 3;
+        END IF;
+
+
     if (_nsfw = 'undefined') THEN
 		SET _nsfw = 1;
         END IF;
@@ -121,8 +125,8 @@ BEGIN
         
     CALL doesUserExist(_userId);
     
-    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt)
-    VALUES (_userId, _status, _name, 0, 0, _description, now(), now());
+    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt,progress)
+    VALUES (_userId, _status, _name, 0, 0, _description, now(), now(),0);
     
     SELECT last_insert_id() AS `id`;
 END $$
@@ -458,7 +462,7 @@ END $$
 
 -- doesGroupExist
 DROP PROCEDURE IF EXISTS `doesGroupExist` $$
-CREATE logAnalysis PROCEDURE `doesGroupExist`(
+CREATE  PROCEDURE `doesGroupExist`(
 	IN _groupId int
 )
 BEGIN
@@ -543,7 +547,7 @@ BEGIN
        
     CALL doesUserExist(_userId);   
 	-- TODO: change this to be a real value for progress
-	SELECT id, `name`, createdAt, numSteps
+	SELECT id, `name`, createdAt, numSteps, progress
     FROM goal
     WHERE userId = _userId;
 END $$
@@ -580,7 +584,7 @@ END $$
 
 -- getGroupList
 DROP PROCEDURE IF EXISTS `getGroupList` $$
-CREATE logAnalysis PROCEDURE `getGroupList`(
+CREATE  PROCEDURE `getGroupList`(
 	IN _userId int(11),
     IN _joined int
 )
@@ -615,7 +619,7 @@ END $$
 
 -- getGroupMembers
 DROP PROCEDURE IF EXISTS `getGroupMembers` $$
-CREATE logAnalysis PROCEDURE `getGroupMembers`(
+CREATE  PROCEDURE `getGroupMembers`(
 	IN _groupId int(11)
 )
 BEGIN
@@ -625,7 +629,7 @@ BEGIN
     
     CALL doesGroupExist(_groupId);
     
-    SELECT username, firstName
+    SELECT user.id,username, firstName
     FROM user JOIN group_users__user_groups
     ON user.id = group_users__user_groups.user_groups
     WHERE group_users__user_groups.group_users = _groupId;
@@ -633,7 +637,7 @@ END $$
 
 -- updateGoalProgress
 DROP PROCEDURE IF EXISTS `updateGoalProgress` $$
-CREATE logAnalysis PROCEDURE `updateGoalProgress`(
+CREATE  PROCEDURE `updateGoalProgress`(
     IN _goalId int
 )
 BEGIN
@@ -651,7 +655,7 @@ END $$
 
 -- updateStep
 DROP PROCEDURE IF EXISTS `updateStep` $$
-CREATE logAnalysis PROCEDURE `updateStep`(
+CREATE  PROCEDURE `updateStep`(
 	IN _stepId int,
     IN _userId int,
     IN _amountWorked int

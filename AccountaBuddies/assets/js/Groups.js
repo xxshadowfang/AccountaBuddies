@@ -162,29 +162,36 @@ var renderJoinedGroups = function (groupList) {
 
     $("#password" + id).click(false);
     $("#joinedLeave" + id).click(false);
-    $("#joinedLeave" + id).click(function () {
 
-      $(this).html("leave");
-      Util.leaveGroup(id, function (body) {
-        if (body.success) {
-          alert("leave Group Succeeded");
-          $(this).html("Join");
-          $("#joinedTableRow" + id).remove();
 
-          Util.getAllGroups(function (body) {
-            if (body.success) {
-              renderGroups(body.body.content)
-            }
-            else {
-              console.log(body.content)
-            }
-          });
-        }
-        else {
-          alert(body.content);
-        }
+    if(!isOwner) {
+      $("#joinedLeave" + id).click(function () {
+
+        $(this).html("leave");
+        Util.leaveGroup(id, function (body) {
+          if (body.success) {
+            alert("leave Group Succeeded");
+            $(this).html("Join");
+            $("#joinedTableRow" + id).remove();
+
+            Util.getAllGroups(function (body) {
+              if (body.success) {
+                renderGroups(body.body.content)
+              }
+              else {
+                console.log(body.content)
+              }
+            });
+          }
+          else {
+            alert(body.content);
+          }
+        })
       })
-    })
+    }
+
+
+
   })
 
 

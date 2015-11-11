@@ -26,23 +26,23 @@ module.exports = function() {
 						description: req.body.description
 				}
 				goal = sails.globals.encode(goal);
-				
+
 				cmd = "CALL createGoal('"+ req.cookies.id +"', '"+ 1 +"', '"+ goal.name +"', '"+ goal.description +"');";
-				
+
 				Goal.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res);
 					}
-						
+
 					var goalId = results[0][0].id;
-					
+
 					// add steps
-					var steps = req.body.steps;					
+					var steps = req.body.steps;
 					var sequence = 0;
 					steps.forEach(function(step) {
 						sequence++;
-						
+
 						var encodedStep = {
 								title: step.title,
 								description: step.description,
@@ -50,11 +50,11 @@ module.exports = function() {
 								duration: step.duration
 						}
 						encodedStep = sails.globals.encode(encodedStep);
-						
+
 						cmd = "CALL `addStepToGoal` ('" + goalId + "', '"
 						+ step.title + "', '" + step.description
 						+ "', '"+ step.duration +"', '"+ sequence +"');";
-						
+
 						Step.query(cmd, function(err, results) {
 							if (err) {
 								var errMsg = sails.globals.errorCodes[String(err.sqlState)];
@@ -62,17 +62,17 @@ module.exports = function() {
 							}
 						});
 					});
-					
+
 					return sails.globals.jsonSuccess(req, res, {id : goalId});
 				});
-			}	
+			}
 		},
-		
+
 		find : function(req, res) {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a goal id.');
 			}
-			
+
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
@@ -92,15 +92,15 @@ module.exports = function() {
 					goal.steps.forEach(function(step) {
 						steps.push(sails.globals.decode(step));
 					});
-					
+
 					comments = [];
 					goal.comments.forEach(function(comment) {
 						comments.push(sails.globals.decode(comment));
 					});
-					
 					retGoal = {
+
 							id : goal.id,
-							isOwner : goal.id == req.cookies.id,
+							isOwner : goal.userId == req.cookies.id,
 							name : goal.name,
 							status : goal.status,
 							description : goal.description,
@@ -108,16 +108,16 @@ module.exports = function() {
 							numSteps : goal.numSteps,
 							progress: goal.progress
 					}
-					
+
 					retGoal = sails.globals.decode(retGoal);
 					retGoal.steps = steps;
 					retGoal.comments = comments;
-					
+
 					return sails.globals.jsonSuccess(req, res, retGoal);
 				});
 			}
 		},
-		
+
 		list : function(req, res) {
 			var id = req.cookies.id
 			if (req.param('id')) {
@@ -127,18 +127,18 @@ module.exports = function() {
 				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
 			} else {
 				cmd = "CALL `getGoalList` ('"+ id +"');";
-				
+
 				Goal.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					
+
 					return sails.globals.jsonSuccess(req, res, results[0]);
 				});
 			}
 		},
-		
+
 		'delete' : function(req, res) {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a goal id.');
@@ -153,12 +153,12 @@ module.exports = function() {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					
+
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
 		},
-		
+
 		update : function(req, res) {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a goal id.');
@@ -172,7 +172,7 @@ module.exports = function() {
 						description: req.body.description
 				}
 				goal = sails.globals.encode(goal);
-				
+
 				cmd = "CALL `updateGoal` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ goal.status +"', '"+ goal.name +"', '"+ goal.description +"');";
 
 				Goal.query(cmd, function(err, results) {
@@ -180,12 +180,12 @@ module.exports = function() {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					
+
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
 		},
-		
+
 		addStep : function(req, res) {
 			if (!req.param('title')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a title.');
@@ -202,7 +202,7 @@ module.exports = function() {
 			if (!req.param('duration')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a duration.');
 			}
-			
+
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res,
@@ -216,7 +216,7 @@ module.exports = function() {
 					duration: req.body.duration
 				}
 				step = sails.globals.encode(step);
-				
+
 				cmd = "CALL `addStepToGoal` ('" + step.goalId + "', '"
 						+ step.title + "', '" + step.description
 						+ "', '"+ step.duration +"', '"+ step.sequence +"');";
@@ -232,7 +232,7 @@ module.exports = function() {
 				});
 			}
 		},
-		
+
 		removeStep: function(req, res) {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a step id.');
@@ -240,25 +240,25 @@ module.exports = function() {
 			if (!req.param('goalId')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a goal id.');
 			}
-			
+
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res,
 						'You must be logged in to do this');
 			} else {
 				cmd = "CALL `removeStepFromGoal` ('"+ req.body.goalId +"', '"+ req.body.id +"', '"+ req.cookies.id +"');";
-				
+
 				Step.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					
+
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
 		},
-		
+
 		updateStep: function(req, res) {
 			if (!req.param('id')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a step id.');
@@ -266,24 +266,24 @@ module.exports = function() {
 			if (!req.param('amountWorked')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide an amount worked.');
 			}
-			
+
 			if (!sails.globals.isLoggedInUser(req.cookies.cookie,
 					req.cookies.id)) {
 				return sails.globals.jsonFailure(req, res,
 						'You must be logged in to do this');
 			} else {
 				cmd = "CALL `updateStep` ('"+ req.body.id +"', '"+ req.cookies.id +"', '"+ req.body.amountWorked +"');";
-				
+
 				Step.query(cmd, function(err, results) {
 					if (err) {
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}
-					
+
 					return sails.globals.jsonSuccess(req, res);
 				});
 			}
 		}
-		
+
 	}
 }();

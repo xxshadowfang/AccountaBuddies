@@ -192,8 +192,25 @@ Util.deleteGoal = function(id,callback){
 }
 
 
-Util.postComment = function(){
+Util.postComment = function(id,text,callback){
+  $.ajax({
+    method:'POST',
+    url:'/comment/create',
+    data:{
+      goalId:id,
+      text:text
+    }
+  }).done(function(body){
+    if(body.success){
+      console.log('create comment succeeded')
+    }
+    else{
+      console.log(body.content)
+    }
+    callback(body)
 
+
+  })
   //TO DO
 }
 

@@ -1,70 +1,10 @@
-.form-container {
-  display: none;
-  top: 200px;
-  width: 100%;
-  position: fixed;
-  z-index: 10000;
-}
-.form {
-  margin: 0 auto;
-  width: 350px;
-  text-align: center;
-}
-.title-bar, .button-area {
-  height: 3em;
-  line-height: 3em;
-  user-select: none;
-}
-.title-bar {
-  background-color: #00CCFF;
-}
-.title-bar div {
-  display: inline-block;
-}
-.title-bar .title {
-  width: 330px;
-  color: white;
-}
-.title-bar .close {
-  width: 15px;
-  font-size: 15px;
-  color: white;
-  cursor: pointer;
-}
-.main-form {
-  width: 100%;
-  overflow: hidden;
-  background-color: white;
-  padding: 20px 0;
-}
-.main-form a {
-  text-decoration: none;
-  color: #21C8FF;
-}
-.form input {
-  height: 2em;
-  line-height: 2em;
-  padding-left: 5px;
-  width: 310px;
-  margin: 0 auto;
-  margin-bottom: 1em;
-  font-size: 14px;
-}
-.form input:last-child {
-  margin-bottom: 0;
-}
-#signup-agree {
-  width: 40px;
-  height: 15px;
-  margin-bottom: 0;
-}
-.button-area {
-  width: 100%;
-  background-color: white;
-}
+
 .btn {
   float: left;
-  height: 3em;
+  height: 30px;
+  width: 80px;
+  text-align: center;
+  line-height: 30px;
   background-color: #EFEFEF;
   color: #999999;
   cursor: pointer;
@@ -72,4 +12,6 @@
 .btn.action {
   background-color: #00CCFF;
   color: white;
+
+
 }

@@ -17,13 +17,13 @@ var template = _.template(
       <dt>Description</dt>
       <dd><%=description%></dd>
       <dt>Hours Spent</dt>
-      <dd><input type="number" id="hour<%=stepId%>" readonly=true value=<%=hours%>  size=2 />
+      <dd><input type="number" id="hour<%=stepId%>"  readonly=true value=<%=hours%>  size=2 />
         <button id="stepAddHours<%=stepId%>">+</button>
         <button id="stepSubHours<%=stepId%>">-</button>
         <button id="finalizeHours<%=stepId%>" class="submit-btn">Submit Modified Hours</button>
       </dd>
     </dl>
-    <button id="completeStep<%stepId%>">Mark step as completed</button>
+    <button id="completeStep<%=stepId%>">Mark step as completed</button>
     </p>
   </td></tr>`
 
@@ -33,11 +33,19 @@ var template = _.template(
 $(document).ready(function(){
   $(".stepDetails").hide();
 
-
+  Util.postComment(id,"hey hey hey hey hey hey Tim is awesome",function(body){
+    if (body.success){
+      alert("post comment succeeded");
+    }else{
+      alert(body.content);
+    }
+  });
 
 
   Util.getGoal(id,function(body){
     console.log(body.body.content);
+
+
 
 
     var content = body.body.content;
@@ -47,8 +55,12 @@ $(document).ready(function(){
     var name = content.name || 'None';
     var steps = content.steps || [];
     var status = content.status || 'None';
-    var isOwner = content.isOwner || false;
-    var progress = content.progress != "null"? content.progress : 0;
+    var isOwner = content.isOwner == "true";
+    var progress = content.progress != "null"? parseFloat(content.progress)*100 : 0;
+
+    progress = progress.toFixed(2);
+
+
     $("#stepsTable").html(
       `<tr>
         <th>Step Number</th>
@@ -61,8 +73,13 @@ $(document).ready(function(){
 
     $("#goalDescriptionBox").html(description);
     $("#headerTitle").html(name+"-progress "+progress+"%");
+
+
+
+
+
     if(isOwner){
-      $(".leaveComment").fadeOut();
+
       $("#deleteGoal").click(function(){
         Util.deleteGoal(id,function(body){
           if(body.success){
@@ -75,51 +92,83 @@ $(document).ready(function(){
         })
       })
 
-      console.log("?");
-    }
+      $("#completeGoal").click(function(){
 
+      })
+
+
+    }
+    var totalTime = 0;
     steps.forEach(function(e){
       var amountWorked = e.amountWorked;
       var createdAt = e.createdAt;
       var description = e.description;
       var duration = e.duration;
-      var progress = e.progress;
+      duration = parseInt(duration);
+      var progress = parseFloat(e.progress)*100;
       var id = e.id;
       var sequence = e.sequence;
       var title = e.title;
+
+      totalTime += parseInt(duration);
       $("#stepsTable").append(template({sequence:sequence,stepId:id,progress:progress,description:description,hours:amountWorked,name:title}));
       $("#detail"+id).hide();
       $("#expandStep"+id).click(function(){
         $("#detail"+id).fadeToggle();
       })
 
-      $("#stepAddHours"+id).click(function(){
-        $("#hour"+id).val(parseInt($("#hour"+id).val())+1);
-      });
 
-      $("#stepSubHours"+id).click(function(){
-        $("#hour"+id).val($("#hour"+id).val()-1);
-      });
+      if(isOwner){
+        $("#stepAddHours"+id).click(function(){
+          if($('#hour'+id).val() >= duration){
+            return;
+          }
+          $("#hour"+id).val(parseInt($("#hour"+id).val())+1);
+        });
 
-      $("#finalizeHours"+id).click(function(){
-        var hours = $("#hour"+id).val();
-        if(hours<0){
-          alert("hours spent cannot be smaller than 0!");
-        }
-        else{
-          Util.updateStep(id,hours,function(body){
-            if(body.success){
-              alert("update step succeed")
+        $("#stepSubHours"+id).click(function(){
+          if($("#hour"+id).val()<=0){
+            return;
+          }
+          $("#hour"+id).val($("#hour"+id).val()-1);
+        });
+
+        $("#finalizeHours"+id).click(function(){
+          var hours = $("#hour"+id).val();
+          if(hours<0){
+            alert("hours spent cannot be smaller than 0!");
+          }
+          else{
+            Util.updateStep(id,hours,function(body){
+              if(body.success){
+                alert("update step succeed")
+                location.reload();
+              }
+              else{
+                alert(body.content);
+              }
+            })
+
+          }
+
+        })
+
+        $("#completeStep"+id).click(function(){
+          Util.updateStep(id,duration,function(body){
+            if (body.success){
+              alert("complete step succeeded");
+              location.reload();
             }
             else{
               alert(body.content);
             }
+
           })
+        })
+      }
 
-        }
-
-      })
     })
+    $("#totalTime").html(totalTime+" hours");
   })
 
 

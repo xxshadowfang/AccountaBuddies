@@ -59,7 +59,7 @@ $(document).ready(function(){
         var name = e.name || 'None';
         var id = e.id || 'None';
         var numSteps = e.numSteps || 'None';
-        var progress = Math.random()*100;
+        var progress = e.progress *100 || 0;
 
         $("#goalList").append(
           template({name:name,date:createDate,progress:progress,id:id,numSteps:numSteps})
@@ -111,7 +111,7 @@ $(document).ready(function(){
         var name = e.name || 'None';
         var id = e.id || 'None';
         var numSteps = e.numSteps || 'None';
-        var progress = Math.random()*100;
+        var progress = e.progress * 100 || 0;
 
         $("#goalList").append(
           template({name:name,date:createDate,progress:progress,id:id,numSteps:numSteps})
