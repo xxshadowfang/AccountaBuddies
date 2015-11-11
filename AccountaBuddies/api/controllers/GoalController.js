@@ -100,7 +100,7 @@ module.exports = function() {
 					
 					retGoal = {
 							id : goal.id,
-							isOwner : goal.id == req.cookies.id,
+							isOwner : goal.userId == req.cookies.id,
 							name : goal.name,
 							status : goal.status,
 							description : goal.description,

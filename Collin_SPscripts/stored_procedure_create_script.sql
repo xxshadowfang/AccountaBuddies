@@ -121,8 +121,8 @@ BEGIN
         
     CALL doesUserExist(_userId);
     
-    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt)
-    VALUES (_userId, _status, _name, 0, 0, _description, now(), now());
+    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt, progress)
+    VALUES (_userId, _status, _name, 0, 0, _description, now(), now(), 0);
     
     SELECT last_insert_id() AS `id`;
 END $$
@@ -542,7 +542,7 @@ BEGIN
        
     CALL doesUserExist(_userId);   
 	-- TODO: change this to be a real value for progress
-	SELECT id, `name`, createdAt, numSteps
+	SELECT id, progress, `name`, createdAt, numSteps
     FROM goal
     WHERE userId = _userId;
 END $$
@@ -590,7 +590,7 @@ BEGIN
     
 	if (_joined = '0') THEN
 		-- bring back all groups saying whether user is owner or joined
-        SELECT `group`.id, `name`, motto, userCount, userId AS ownerId, user_groups AS isJoined
+        SELECT `group`.id, `name`, motto, userCount, userId, createdAt AS ownerId, user_groups AS isJoined
         FROM (
 			SELECT * FROM group_users__user_groups
             WHERE user_groups = _userId
@@ -603,7 +603,7 @@ BEGIN
 	if (_joined = '1') THEN
 		CALL doesUserExist(_userId);
 		-- bring back just groups that users are in
-		SELECT `group`.id, `name`, motto, userCount, userId AS ownerId
+		SELECT `group`.id, `name`, motto, userCount, userId, createdAt AS ownerId
 			FROM `group`
 			JOIN group_users__user_groups
 			ON (`group`.id = group_users__user_groups.group_users)
@@ -624,7 +624,7 @@ BEGIN
     
     CALL doesGroupExist(_groupId);
     
-    SELECT username, firstName
+    SELECT user.id, username, firstName
     FROM user JOIN group_users__user_groups
     ON user.id = group_users__user_groups.user_groups
     WHERE group_users__user_groups.group_users = _groupId;
