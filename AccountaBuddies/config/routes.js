@@ -98,6 +98,11 @@ module.exports.routes = {
 		action: 'update'
 	},
 	
+	'POST /goal/complete': {
+		controller: 'goal',
+		action: 'complete'
+	},
+	
 	'POST /goal/delete/:id': {
 		controller: 'goal',
 		action: 'delete'

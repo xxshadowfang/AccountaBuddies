@@ -38,6 +38,7 @@ module.exports.bootstrap = function(cb) {
 			29003: "Description was null.",
 			29004: "Sequence was null.",
 			29005: "stepId was null.",
+			29006: "Amount worked was null.",
 			
 			30000: "Group does not exist.",
 			30002: "filter was null.",

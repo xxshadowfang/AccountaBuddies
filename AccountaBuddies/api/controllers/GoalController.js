@@ -100,7 +100,7 @@ module.exports = function() {
 					
 					retGoal = {
 							id : goal.id,
-							isOwner : goal.id == req.cookies.id,
+							isOwner : goal.userId == req.cookies.id,
 							name : goal.name,
 							status : goal.status,
 							description : goal.description,
@@ -174,6 +174,27 @@ module.exports = function() {
 				goal = sails.globals.encode(goal);
 				
 				cmd = "CALL `updateGoal` ('"+ req.param('id') +"', '"+ req.cookies.id +"', '"+ goal.status +"', '"+ goal.name +"', '"+ goal.description +"');";
+
+				Goal.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+					
+					return sails.globals.jsonSuccess(req, res);
+				});
+			}
+		},
+		
+		complete : function(req, res) {
+			if (!req.param('goalId')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a goal id');
+			}
+			
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {				
+				cmd = "CALL `completeGoal` ('"+ req.body.goalId +"', '"+ req.cookies.id + "');";
 
 				Goal.query(cmd, function(err, results) {
 					if (err) {
