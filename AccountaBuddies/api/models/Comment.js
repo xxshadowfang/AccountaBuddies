@@ -19,15 +19,6 @@ module.exports = function() {
 				type : 'string',
 				maxLength : 255,
 				required : true
-			},
-			rating : {
-				type : 'integer',
-				enum : [ 1, 2, 3, 4, 5 ],
-				defaultTo : 3
-			},
-			nsfw : {
-				type : 'boolean',
-				defaultTo : false
 			}
 		// filter: {}???
 		}

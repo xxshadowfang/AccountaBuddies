@@ -18,8 +18,6 @@ describe('CommentController Integration Tests', function() {
 			user.post('/comment/create')
 			.send({
 				goalId: 77,
-				rating: 3,
-				nsfw: false
 			}).expect(200, {
 				success: false,
 				content: 'You must provide comment text'
@@ -29,9 +27,7 @@ describe('CommentController Integration Tests', function() {
 		it('should deny comment without goalId', function(done) {
 			user.post('/comment/create')
 			.send({
-				text: 'comment text',
-				rating: 3,
-				nsfw: false
+				text: 'comment text'
 			}).expect(200, {
 				success: false,
 				content: 'You must provide a goal id'
@@ -42,9 +38,7 @@ describe('CommentController Integration Tests', function() {
 			user.post('/comment/create')
 			.send({
 				goalId: 77,
-				text: 'comment text',
-				rating: 3,
-				nsfw: false
+				text: 'comment text'
 			}).expect(200, {
 				success: false,
 				content: 'Goal does not exist.'
@@ -56,7 +50,6 @@ describe('CommentController Integration Tests', function() {
 			.send({
 				goalId: 1,
 				text: 'comment text',
-				rating: 3,
 				nsfw: false
 			}).expect(200, {
 				success: true,
@@ -84,9 +77,7 @@ describe('CommentController Integration Tests', function() {
 					user.post('/comment/create')
 					.send({
 						goalId: 1,
-						text: 'userId should be 2',
-						rating: 5,
-						nsfw: true
+						text: 'userId should be 2'
 					}).expect(200, {
 						success: true,
 						body: {
