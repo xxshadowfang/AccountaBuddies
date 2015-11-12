@@ -117,6 +117,11 @@ $(document).ready(function(){
           template({name:name,date:createDate,progress:progress,id:id,numSteps:numSteps})
         )
 
+        $("#table"+id).click(function(){
+          window.location = '/goal/detailPage?id='+id;
+        })
+
+        $("#deleteGoal"+id).click(false);
 
         $("#deleteGoal"+id).click(function(){
           Util.deleteGoal(id,function(body){
@@ -130,9 +135,7 @@ $(document).ready(function(){
           })
         })
 
-        $("#table"+id).click(function(){
-          window.location = '/goal/detailPage?id='+id;
-        })
+
       })
 
 
