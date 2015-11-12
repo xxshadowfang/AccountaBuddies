@@ -111,7 +111,15 @@ $(document).ready(function(){
       })
 
       $("#completeGoal").click(function(){
-
+        Util.completeGoal(id,function(body){
+          if(body.success){
+            alert("complete goal succeeded");
+            location.reload();
+          }
+          else{
+            alert(body.content);
+          }
+        })
       })
 
 

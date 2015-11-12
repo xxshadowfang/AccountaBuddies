@@ -111,9 +111,18 @@ module.exports = function() {
 
 					retGoal = sails.globals.decode(retGoal);
 					retGoal.steps = steps;
-					retGoal.comments = comments;
+          var cmd = "CALL getGoalComments("+ retGoal.id +");";
+					Goal.query(cmd, function(err, results) {
+						if (err) {
+							var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+							return sails.globals.jsonFailure(req, res, errMsg);
+						}
+            console.log(retGoal);
+						retGoal.comments = results[0];
+            return sails.globals.jsonSuccess(req, res, retGoal);
+					});
 
-					return sails.globals.jsonSuccess(req, res, retGoal);
+
 				});
 			}
 		},

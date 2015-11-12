@@ -466,3 +466,22 @@ Util.updateStep = function (id,amountWorked,callback){
       callback(body);
     })
 }
+
+
+Util.completeGoal = function(id,callback){
+  $.ajax({
+    method:"POST",
+    url:"/goal/complete",
+    data:{goalId:id}
+  }).done(function(body){
+    if(body.success){
+      console.log("complete goal succeeded");
+
+    }
+    else{
+      console.log(body.content);
+    }
+    callback(body);
+  })
+
+}
