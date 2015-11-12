@@ -111,7 +111,15 @@ module.exports = function() {
 					
 					retGoal = sails.globals.decode(retGoal);
 					retGoal.steps = steps;
-					retGoal.comments = comments;
+
+					Goal.query(cmd, function(err, results) {
+						if (err) {
+							var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+							return sails.globals.jsonFailure(req, res, errMsg);
+						}
+						
+						retGoal.comments = results[0];
+					});
 					
 					return sails.globals.jsonSuccess(req, res, retGoal);
 				});
