@@ -701,3 +701,14 @@ BEGIN
     
     CALL updateGoalProgress(_goalId);
 END $$
+
+-- getGoalComments
+DROP PROCEDURE IF EXISTS `getGoalComments` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `getGoalComments`(
+	IN _goalId int
+)
+BEGIN
+	SELECT comment.id, user.username, user.id AS userId, `text`, comment.createdAt
+	FROM comment JOIN user ON comment.userId = user.id
+	WHERE comment.goalId = _goalId;
+END $$
