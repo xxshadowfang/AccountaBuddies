@@ -25,19 +25,17 @@ module.exports = function() {
 			} else {
 				var comment = {
 						goalId: req.param('goalId'),
-						text: req.body.text,
-						rating: rating,
-						nsfw: nsfw
+
+						text: req.body.text
 				}
 
 				comment = sails.globals.encode(comment);
-        console.log(comment);
 				cmd = "CALL addGoalComment('"+ req.cookies.id +"', '"+ comment.goalId +"', '"
-										+ comment.text +"', '"+ comment.rating +"', '"+ comment.nsfw +"');";
+										+ comment.text + "');";
 
 				Comment.query(cmd, function(err, results) {
 					if (err) {
-            console.log(err);
+						console.log(err);
 						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
 						return sails.globals.jsonFailure(req, res, errMsg);
 					}

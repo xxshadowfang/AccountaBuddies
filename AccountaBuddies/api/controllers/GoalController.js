@@ -186,6 +186,27 @@ module.exports = function() {
 			}
 		},
 
+		complete : function(req, res) {
+			if (!req.param('goalId')) {
+				return sails.globals.jsonFailure(req, res, 'You must provide a goal id');
+			}
+
+			if (!sails.globals.isLoggedInUser(req.cookies.cookie, req.cookies.id)) {
+				return sails.globals.jsonFailure(req, res, 'You must be logged in to do this');
+			} else {
+				cmd = "CALL `completeGoal` ('"+ req.body.goalId +"', '"+ req.cookies.id + "');";
+
+				Goal.query(cmd, function(err, results) {
+					if (err) {
+						var errMsg = sails.globals.errorCodes[String(err.sqlState)];
+						return sails.globals.jsonFailure(req, res, errMsg);
+					}
+
+					return sails.globals.jsonSuccess(req, res);
+				});
+			}
+		},
+
 		addStep : function(req, res) {
 			if (!req.param('title')) {
 				return sails.globals.jsonFailure(req, res, 'You must provide a title.');

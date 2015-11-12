@@ -4,6 +4,14 @@
 var id = goalId;
 
 
+var commentTemplate = _.template(
+  `<tr>
+    <td><%=username%> </td>
+    <td><%=text%></td>
+    <td><%=date%></td>
+  </tr>`
+)
+
 var template = _.template(
   `<tr>
     <td><%=sequence%></td>
@@ -33,14 +41,24 @@ var template = _.template(
 $(document).ready(function(){
   $(".stepDetails").hide();
 
-  Util.postComment(id,"hey hey hey hey hey hey Tim is awesome",function(body){
-    if (body.success){
-      alert("post comment succeeded");
-    }else{
-      alert(body.content);
+  $("#submitComment").click(function(){
+    var text = $("#commentText").val();
+    if(text){
+      Util.postComment(id,text,function(body){
+        if(body.success){
+          alert('post comment succeeded');
+          location.reload();
+        }
+        else{
+          alert(body.content);
+        }
+      })
     }
-  });
+    else{
+      alert("please write a text for the comment")
+    }
 
+  })
 
   Util.getGoal(id,function(body){
     console.log(body.body.content);
@@ -57,7 +75,7 @@ $(document).ready(function(){
     var status = content.status || 'None';
     var isOwner = content.isOwner == "true";
     var progress = content.progress != "null"? parseFloat(content.progress)*100 : 0;
-
+    var comments = content.comments || [];
     progress = progress.toFixed(2);
 
 
@@ -99,6 +117,16 @@ $(document).ready(function(){
 
     }
     var totalTime = 0;
+
+    comments.forEach(function(e){
+      var date = e.createdAt;
+      var username = e.username || "No Name";
+      var text = e.text || "No description";
+      $("#commentsTable").append(commentTemplate({username:username,text:text,date:date}))
+    })
+
+
+
     steps.forEach(function(e){
       var amountWorked = e.amountWorked;
       var createdAt = e.createdAt;

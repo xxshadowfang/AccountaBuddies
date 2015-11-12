@@ -28,9 +28,7 @@ DROP PROCEDURE IF EXISTS `addGoalComment` $$
 CREATE  PROCEDURE `addGoalComment`(
 	IN _userId int,
     IN _goalId int,
-    IN _text varchar(255),
-    IN _rating int,
-    IN _nsfw bit
+    IN _text varchar(255)
 )
 BEGIN
 	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
@@ -39,20 +37,13 @@ BEGIN
 	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '29000'
         SET MESSAGE_TEXT = 'goalId was null';
         END IF;
-	if(_rating = 'undefined') THEN 
-        SET _rating = 3;
-        END IF;
 
-
-    if (_nsfw = 'undefined') THEN
-		SET _nsfw = 1;
-        END IF;
         
 	CALL doesUserExist(_userId);
     CALL doesGoalExist(_goalId);
     
-    INSERT INTO `comment` (goalId, userId, `text`, rating, nsfw, createdAt, updatedAt)
-    VALUES (_goalId, _userId, _text, _rating, _nsfw, now(), now());
+    INSERT INTO `comment` (goalId, userId, `text`, createdAt, updatedAt)
+    VALUES (_goalId, _userId, _text, now(), now());
     
     SELECT last_insert_id() AS `id`;
 END $$
@@ -125,8 +116,10 @@ BEGIN
         
     CALL doesUserExist(_userId);
     
-    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt,progress)
-    VALUES (_userId, _status, _name, 0, 0, _description, now(), now(),0);
+
+    INSERT INTO goal (userId, `status`, `name`, duration, numSteps, description, createdAt, updatedAt, progress)
+    VALUES (_userId, _status, _name, 0, 0, _description, now(), now(), 0);
+
     
     SELECT last_insert_id() AS `id`;
 END $$
@@ -547,7 +540,9 @@ BEGIN
        
     CALL doesUserExist(_userId);   
 	-- TODO: change this to be a real value for progress
-	SELECT id, `name`, createdAt, numSteps, progress
+
+	SELECT id, progress, `name`, createdAt, numSteps
+
     FROM goal
     WHERE userId = _userId;
 END $$
@@ -595,7 +590,7 @@ BEGIN
     
 	if (_joined = '0') THEN
 		-- bring back all groups saying whether user is owner or joined
-        SELECT `group`.id, `name`, motto, userCount, userId AS ownerId, user_groups AS isJoined
+        SELECT `group`.id, `name`, motto, userCount, userId AS ownerId, createdAt, user_groups AS isJoined
         FROM (
 			SELECT * FROM group_users__user_groups
             WHERE user_groups = _userId
@@ -608,7 +603,7 @@ BEGIN
 	if (_joined = '1') THEN
 		CALL doesUserExist(_userId);
 		-- bring back just groups that users are in
-		SELECT `group`.id, `name`, motto, userCount, userId AS ownerId
+		SELECT `group`.id, `name`, motto, userCount, userId AS ownerId, createdAt
 			FROM `group`
 			JOIN group_users__user_groups
 			ON (`group`.id = group_users__user_groups.group_users)
@@ -629,7 +624,8 @@ BEGIN
     
     CALL doesGroupExist(_groupId);
     
-    SELECT user.id,username, firstName
+
+    SELECT user.id, username, firstName
     FROM user JOIN group_users__user_groups
     ON user.id = group_users__user_groups.user_groups
     WHERE group_users__user_groups.group_users = _groupId;
@@ -683,6 +679,32 @@ BEGIN
     SET amountWorked = _amountWorked,
 		progress = _amountWorked / duration
     WHERE id = _stepId;
+    
+    CALL updateGoalProgress(_goalId);
+END $$
+
+-- completeGoal
+DROP PROCEDURE IF EXISTS `completeGoal` $$
+CREATE DEFINER=`root`@`%` PROCEDURE `completeGoal`(
+	IN _goalId int,
+    IN _userId int
+)
+BEGIN
+	if (_userId = 'undefined') THEN SIGNAL SQLSTATE '19000'
+        SET MESSAGE_TEXT = 'userId was null';
+        END IF;
+	if (_goalId = 'undefined') THEN SIGNAL SQLSTATE '29000'
+        SET MESSAGE_TEXT = 'goalId was null';
+        END IF;
+       
+	if (SELECT userId FROM goal WHERE id = _goalId) != _userId THEN
+		SIGNAL SQLSTATE '25000'
+        SET MESSAGE_TEXT = 'You must be the owner of this goal for that action.';
+		END IF;
+        
+	UPDATE step
+    SET amountWorked = duration
+    WHERE goalId = _goalId;
     
     CALL updateGoalProgress(_goalId);
 END $$
